@@ -23,11 +23,10 @@ const Title = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  // height: 5rem;
 `
 
-const Toolbar = styled(IonToolbar)`
-  // padding: 5rem;
+const Message = styled.p`
+  margin: 0.5rem 0 0 0;
 `
 
 interface Props {
@@ -53,7 +52,7 @@ function ProgressToolbar({
         <ProgressBoxes
           {...{ currentPage, totalPages }}
         />
-        <div>Read and continue</div>
+        <Message>Read and continue</Message>
       </Title>
     </IonToolbar>
   )

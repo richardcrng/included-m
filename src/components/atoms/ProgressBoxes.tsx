@@ -9,6 +9,7 @@ import {
 } from 'react-icons/io5'
 
 interface Props {
+  className?: string;
   currentPage: number;
   totalPages: number;
 }
@@ -27,10 +28,13 @@ const Rows = styled.div`
 `
 
 function ProgressBoxes({
+  className,
   currentPage,
   totalPages
 } : Props) {
-  const [iconSize, setIconSize] = useState(24)
+  const defaultWidth = 20
+
+  const [iconSize, setIconSize] = useState(defaultWidth)
   const [shouldDivide, setShouldDivide] = useState(false)
   const divideIdx = Math.ceil(totalPages / 2)
 
@@ -38,11 +42,11 @@ function ProgressBoxes({
   const { ref } = useDimensions<HTMLDivElement>({
     onResize: ({ width }) => {
       console.log(width)
-      if (width / totalPages > 24) {
-        setIconSize(24)
+      if (width / totalPages > defaultWidth) {
+        setIconSize(defaultWidth)
         setShouldDivide(false)
       } else {
-        setIconSize(20)
+        setIconSize(defaultWidth - 4)
         setShouldDivide(true)
       }
     },
@@ -57,7 +61,7 @@ function ProgressBoxes({
   }).map(Icon => <Icon size={iconSize} />)
 
   return (
-    <Rows ref={ref}>
+    <Rows ref={ref} className={className}>
       {shouldDivide && (
         <>
           <Boxes>{icons.slice(0, divideIdx)}</Boxes>
