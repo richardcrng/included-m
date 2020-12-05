@@ -1,19 +1,21 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import styled from 'styled-components'
 import {
   IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs
+  IonButton,
+  IonButtons,
+  IonToolbar,
+  IonHeader,
+  IonTitle
 } from '@ionic/react';
+import {
+  IoArrowBack,
+  IoClose,
+  IoCheckboxSharp,
+  IoSquare,
+  IoSquareOutline
+} from 'react-icons/io5'
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,31 +36,59 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+
+const content = [
+  "The startup Juicero was convinced that its customers would pay nearly $700 for its product. By 2017, they had raised almost $120M and hired over 200 employees.",
+  "But sales were middling after product launch. Despite slashing prices, Juicero was steadily losing money, especially after it came out that squeezing their bags by hand was just as efficient."
+]
+
+const Container = styled.div`
+  margin: 1rem;
+`
+
+const Buttons = styled(IonButtons)`
+  margin: 1rem;
+`
+
+const Title = styled(IonTitle)`
+  height: 5rem;
+`
+
 const App: React.FC = () => (
   <IonApp>
+    <IonHeader>
+      <IonToolbar>
+        <Buttons slot='start'>
+          <IoArrowBack size={24} />
+        </Buttons>
+        <Buttons slot='end'>
+          <IoClose size={24} />
+        </Buttons>
+        <Title>
+          <div>
+            <IoCheckboxSharp size={18} />
+            <IoCheckboxSharp size={18} />
+            <IoCheckboxSharp size={18} />
+            <IoSquare size={18} />
+            <IoSquareOutline size={18} />
+            <IoSquareOutline size={18} />
+            <IoSquareOutline size={18} />
+          </div>
+          <div>Read and continue</div>
+        </Title>
+      </IonToolbar>
+    </IonHeader>
     <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route path="/tab1" component={Tab1} exact={true} />
-          <Route path="/tab2" component={Tab2} exact={true} />
-          <Route path="/tab3" component={Tab3} />
-          <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
+      <Container>
+        {content.map(block => {
+          return (
+            <p>{block}</p>
+          )
+        })}
+      </Container>
+      <IonButton color='success'>
+        Continue
+      </IonButton>
     </IonReactRouter>
   </IonApp>
 );
