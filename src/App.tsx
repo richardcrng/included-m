@@ -40,7 +40,10 @@ const Container = styled.div`
 const App: React.FC = () => (
   <IonApp>
     <IonHeader>
-      <ProgressToolbar />
+      <ProgressToolbar
+        currentPage={4}
+        totalPages={10}
+      />
     </IonHeader>
     <IonReactRouter>
       <Container>

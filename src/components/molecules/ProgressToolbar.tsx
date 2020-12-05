@@ -13,7 +13,8 @@ import {
   IoClose,
   IoCheckboxSharp,
   IoSquare,
-  IoSquareOutline
+  IoSquareOutline,
+  IoCheckboxOutline
 } from 'react-icons/io5'
 
 const Buttons = styled(IonButtons)`
@@ -24,7 +25,28 @@ const Title = styled(IonTitle)`
   height: 5rem;
 `
 
-function ProgressToolbar() {
+interface Props {
+  currentPage: number;
+  totalPages: number;
+}
+
+function ProgressToolbar({
+  currentPage,
+  totalPages
+}: Props) {
+
+  const iconSize = 24
+  const checkboxes = Array.from(Array(totalPages).keys()).map(idx => {
+    const Icon = idx < currentPage
+      ? IoCheckboxSharp
+      : idx === currentPage
+        ? IoSquare
+        : IoSquareOutline
+    
+    return <Icon size={iconSize} />
+  })
+
+
   return (
     <IonToolbar>
       <Buttons slot='start'>
@@ -35,13 +57,7 @@ function ProgressToolbar() {
       </Buttons>
       <Title>
         <div>
-          <IoCheckboxSharp size={18} />
-          <IoCheckboxSharp size={18} />
-          <IoCheckboxSharp size={18} />
-          <IoSquare size={18} />
-          <IoSquareOutline size={18} />
-          <IoSquareOutline size={18} />
-          <IoSquareOutline size={18} />
+          {checkboxes}
         </div>
         <div>Read and continue</div>
       </Title>
