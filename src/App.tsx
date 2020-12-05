@@ -41,8 +41,8 @@ const App: React.FC = () => (
   <IonApp>
     <IonHeader>
       <ProgressToolbar
-        currentPage={4}
-        totalPages={10}
+        currentPage={2}
+        totalPages={11}
       />
     </IonHeader>
     <IonReactRouter>

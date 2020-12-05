@@ -11,18 +11,23 @@ import {
 import {
   IoArrowBack,
   IoClose,
-  IoCheckboxSharp,
-  IoSquare,
-  IoSquareOutline,
-  IoCheckboxOutline
 } from 'react-icons/io5'
+import ProgressBoxes from '../atoms/ProgressBoxes';
 
 const Buttons = styled(IonButtons)`
   margin: 1rem;
 `
 
-const Title = styled(IonTitle)`
-  height: 5rem;
+const Title = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  // height: 5rem;
+`
+
+const Toolbar = styled(IonToolbar)`
+  // padding: 5rem;
 `
 
 interface Props {
@@ -35,17 +40,6 @@ function ProgressToolbar({
   totalPages
 }: Props) {
 
-  const iconSize = 24
-  const checkboxes = Array.from(Array(totalPages).keys()).map(idx => {
-    const Icon = idx < currentPage
-      ? IoCheckboxSharp
-      : idx === currentPage
-        ? IoSquare
-        : IoSquareOutline
-    
-    return <Icon size={iconSize} />
-  })
-
 
   return (
     <IonToolbar>
@@ -56,9 +50,9 @@ function ProgressToolbar({
         <IoClose size={24} />
       </Buttons>
       <Title>
-        <div>
-          {checkboxes}
-        </div>
+        <ProgressBoxes
+          {...{ currentPage, totalPages }}
+        />
         <div>Read and continue</div>
       </Title>
     </IonToolbar>
