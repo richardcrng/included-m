@@ -3,18 +3,8 @@ import styled from 'styled-components'
 import {
   IonApp,
   IonButton,
-  IonButtons,
-  IonToolbar,
   IonHeader,
-  IonTitle
 } from '@ionic/react';
-import {
-  IoArrowBack,
-  IoClose,
-  IoCheckboxSharp,
-  IoSquare,
-  IoSquareOutline
-} from 'react-icons/io5'
 import { IonReactRouter } from '@ionic/react-router';
 
 /* Core CSS required for Ionic components to work properly */
@@ -35,6 +25,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import ProgressToolbar from './components/molecules/ProgressToolbar';
 
 
 const content = [
@@ -46,37 +37,10 @@ const Container = styled.div`
   margin: 1rem;
 `
 
-const Buttons = styled(IonButtons)`
-  margin: 1rem;
-`
-
-const Title = styled(IonTitle)`
-  height: 5rem;
-`
-
 const App: React.FC = () => (
   <IonApp>
     <IonHeader>
-      <IonToolbar>
-        <Buttons slot='start'>
-          <IoArrowBack size={24} />
-        </Buttons>
-        <Buttons slot='end'>
-          <IoClose size={24} />
-        </Buttons>
-        <Title>
-          <div>
-            <IoCheckboxSharp size={18} />
-            <IoCheckboxSharp size={18} />
-            <IoCheckboxSharp size={18} />
-            <IoSquare size={18} />
-            <IoSquareOutline size={18} />
-            <IoSquareOutline size={18} />
-            <IoSquareOutline size={18} />
-          </div>
-          <div>Read and continue</div>
-        </Title>
-      </IonToolbar>
+      <ProgressToolbar />
     </IonHeader>
     <IonReactRouter>
       <Container>
