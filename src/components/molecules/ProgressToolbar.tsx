@@ -1,12 +1,8 @@
 import React from 'react';
 import styled from 'styled-components'
 import {
-  IonApp,
-  IonButton,
   IonButtons,
   IonToolbar,
-  IonHeader,
-  IonTitle
 } from '@ionic/react';
 import {
   IoArrowBack,

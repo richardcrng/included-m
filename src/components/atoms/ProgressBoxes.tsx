@@ -58,7 +58,7 @@ function ProgressBoxes({
       : idx === currentPage
         ? IoSquare
         : IoSquareOutline
-  }).map(Icon => <Icon size={iconSize} />)
+  }).map((Icon, idx) => <Icon key={idx} size={iconSize} />)
 
   return (
     <Rows ref={ref} className={className}>
