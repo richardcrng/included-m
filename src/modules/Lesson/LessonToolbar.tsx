@@ -37,12 +37,21 @@ function LessonToolbar({
   message
 }: Props) {
 
-  const { state: { activities, currentIdx } } = useContext(LessonContext)
+  const {
+    dispatch,
+    actions,
+    state: { activities, currentIdx }
+  } = useContext(LessonContext)
 
   return (
     <IonToolbar>
       <Buttons slot='start'>
-        <IoArrowBack size={24} />
+        <IoArrowBack
+          onClick={() => {
+            dispatch(actions.currentIdx.create.do((n: number) => Math.max(0, n-1)))
+          }}
+          size={24}
+        />
       </Buttons>
       <Buttons slot='end'>
         <IoClose size={24} />
