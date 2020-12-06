@@ -1,5 +1,6 @@
 import { IonToast } from '@ionic/react';
 import React from 'react';
+import Markdown from 'markdown-to-jsx'
 
 export interface NotificationProps {
   header?: string,

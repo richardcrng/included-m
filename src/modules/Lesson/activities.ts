@@ -91,10 +91,32 @@ const activities: Activity[] = [
     ]
   },
   {
-    activityType: 'read',
+    activityType: 'select-multiple',
     blocks: [
-      "Every fund looks to define their unique opportunity space and sustainable competitive advantage, but they share something in common:",
-      "They take risks by funding early-stage ventures because they love the work, and have the intention of achieving large returns for their investors.",
+      "Every fund looks to define their unique opportunity space and sustainable competitive advantage, but they share some things in common.",
+      "What do you think those things are?"
+    ],
+    answers: [
+      {
+        text: "They take risks by funding early-stage ventures.",
+        isCorrect: true,
+        feedback: "That's right - what an exciting business!"
+      },
+      {
+        text: 'They are profitable.',
+        isCorrect: false,
+        feedback: "If only! There's no guarantee in venture capital of profitability..."
+      },
+      {
+        text: 'They manage billions of pounds of assets.',
+        isCorrect: false,
+        feedback: "Some funds might have a portfolio valued at billions, but most funds have millions rather than billions that they deploy."
+      },
+      {
+        text: "They have the intention of achieving large returns for their investors.",
+        isCorrect: true,
+        feedback: "That's right - VCs have their own investors to answer to!"
+      }
     ]
   },
   {
@@ -121,6 +143,12 @@ const activities: Activity[] = [
         isCorrect: false,
         feedback: "You might think so, but no! Fund returns are not *just* a function of failure rate."
       }
+    ]
+  },
+  {
+    activityType: 'read',
+    blocks: [
+      "Regardless of the exact figure, it is pretty clear that a startup’s pathway to success is an arduous one, thus VC investors are exacting with their capital and are structured in a way so as to balance good governance with risk-taking while endeavouring to create substantial returns for their investors."
     ]
   }
 ]
