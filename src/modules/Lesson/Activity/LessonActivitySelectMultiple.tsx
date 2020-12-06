@@ -42,11 +42,11 @@ function LessonActivitySelectMultiple({
     answer: typeof answers[0],
     idx: number
   ) => () => {
-    if (!answer.isSelected) {
-      dispatch(actions[idx].create.assign({
-        isSelected: true
-      }))
-    }
+    if (answer.isSelected) return
+
+    dispatch(actions[idx].create.assign({
+      isSelected: true
+    }))
 
     if (answer.feedback) {
       if (typeof answer.feedback === 'string') {
