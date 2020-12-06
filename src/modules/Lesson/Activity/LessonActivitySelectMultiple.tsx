@@ -9,7 +9,7 @@ import LessonContent from '../LessonContent';
 import { SelectMultipleActivity } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
-import LessonToolbar from '../../../components/molecules/LessonToolbar';
+import LessonToolbar from '../LessonToolbar';
 import LessonContinueButton from '../../LessonContinueButton';
 import LessonHeader from '../LessonHeader';
 
@@ -79,8 +79,6 @@ function LessonActivitySelectMultiple({
   return (
     <>
       <LessonHeader
-        currentPage={2}
-        totalPages={11}
         message='Select all that apply'
       />
       <IonAlert

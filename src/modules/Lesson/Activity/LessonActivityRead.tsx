@@ -14,10 +14,7 @@ function LessonActivityRead({
 }: Props) {
   return (
     <>
-      <LessonHeader
-        currentPage={1}
-        totalPages={11}
-      />
+      <LessonHeader />
       <LessonContent>
         {blocks.map(block => (
           <LessonContentBlock

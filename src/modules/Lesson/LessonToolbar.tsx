@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components'
 import {
   IonButtons,
@@ -8,7 +8,8 @@ import {
   IoArrowBack,
   IoClose,
 } from 'react-icons/io5'
-import ProgressBoxes from '../atoms/ProgressBoxes';
+import ProgressBoxes from '../../components/atoms/ProgressBoxes';
+import { LessonContext } from './Lesson';
 
 const Buttons = styled(IonButtons)`
   margin: 1rem;
@@ -29,17 +30,14 @@ const Message = styled.p`
 `
 
 interface Props {
-  currentPage: number;
-  totalPages: number;
   message?: string;
 }
 
 function LessonToolbar({
-  currentPage,
-  totalPages,
   message
 }: Props) {
 
+  const { state: { activities, currentIdx } } = useContext(LessonContext)
 
   return (
     <IonToolbar>
@@ -51,7 +49,8 @@ function LessonToolbar({
       </Buttons>
       <Title>
         <ProgressBoxes
-          {...{ currentPage, totalPages }}
+          currentPage={currentIdx}
+          totalPages={activities.length}
         />
         <Message>{message ? message : 'Read and continue'}</Message>
       </Title>

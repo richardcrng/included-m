@@ -4,7 +4,7 @@ import LessonActivityRead from './LessonActivityRead';
 import LessonActivitySelectMultiple from './LessonActivitySelectMultiple';
 
 interface Props {
-  activity: Activity
+  activity: Activity,
 }
 
 function LessonActivity({
