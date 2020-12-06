@@ -27,27 +27,32 @@ const Rows = styled.div`
   width: 100%
 `
 
+const defaultWidth = 20
+let memoIconSize = defaultWidth
+let memoShouldDivide = false
+
 function ProgressBoxes({
   className,
   currentPage,
   totalPages
 } : Props) {
-  const defaultWidth = 20
 
-  const [iconSize, setIconSize] = useState(defaultWidth)
-  const [shouldDivide, setShouldDivide] = useState(false)
+  const [iconSize, setIconSize] = useState(memoIconSize)
+  const [shouldDivide, setShouldDivide] = useState(memoShouldDivide)
   const divideIdx = Math.ceil(totalPages / 2)
-
 
   const { ref } = useDimensions<HTMLDivElement>({
     onResize: ({ width }) => {
-      console.log(width)
       if (width / totalPages > defaultWidth) {
         setIconSize(defaultWidth)
         setShouldDivide(false)
+        memoIconSize = defaultWidth
+        memoShouldDivide = false
       } else {
-        setIconSize(defaultWidth - 4)
+        setIconSize(Math.abs(defaultWidth - 4))
         setShouldDivide(true)
+        memoIconSize = Math.abs(memoIconSize - 4)
+        memoShouldDivide = true
       }
     },
   });

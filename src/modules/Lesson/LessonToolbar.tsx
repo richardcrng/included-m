@@ -58,6 +58,7 @@ function LessonToolbar({
       </Buttons>
       <Title>
         <ProgressBoxes
+          key='stable'
           currentPage={currentIdx}
           totalPages={activities.length}
         />
