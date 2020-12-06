@@ -1,8 +1,4 @@
 import React, { useMemo, useReducer, useState } from 'react';
-import {
-  IonAlert
-} from '@ionic/react';
-import { Notification } from 'react-rainbow-components';
 import { shuffle } from 'lodash';
 import riduce from 'riduce';
 import LessonContent from '../LessonContent';
@@ -10,18 +6,16 @@ import { SelectAnAnswerActivity, SelectMultipleActivity } from '../lesson-types'
 import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
 import LessonContinueButton from '../LessonContinueButton';
+import Notification, { NotificationProps } from '../../../components/atoms/Notification';
 
 interface Props {
   activity: SelectMultipleActivity | SelectAnAnswerActivity
 }
 
-type Notification =
-  { header?: string, message: string, buttonText?: string, isShowing: boolean }
-
 function LessonActivitySelectMultiple({
   activity: { blocks, answers }
 }: Props) {
-  const [notification, setNotification] = useState<Notification>({ message: '', isShowing: false })
+  const [notification, setNotification] = useState<NotificationProps>({ message: '', isShowing: false })
 
   const shuffledAnswers = useMemo(
     () => shuffle(answers),
@@ -76,9 +70,13 @@ function LessonActivitySelectMultiple({
 
   return (
     <>
-      <IonAlert
+      <Notification
+        isShowing={notification.isShowing}
         header={notification.header}
-        isOpen={notification.isShowing}
+        message={notification.message}
+        position='top'
+        duration={1000}
+        buttons={[notification.buttonText || 'Close']}
         onDidDismiss={() => {
           setNotification(prevState => ({
             ...prevState,
@@ -93,8 +91,6 @@ function LessonActivitySelectMultiple({
             ))
           )))
         }}
-        message={notification.message}
-        buttons={[notification.buttonText || 'Back']}
       />
       <LessonContent>
         {blocks.map(block => (
