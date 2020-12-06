@@ -1,3 +1,3 @@
-import LessonSwipeCards from "./LessonSwipeCards";
+import LessonActivitySwipeCards from "./LessonActivitySwipeCards";
 
-export default LessonSwipeCards
+export default LessonActivitySwipeCards

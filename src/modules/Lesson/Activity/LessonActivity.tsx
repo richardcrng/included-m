@@ -3,7 +3,7 @@ import { Activity } from '../lesson-types';
 import LessonActivityRead from './LessonActivityRead';
 import LessonActivitySelectMultiple from './LessonActivitySelectMultiple';
 import LessonActivitySelectForEachBlank from './SelectForEachBlank';
-import LessonSwipeCards from './SwipeCards';
+import LessonActivitySwipeCards from './SwipeCards';
 
 interface Props {
   activity: Activity,
@@ -33,8 +33,8 @@ function LessonActivity({
     )
   } else if (activity.activityType === 'swipe-cards') {
     return (
-      <LessonSwipeCards
-        cards={[]}
+      <LessonActivitySwipeCards
+        activity={activity}
       />
     )
   } else {

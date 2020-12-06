@@ -43,9 +43,9 @@ function Stack<TCard>({
   )
 
   return (
-    <Viewport>
+    <>
       {children(cardNodes, swingData, StackedCards)}
-    </Viewport>
+    </>
   )
 }
 
