@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/react';
 import { arrowBack, arrowForward, card } from 'ionicons/icons';
+import { shuffle } from 'lodash';
 import Swing, { Core } from '../../../../lib/swing-react';
 import { SwipeCard, SwipeCardsActivity } from '../../lesson-types';
 import LessonContent from '../../LessonContent';
@@ -17,7 +18,7 @@ function LessonActivitySwipeCards({
 }: Props) {
   const [notificationState, setNotificationState] = useState<NotificationProps>({ message: '', isShowing: false })
 
-  const [cardsState, setCardsState] = React.useState(activity.cards.map(card => ({
+  const [cardsState, setCardsState] = React.useState(shuffle(activity.cards).map(card => ({
     ...card,
     count: 0
   })))
