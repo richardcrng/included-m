@@ -1,6 +1,6 @@
 import React, { useMemo, useReducer, useState } from 'react';
 import {
-  IonButton, IonHeader,
+  IonButton, IonHeader, IonAlert
 } from '@ionic/react';
 import { Notification } from 'react-rainbow-components';
 import { shuffle } from 'lodash';
@@ -16,13 +16,12 @@ interface Props {
 }
 
 type Notification =
-  { message?: string, isShowing: false }
-    | { message: string, isShowing: true }
+  { header?: string, message: string, buttonText?: string, isShowing: boolean }
 
 function LessonActivitySelectMultiple({
   activity: { blocks, answers }
 }: Props) {
-  const [notification, setNotification] = useState<Notification>({ isShowing: false })
+  const [notification, setNotification] = useState<Notification>({ message: '', isShowing: false })
 
   const shuffledAnswers = useMemo(
     () => shuffle(answers),
@@ -43,17 +42,25 @@ function LessonActivitySelectMultiple({
     idx: number
   ) => () => {
     if (!answer.isSelected) {
-      console.log('selecting', answer, idx)
       dispatch(actions[idx].create.assign({
         isSelected: true
       }))
     }
 
     if (answer.feedback) {
-      setNotification({
-        message: answer.feedback,
-        isShowing: true
-      })
+      if (typeof answer.feedback === 'string') {
+        setNotification({
+          message: answer.feedback,
+          isShowing: true
+        })
+      } else {
+        setNotification({
+          header: answer.feedback.header,
+          message: answer.feedback.message,
+          buttonText: answer.feedback.buttonText,
+          isShowing: true
+        })
+      }
     }
   }
 
@@ -66,17 +73,26 @@ function LessonActivitySelectMultiple({
           message='Select all answers that apply'
         />
       </IonHeader>
-      {notification.isShowing && (
-        <Notification
-          onRequestClose={() => {
-            setNotification(prevState => ({
-              ...prevState,
-              isShowing: false
-            }))
-          }}
-          description={notification.message}
-        />
-      )}
+      <IonAlert
+        header={notification.header}
+        isOpen={notification.isShowing}
+        onDidDismiss={() => {
+          setNotification(prevState => ({
+            ...prevState,
+            isShowing: false
+          }))
+
+          dispatch(actions.create.do(answers => (
+            answers.map(answer => (
+              answer.isSelected && !answer.isCorrect
+                ? { ...answer, isSelected: false }
+                : answer
+            ))
+          )))
+        }}
+        message={notification.message}
+        buttons={[notification.buttonText || 'Back']}
+      />
       <LessonContent>
         {blocks.map(block => (
           <LessonContentBlock

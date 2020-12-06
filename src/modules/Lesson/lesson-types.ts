@@ -16,7 +16,11 @@ export type SelectMultipleActivity = {
 export type SelectAnswer = {
   text: string
   isCorrect: boolean
-  feedback?: string
+  feedback?: string | {
+    header?: string,
+    message: string,
+    buttonText?: string
+  }
   isSelected?: boolean
 }
 
