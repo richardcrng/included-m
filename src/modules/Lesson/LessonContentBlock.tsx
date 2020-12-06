@@ -1,4 +1,5 @@
 import React from 'react';
+import Markdown from 'markdown-to-jsx';
 import { ContentBlock } from './lesson-types';
 
 interface Props {
@@ -8,22 +9,9 @@ interface Props {
 function LessonContentBlock({
   block
 }: Props) {
-  // if (isSelectMultipleAnswers(block)) {
-  //   return (
-  //     <div key={JSON.stringify(block)}>
-  //       {block.answers.map(answer => (
-  //         <MultipleAnswerCard
-  //           key={answer.text}
-  //           text={answer.text}
-  //         />
-  //       ))}
-  //     </div>
-  //   )
-  // } else {
-    return (
-      <p key={JSON.stringify(block)}>{block}</p>
-    )
-  // }
+  return (
+    <Markdown options={{ forceBlock: true }}>{block}</Markdown>
+  )
 }
 
 export default LessonContentBlock

@@ -3,7 +3,6 @@ import LessonContent from '../LessonContent';
 import { ContentBlock } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
 import LessonContinueButton from '../LessonContinueButton';
-import LessonHeader from '../LessonHeader';
 
 interface Props {
   blocks: ContentBlock[]
