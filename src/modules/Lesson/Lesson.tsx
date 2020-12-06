@@ -14,6 +14,8 @@ import {
 } from '@ionic/react';
 import ProgressToolbar from '../../components/molecules/ProgressToolbar';
 import { ContentBlock, isSelectMultipleAnswers } from './lesson-types';
+import MultipleAnswerCard from '../../components/atoms/MultipleAnswerCard';
+import LessonContentBlock from './LessonContentBlock';
 
 const content: ContentBlock[] = [
   "Within six months, Juicero had shuttered, offering a full refund to their customers.",
@@ -56,26 +58,12 @@ function Lesson() {
       </IonHeader>
       <IonContent>
         <Container>
-          {content.map(block => {
-            if (isSelectMultipleAnswers(block)) {
-              return (
-                <div key={JSON.stringify(block)}>
-                  {block.answers.map(answer => (
-                    <IonCard key={answer.text}>
-                      {/* <IonCardHeader>
-                        <IonCheckbox />
-                      </IonCardHeader> */}
-                      <IonCardContent>{answer.text}</IonCardContent>
-                    </IonCard>
-                  ))}
-                </div>
-              )
-            } else {
-              return (
-                <p key={JSON.stringify(block)}>{block}</p>
-              )
-            }
-          })}
+          {content.map(block => (
+            <LessonContentBlock
+              key={JSON.stringify(block)}
+              block={block}
+            />
+          ))}
         </Container>
       </IonContent>
       <IonButton color='success'>
