@@ -7,10 +7,12 @@ import { SelectAnswer } from '../../modules/Lesson/lesson-types';
 
 interface Props {
   answer: SelectAnswer
+  onClick(): void
 }
 
 function MultipleAnswerCard({
-  answer: { text, isSelected, isCorrect }
+  answer: { text, isSelected, isCorrect },
+  onClick
 }: Props) {
 
   const color = isSelected
@@ -18,7 +20,11 @@ function MultipleAnswerCard({
     : undefined
 
   return (
-    <IonCard button color={color}>
+    <IonCard
+      button
+      color={color}
+      onClick={onClick}
+    >
       {/* <IonCardHeader>
         <IonCheckbox />
       </IonCardHeader> */}

@@ -30,6 +30,18 @@ function LessonActivitySelectMultiple({
 
   const allCorrectAnswersSelected = answersState.every(answer => !answer.isCorrect || answer.isSelected)
 
+  const makeClickHandler = (
+    answer: typeof answers[0],
+    idx: number
+  ) => () => {
+    if (!answer.isSelected) {
+      console.log('selecting', answer, idx)
+      dispatch(actions[idx].create.assign({
+        isSelected: true
+      }))
+    }
+  }
+
   return (
     <>
       <LessonContent>
@@ -39,10 +51,11 @@ function LessonActivitySelectMultiple({
             block={block}
           />
         ))}
-        {answersState.map(answer => (
+        {answersState.map((answer, idx) => (
           <MultipleAnswerCard
             key={answer.text}
             answer={answer}
+            onClick={makeClickHandler(answer, idx)}
           />
         ))}
       </LessonContent>

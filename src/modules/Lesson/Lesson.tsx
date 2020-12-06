@@ -16,12 +16,12 @@ const activity: Activity = {
     {
       text: "They needed more celebrity endorsements.",
       isCorrect: false,
-      isSelected: true
+      // isSelected: true
     },
     {
       text: "They assumed they knew what customers wanted from the product.",
       isCorrect: true,
-      isSelected: true
+      // isSelected: true
     },
     {
       text: "They didn't raise enough money.",
