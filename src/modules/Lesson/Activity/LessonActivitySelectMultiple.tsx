@@ -58,12 +58,14 @@ function LessonActivitySelectMultiple({
     } else if (answer.isCorrect) {
       setNotification({
         message: 'Amazing!',
-        isShowing: true
+        isShowing: true,
+        color: 'success'
       })
     } else {
       setNotification({
         message: 'Not quite...',
-        isShowing: true
+        isShowing: true,
+        color: 'warning'
       })
     }
   }
@@ -72,6 +74,7 @@ function LessonActivitySelectMultiple({
     <>
       <Notification
         isShowing={notification.isShowing}
+        color={notification.color}
         header={notification.header}
         message={notification.message}
         position='top'

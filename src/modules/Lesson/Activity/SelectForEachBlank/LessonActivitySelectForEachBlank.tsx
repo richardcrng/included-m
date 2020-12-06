@@ -7,21 +7,17 @@ import { SelectForEachBlankSimpleActivity } from '../../lesson-types';
 import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
 import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
-import Notification from '../../../../components/atoms/Notification';
+import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
 
 interface Props {
   activity: SelectForEachBlankSimpleActivity
 }
 
-type Notification =
-  { header?: string, message: string, buttonText?: string, isShowing: boolean }
-
-
 
 function LessonActivitySelectForEachBlank({
   activity: { blocks, }
 }: Props) {
-  const [notification, setNotification] = useState<Notification>({ message: '', isShowing: false })
+  const [notification, setNotification] = useState<NotificationProps>({ message: '', isShowing: false })
 
   const answers = answersFromBlocks(blocks)
 
@@ -51,7 +47,11 @@ function LessonActivitySelectForEachBlank({
     dispatch(actions.answers[idx].isSelected.create.on())
 
     if (answerMatchesInput(answer)) {
-      setNotification({ message: 'Amazing!', isShowing: true })
+      setNotification({
+        message: 'Amazing!',
+        isShowing: true,
+        color: 'success'
+      })
       dispatch(bundle([
         actions.answers[idx].isLocked.create.on(),
         actions.selectedInput.create.do(() => {
@@ -66,7 +66,8 @@ function LessonActivitySelectForEachBlank({
     } else {
       setNotification({
         message: 'Not quite...',
-        isShowing: true
+        isShowing: true,
+        color: 'warning'
       })
     }
   }
@@ -75,6 +76,7 @@ function LessonActivitySelectForEachBlank({
     <>
       <Notification
         header={notification.header}
+        color={notification.color}
         isShowing={notification.isShowing}
         onDidDismiss={() => {
           setNotification(prevState => ({

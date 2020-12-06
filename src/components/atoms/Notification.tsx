@@ -27,6 +27,7 @@ function Notification({
   return (
     <IonToast
       isOpen={isShowing}
+      color={color}
       header={header}
       message={message}
       position={position}
