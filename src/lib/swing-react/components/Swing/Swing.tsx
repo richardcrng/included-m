@@ -29,7 +29,7 @@ export interface Props<TCard> {
   cards: TCard[],
   getCardKey: (card: TCard) => string | number,
   renderCard?: ({ card, idx, ref }: RenderCardArg<TCard>) => React.ReactNode,
-  onThrowOut(e: SwingCore.SwingEvent): void,
+  onThrowOut(e: SwingCore.SwingEvent, stack: SwingCore.Stack): void,
   children?: React.ReactNode,
   stackConfig?: SwingCore.StackConfig
 }

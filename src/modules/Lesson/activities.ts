@@ -76,7 +76,7 @@ const swipeActivity: Activity = {
   blocks: ["Are the following examples startups or something else?"],
   cards: [
     { text: "A large conglomerate updates the colour of its best-selling product.", isRight: true },
-    { text: "A student wants to start a social network for children.", isRight: true },
+    { text: "A student wants to start a social network for children.", isRight: false },
     { text: "A journalist quits her job and decides to go freelance.", isRight: true },
     { text: "An engineer wants to design an app to sell.", isRight: false }
   ],

@@ -44,8 +44,10 @@ declare module SwingCore {
     trigger(name: string, object: Object): void
   }
 
-  export function Stack(config?: StackConfig): Stack
-  export class Stack {
+  export interface Stack {
+
+    (config?: StackConfig): Stack
+
     /**
      * Creates an instance of Card and associates it with an element.
      * @param element

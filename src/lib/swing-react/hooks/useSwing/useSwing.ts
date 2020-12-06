@@ -10,7 +10,6 @@ function useSwing<EType extends HTMLElement = HTMLElement>({
   stackConfig,
   onThrowOut
 }: Config) {
-  // @ts-ignore
   const [stack] = useState(Swing.Stack(stackConfig))
 
   // set listeners

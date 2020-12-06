@@ -1,6 +1,6 @@
-import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/react';
 import React from 'react';
-import { arrowBack, arrowForward } from 'ionicons/icons';
+import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/react';
+import { arrowBack, arrowForward, card } from 'ionicons/icons';
 import Swing, { Core } from '../../../../lib/swing-react';
 import { SwipeCard, SwipeCardsActivity } from '../../lesson-types';
 import LessonContent from '../../LessonContent';
@@ -8,19 +8,37 @@ import LessonContentBlock from '../../LessonContentBlock';
 
 interface Props {
   activity: SwipeCardsActivity
-  // onThrowOut: (e: Core.Types.SwingEvent) => void
 }
 
 function LessonActivitySwipeCards({
   activity,
-  // onThrowOut
 }: Props) {
+
+  const [cardsState, setCardsState] = React.useState(activity.cards.map(card => ({
+    ...card,
+    count: 0
+  })))
 
   return (
     <Swing.Provider
-      cards={activity.cards}
-      getCardKey={(card) => card.text}
-      onThrowOut={() => undefined}
+      cards={cardsState}
+      getCardKey={(card) => `${card.text}-${card.count}`}
+      onThrowOut={(swingEvent, stack) => {
+        const directionMatches = (
+          cardsState[0].isRight && swingEvent.throwDirection === Core.Direction.RIGHT
+        ) || (
+          !cardsState[0].isRight && swingEvent.throwDirection === Core.Direction.LEFT
+        )
+        if (directionMatches) {
+          setCardsState(([first, ...rest]) => rest)
+        } else {
+          // return card to top of stack
+          setCardsState(([first, ...rest]) => [
+            { ...first, count: first.count + 1 },
+            ...rest
+          ])
+        }
+      }}
       renderCard={({ card, idx }) => (
         <IonCard key={card.text} >
           <IonCardContent>
@@ -40,6 +58,9 @@ function LessonActivitySwipeCards({
                     block={block}
                   />
                 ))}
+                <Swing.Cards>
+                  {cardNodes}
+                </Swing.Cards>
               </LessonContent>
               <IonFooter>
                 <IonButton expand='full'>
