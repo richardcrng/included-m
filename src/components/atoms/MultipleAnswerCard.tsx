@@ -10,10 +10,10 @@ interface Props {
 }
 
 function MultipleAnswerCard({
-  answer: { text, selected, isCorrect }
+  answer: { text, isSelected, isCorrect }
 }: Props) {
 
-  const color = selected
+  const color = isSelected
     ? isCorrect ? 'success' : 'warning'
     : undefined
 

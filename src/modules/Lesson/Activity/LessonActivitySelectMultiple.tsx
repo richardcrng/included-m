@@ -28,6 +28,8 @@ function LessonActivitySelectMultiple({
 
   const [answersState, dispatch] = useReducer(reducer, shuffledAnswers)
 
+  const allCorrectAnswersSelected = answersState.every(answer => !answer.isCorrect || answer.isSelected)
+
   return (
     <>
       <LessonContent>
@@ -44,9 +46,11 @@ function LessonActivitySelectMultiple({
           />
         ))}
       </LessonContent>
-      <IonButton color='primary'>
-        Continue
-      </IonButton>
+      {allCorrectAnswersSelected && (
+        <IonButton color='primary'>
+          Continue
+        </IonButton>
+      )}
     </>
   )
 }
