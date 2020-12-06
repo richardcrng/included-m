@@ -9,7 +9,6 @@ import LessonContent from '../LessonContent';
 import { SelectMultipleActivity } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
-import LessonHeader from '../LessonHeader';
 import LessonContinueButton from '../LessonContinueButton';
 
 interface Props {
@@ -77,9 +76,6 @@ function LessonActivitySelectMultiple({
 
   return (
     <>
-      <LessonHeader
-        message='Select all that apply'
-      />
       <IonAlert
         header={notification.header}
         isOpen={notification.isShowing}

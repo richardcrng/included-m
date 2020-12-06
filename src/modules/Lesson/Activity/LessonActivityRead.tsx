@@ -14,7 +14,6 @@ function LessonActivityRead({
 }: Props) {
   return (
     <>
-      <LessonHeader />
       <LessonContent>
         {blocks.map(block => (
           <LessonContentBlock

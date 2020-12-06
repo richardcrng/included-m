@@ -43,6 +43,16 @@ function LessonToolbar({
     state: { activities, currentIdx }
   } = useContext(LessonContext)
 
+  const getCurrentActivityType = () => {
+    switch (activities[currentIdx].activityType) {
+      case 'select-multiple':
+        return 'Select all that apply'
+      
+      default:
+        return 'Read and continue'
+    }
+  }
+
   return (
     <IonToolbar>
       <Buttons slot='start'>
@@ -58,11 +68,12 @@ function LessonToolbar({
       </Buttons>
       <Title>
         <ProgressBoxes
-          key='stable'
           currentPage={currentIdx}
           totalPages={activities.length}
         />
-        <Message>{message ? message : 'Read and continue'}</Message>
+        <Message>
+          {getCurrentActivityType()}
+        </Message>
       </Title>
     </IonToolbar>
   )

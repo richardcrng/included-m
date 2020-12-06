@@ -3,6 +3,7 @@ import riduce, { Action } from 'riduce'
 import { Activity } from './lesson-types';
 import LessonActivity from './Activity/LessonActivity';
 import { ActionsProxy } from 'riduce/dist/proxy/createActionsProxy';
+import LessonToolbar from './LessonToolbar';
 
 const readActivity: Activity = {
   activityType: 'read',
@@ -82,6 +83,7 @@ function Lesson() {
         state: lessonState
       }}
     >
+      <LessonToolbar />
       <LessonActivity
         activity={lessonState.activities[lessonState.currentIdx]}
       />
