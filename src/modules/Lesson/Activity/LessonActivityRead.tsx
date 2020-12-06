@@ -1,10 +1,8 @@
 import React from 'react';
-import {
-  IonButton,
-} from '@ionic/react';
 import LessonContent from '../LessonContent';
 import { ContentBlock } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
+import LessonContinueButton from '../../LessonContinueButton';
 
 interface Props {
   blocks: ContentBlock[]
@@ -23,9 +21,7 @@ function LessonActivityRead({
           />
         ))}
       </LessonContent>
-      <IonButton color='success'>
-        Continue
-      </IonButton>
+      <LessonContinueButton />
     </>
   )
 }

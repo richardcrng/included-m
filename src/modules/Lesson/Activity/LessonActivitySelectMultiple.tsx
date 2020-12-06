@@ -10,6 +10,7 @@ import { SelectMultipleActivity } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
 import LessonToolbar from '../../../components/molecules/LessonToolbar';
+import LessonContinueButton from '../../LessonContinueButton';
 
 interface Props {
   activity: SelectMultipleActivity
@@ -118,13 +119,9 @@ function LessonActivitySelectMultiple({
           />
         ))}
       </LessonContent>
-      <IonButton
-        color={allCorrectAnswersSelected ? 'primary' : 'medium'}
+      <LessonContinueButton
         disabled={!allCorrectAnswersSelected}
-        expand='full'
-      >
-          Continue
-        </IonButton>
+      />
     </>
   )
 }
