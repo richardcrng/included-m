@@ -28,7 +28,7 @@ const selectActivity: Activity = {
       isCorrect: false
     },
     {
-      text: "They scaled correctly without knowing for sure their business model worked.",
+      text: "They scaled prematurely without knowing for sure their business model worked.",
       isCorrect: true
     }
   ]
