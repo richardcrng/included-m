@@ -2,7 +2,6 @@ import React from 'react';
 import {
   IonHeader,
 } from '@ionic/react';
-import ProgressToolbar from '../../components/molecules/ProgressToolbar';
 import { Activity } from './lesson-types';
 import LessonActivity from './Activity/LessonActivity';
 
@@ -16,6 +15,7 @@ const activity: Activity = {
     {
       text: "They needed more celebrity endorsements.",
       isCorrect: false,
+      feedback: "That is just so so silly."
       // isSelected: true
     },
     {
@@ -38,12 +38,6 @@ const activity: Activity = {
 function Lesson() {
   return (
     <>
-      <IonHeader>
-        <ProgressToolbar
-          currentPage={2}
-          totalPages={11}
-        />
-      </IonHeader>
       <LessonActivity
         activity={activity}
       />

@@ -23,16 +23,21 @@ const Title = styled.div`
 
 const Message = styled.p`
   margin: 0.5rem 0 0 0;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: bold;
 `
 
 interface Props {
   currentPage: number;
   totalPages: number;
+  message?: string;
 }
 
-function ProgressToolbar({
+function LessonToolbar({
   currentPage,
-  totalPages
+  totalPages,
+  message
 }: Props) {
 
 
@@ -48,10 +53,10 @@ function ProgressToolbar({
         <ProgressBoxes
           {...{ currentPage, totalPages }}
         />
-        <Message>Read and continue</Message>
+        <Message>{message ? message : 'Read and continue'}</Message>
       </Title>
     </IonToolbar>
   )
 }
 
-export default ProgressToolbar
+export default LessonToolbar

@@ -22,7 +22,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import ProgressToolbar from './components/molecules/ProgressToolbar';
+import ProgressToolbar from './components/molecules/LessonToolbar';
 import Lesson from './modules/Lesson';
 
 

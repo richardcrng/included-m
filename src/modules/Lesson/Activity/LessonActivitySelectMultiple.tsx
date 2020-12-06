@@ -1,21 +1,29 @@
-import React, { useMemo, useReducer } from 'react';
+import React, { useMemo, useReducer, useState } from 'react';
 import {
-  IonButton,
+  IonButton, IonHeader,
 } from '@ionic/react';
+import { Notification } from 'react-rainbow-components';
 import { shuffle } from 'lodash';
 import riduce from 'riduce';
 import LessonContent from '../LessonContent';
 import { SelectMultipleActivity } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
+import LessonToolbar from '../../../components/molecules/LessonToolbar';
 
 interface Props {
   activity: SelectMultipleActivity
 }
 
+type Notification =
+  { message?: string, isShowing: false }
+    | { message: string, isShowing: true }
+
 function LessonActivitySelectMultiple({
   activity: { blocks, answers }
 }: Props) {
+  const [notification, setNotification] = useState<Notification>({ isShowing: false })
+
   const shuffledAnswers = useMemo(
     () => shuffle(answers),
     [answers]
@@ -40,10 +48,35 @@ function LessonActivitySelectMultiple({
         isSelected: true
       }))
     }
+
+    if (answer.feedback) {
+      setNotification({
+        message: answer.feedback,
+        isShowing: true
+      })
+    }
   }
 
   return (
     <>
+      <IonHeader>
+        <LessonToolbar
+          currentPage={2}
+          totalPages={11}
+          message='Select all answers that apply'
+        />
+      </IonHeader>
+      {notification.isShowing && (
+        <Notification
+          onRequestClose={() => {
+            setNotification(prevState => ({
+              ...prevState,
+              isShowing: false
+            }))
+          }}
+          description={notification.message}
+        />
+      )}
       <LessonContent>
         {blocks.map(block => (
           <LessonContentBlock
