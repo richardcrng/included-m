@@ -84,11 +84,11 @@ const swipeActivity: Activity = {
 }
 
 const activities: Activity[] = [
-  swipeActivity,
   readActivity,
   selectActivity,
   selectForEachBlankSimpleActivity,
   selectAnAnswerActivity,
+  swipeActivity,
   { activityType: 'read', blocks: [] },
   { activityType: 'read', blocks: [] },
   { activityType: 'read', blocks: [] },

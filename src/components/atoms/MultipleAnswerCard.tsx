@@ -1,4 +1,5 @@
 import React from 'react';
+import Markdown from 'markdown-to-jsx';
 import {
   IonCard,
   IonCardContent
@@ -28,7 +29,11 @@ function MultipleAnswerCard({
       disabled={disabled}
       onClick={onClick}
     >
-      <IonCardContent>{text}</IonCardContent>
+      <IonCardContent>
+        <Markdown>
+          {text}
+        </Markdown>
+      </IonCardContent>
     </IonCard>
   )
 }
