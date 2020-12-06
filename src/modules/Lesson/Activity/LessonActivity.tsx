@@ -1,7 +1,8 @@
 import React from 'react';
-import { isSelectMultipleActivity, Activity } from '../lesson-types';
+import { isSelectMultipleActivity, Activity, isSelectForEachBlankActivity } from '../lesson-types';
 import LessonActivityRead from './LessonActivityRead';
 import LessonActivitySelectMultiple from './LessonActivitySelectMultiple';
+import LessonActivitySelectForEachBlank from './LessonActivitySelectForEachBlank';
 
 interface Props {
   activity: Activity,
@@ -13,6 +14,12 @@ function LessonActivity({
   if (isSelectMultipleActivity(activity)) {
     return (
       <LessonActivitySelectMultiple
+        activity={activity}
+      />
+    )
+  } else if (isSelectForEachBlankActivity(activity)) {
+    return (
+      <LessonActivitySelectForEachBlank
         activity={activity}
       />
     )

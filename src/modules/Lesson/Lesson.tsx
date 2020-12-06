@@ -39,10 +39,19 @@ const selectActivity: Activity = {
   ]
 }
 
+const selectForEachBlankActivity: Activity = {
+  activityType: 'select-for-each-blank',
+  blocks: [
+    "To be successful, startups shouldn't just try to be a scaled-down version of a large company.",
+    "For existing companies with a known market, {{traditional product development}} can work just fine.",
+    "But if you're unsure about what you're selling and who you're going to sell it to, {{a startup model}} might be more appropriate."
+  ]
+}
+
 const activities: Activity[] = [
   readActivity,
   selectActivity,
-  { activityType: 'read', blocks: [] },
+  selectForEachBlankActivity,
   { activityType: 'read', blocks: [] },
   { activityType: 'read', blocks: [] },
   { activityType: 'read', blocks: [] },

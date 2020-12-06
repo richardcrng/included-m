@@ -3,10 +3,10 @@ import {
   IonCard,
   IonCardContent
 } from '@ionic/react'
-import { SelectAnswer } from '../../modules/Lesson/lesson-types';
+import { SelectMultipleAnswer } from '../../modules/Lesson/lesson-types';
 
 interface Props {
-  answer: SelectAnswer
+  answer: SelectMultipleAnswer
   onClick(): void
 }
 
@@ -25,9 +25,6 @@ function MultipleAnswerCard({
       color={color}
       onClick={onClick}
     >
-      {/* <IonCardHeader>
-        <IonCheckbox />
-      </IonCardHeader> */}
       <IonCardContent>{text}</IonCardContent>
     </IonCard>
   )

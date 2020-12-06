@@ -1,6 +1,9 @@
 export type Activity =
   ReadActivity
     | SelectMultipleActivity
+    | SelectForEachBlankSimpleActivity
+
+export type ContentBlock = string
 
 export type ReadActivity = {
   activityType: 'read',
@@ -10,10 +13,10 @@ export type ReadActivity = {
 export type SelectMultipleActivity = {
   activityType: 'select-multiple',
   blocks: ContentBlock[],
-  answers: SelectAnswer[]
+  answers: SelectMultipleAnswer[]
 }
 
-export type SelectAnswer = {
+export type SelectMultipleAnswer = {
   text: string
   isCorrect: boolean
   feedback?: string | {
@@ -24,18 +27,15 @@ export type SelectAnswer = {
   isSelected?: boolean
 }
 
-export type ContentBlock = string
-
-// export type SelectMultipleAnswers = {
-//   type: 'select-multiple-answers',
-//   answers: { text: string, isCorrect: boolean }[]
-// }
+export type SelectForEachBlankSimpleActivity = {
+  activityType: 'select-for-each-blank',
+  blocks: ContentBlock[]
+}
 
 export function isSelectMultipleActivity(activity: Activity): activity is SelectMultipleActivity {
   return activity.activityType === 'select-multiple'
 }
 
-// export function isSelectMultipleAnswers(block: ContentBlock): block is SelectMultipleAnswers {
-//   return typeof block === 'object'
-//     && block.type === 'select-multiple-answers'
-// }
+export function isSelectForEachBlankActivity(activity: Activity): activity is SelectForEachBlankSimpleActivity {
+  return activity.activityType === 'select-for-each-blank'
+}
