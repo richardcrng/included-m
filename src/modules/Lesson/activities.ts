@@ -53,9 +53,9 @@ const selectForEachBlankComplexActivity: Activity = {
 }
 
 const activities: Activity[] = [
+  selectForEachBlankSimpleActivity,
   readActivity,
   selectActivity,
-  selectForEachBlankSimpleActivity,
   { activityType: 'read', blocks: [] },
   { activityType: 'read', blocks: [] },
   { activityType: 'read', blocks: [] },
