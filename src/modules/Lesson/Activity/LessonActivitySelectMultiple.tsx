@@ -3,15 +3,16 @@ import {
   IonButton,
 } from '@ionic/react';
 import LessonContent from '../LessonContent';
-import { ContentBlock } from '../lesson-types';
+import { SelectMultipleActivity } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
+import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
 
 interface Props {
-  blocks: ContentBlock[]
+  activity: SelectMultipleActivity
 }
 
 function LessonActivitySelectMultiple({
-  blocks
+  activity: { blocks, answers }
 }: Props) {
   return (
     <>
@@ -20,6 +21,12 @@ function LessonActivitySelectMultiple({
           <LessonContentBlock
             key={JSON.stringify(block)}
             block={block}
+          />
+        ))}
+        {answers.map(answer => (
+          <MultipleAnswerCard
+            key={answer.text}
+            text={answer.text}
           />
         ))}
       </LessonContent>

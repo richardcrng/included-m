@@ -13,7 +13,7 @@ function LessonActivity({
   if (isSelectMultipleActivity(activity)) {
     return (
       <LessonActivitySelectMultiple
-        blocks={activity.blocks}
+        activity={activity}
       />
     )
   } else {

@@ -11,26 +11,23 @@ const activity: Activity = {
   blocks: [
     "Within six months, Juicero had shuttered, offering a full refund to their customers.",
     "What do you suppose were some of the missteps that led to Juicero's demise?",
+  ],
+  answers: [
     {
-      type: "select-multiple-answers",
-      answers: [
-        {
-          text: "They needed more celebrity endorsements.",
-          isCorrect: false
-        },
-        {
-          text: "They assumed they knew what customers wanted from the product.",
-          isCorrect: true
-        },
-        {
-          text: "They didn't raise enough money.",
-          isCorrect: false
-        },
-        {
-          text: "They scaled correctly without knowing for sure their business model worked.",
-          isCorrect: true
-        }
-      ]
+      text: "They needed more celebrity endorsements.",
+      isCorrect: false
+    },
+    {
+      text: "They assumed they knew what customers wanted from the product.",
+      isCorrect: true
+    },
+    {
+      text: "They didn't raise enough money.",
+      isCorrect: false
+    },
+    {
+      text: "They scaled correctly without knowing for sure their business model worked.",
+      isCorrect: true
     }
   ]
 }

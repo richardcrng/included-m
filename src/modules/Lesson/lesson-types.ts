@@ -9,21 +9,28 @@ export type ReadActivity = {
 
 export type SelectMultipleActivity = {
   activityType: 'select-multiple',
-  blocks: ContentBlock[]
+  blocks: ContentBlock[],
+  answers: SelectAnswer[]
 }
 
-export type ContentBlock = string | SelectMultipleAnswers
-
-export type SelectMultipleAnswers = {
-  type: 'select-multiple-answers',
-  answers: { text: string, isCorrect: boolean }[]
+export type SelectAnswer = {
+  text: string
+  isCorrect: boolean
+  feedback?: string
 }
+
+export type ContentBlock = string
+
+// export type SelectMultipleAnswers = {
+//   type: 'select-multiple-answers',
+//   answers: { text: string, isCorrect: boolean }[]
+// }
 
 export function isSelectMultipleActivity(activity: Activity): activity is SelectMultipleActivity {
   return activity.activityType === 'select-multiple'
 }
 
-export function isSelectMultipleAnswers(block: ContentBlock): block is SelectMultipleAnswers {
-  return typeof block === 'object'
-    && block.type === 'select-multiple-answers'
-}
+// export function isSelectMultipleAnswers(block: ContentBlock): block is SelectMultipleAnswers {
+//   return typeof block === 'object'
+//     && block.type === 'select-multiple-answers'
+// }
