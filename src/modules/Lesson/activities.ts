@@ -84,17 +84,43 @@ const swipeActivity: Activity = {
 
 const activities: Activity[] = [
   {
-    activityType: 'read',
+    activityType: 'select-for-each-blank',
     blocks: [
-      "Venture Capital (VC) is a form of private financing provided by VC funds to early-stage, high potential companies. Whilst providing capital to early-stage companies in exchange for equity is arguably the primary role of a VC investor, some also provide founders with other ‘services’ such as strategic guidance and expertise in relevant industries.",
+      "Venture Capital (VC) is a form of private financing provided by VC funds to early-stage, high potential companies.",
+      "Whilst providing {{capital to early-stage companies in exchange for equity}} is arguably the *primary* role of a VC investor, some also provide founders with {{other ‘services’ such as strategic guidance and expertise in relevant industries}}.",
     ]
   },
   {
     activityType: 'read',
     blocks: [
-      "Daniel Blomquist summed up Creandum’s purpose when announcing [their recent $300m fund](https://blog.creandum.com/creandum-v-6b11f646e14d):",
-      "> Over the past 15 years, we have developed from backing many of the Nordic BUSD companies, to now working with these founders from anywhere in Europe. With offices in Stockholm, Berlin, and San Francisco, we are able to serve European founders locally as well as in the US with the aim to support them in building globally leading companies.",
-      "> Our experience has taught us that it takes time to grow a hyper-successful, globally dominant business, and only those are the ones we continue to look for. This is a key part of our historic success: back disruptors early and stay with them long term."
+      "Every fund looks to define their unique opportunity space and sustainable competitive advantage, but they share something in common:",
+      "They take risks by funding early-stage ventures because they love the work, and have the intention of achieving large returns for their investors.",
+    ]
+  },
+  {
+    activityType: 'read',
+    blocks: [
+      "As is the case with most high-risk investment vehicles, VC investments experience high rates of failure.",
+      "A 2012 research project conducted by HBS Professor, Shikhar Ghosh stated that around 75% of all venture-backed start-ups fail, whilst a report by Startup Genome predicted this figure to be as high as 90%."
+    ]
+  },
+  {
+    activityType: 'select-an-answer',
+    blocks: [
+      "The best performing funds tend to have a different failure rate in startups that they back to average funds.",
+      "How do you think it's different?"
+    ],
+    answers: [
+      {
+        text: "Higher - go big or go home!",
+        isCorrect: true,
+        feedback: "That's right! Isn't that interesting?"
+      },
+      {
+        text: "Lower - they're better performing funds after all!",
+        isCorrect: false,
+        feedback: "You might think so, but no! Fund returns are not *just* a function of failure rate."
+      }
     ]
   }
 ]
