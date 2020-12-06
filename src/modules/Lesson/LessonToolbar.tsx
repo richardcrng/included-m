@@ -45,6 +45,12 @@ function LessonToolbar({
 
   const getCurrentActivityType = () => {
     switch (activities[currentIdx].activityType) {
+      case 'select-an-answer':
+        return 'Select an answer'
+
+      case 'select-for-each-blank':
+        return 'Select an answer for each blank'
+      
       case 'select-multiple':
         return 'Select all that apply'
       

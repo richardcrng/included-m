@@ -6,13 +6,13 @@ import { Notification } from 'react-rainbow-components';
 import { shuffle } from 'lodash';
 import riduce from 'riduce';
 import LessonContent from '../LessonContent';
-import { SelectMultipleActivity } from '../lesson-types';
+import { SelectAnAnswerActivity, SelectMultipleActivity } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
 import LessonContinueButton from '../LessonContinueButton';
 
 interface Props {
-  activity: SelectMultipleActivity
+  activity: SelectMultipleActivity | SelectAnAnswerActivity
 }
 
 type Notification =

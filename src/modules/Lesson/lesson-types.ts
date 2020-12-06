@@ -1,5 +1,6 @@
 export type Activity =
   ReadActivity
+    | SelectAnAnswerActivity
     | SelectMultipleActivity
     | SelectForEachBlankSimpleActivity
 
@@ -8,6 +9,12 @@ export type ContentBlock = string
 export type ReadActivity = {
   activityType: 'read',
   blocks: ContentBlock[]
+}
+
+export type SelectAnAnswerActivity = {
+  activityType: 'select-an-answer',
+  blocks: ContentBlock[],
+  answers: SelectMultipleAnswer[]
 }
 
 export type SelectMultipleActivity = {

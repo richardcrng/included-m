@@ -52,11 +52,30 @@ const selectForEachBlankComplexActivity: Activity = {
   ]
 }
 
+const selectAnAnswerActivity: Activity = {
+  activityType: 'select-an-answer',
+  blocks: [
+    "But what exactly is a startup? For our purposes, let's turn to Steve Blank's definition:",
+    "> A *startup* is a temporary organization in search of a scalable, repeatable, profitable business model.",
+    "Essentially, this means:"
+  ],
+  answers: [
+    {
+      text: 'All startups either get sold or shut down after a while.',
+      isCorrect: false
+    },
+    {
+      text: 'Startups are adaptable organizations whose primary goal is to *find* a business model - not to execute one.',
+      isCorrect: true
+    }
+  ]
+}
+
 const activities: Activity[] = [
-  selectForEachBlankSimpleActivity,
   readActivity,
   selectActivity,
-  { activityType: 'read', blocks: [] },
+  selectForEachBlankSimpleActivity,
+  selectAnAnswerActivity,
   { activityType: 'read', blocks: [] },
   { activityType: 'read', blocks: [] },
   { activityType: 'read', blocks: [] },
