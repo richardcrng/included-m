@@ -1,5 +1,6 @@
+import React, { useContext } from 'react'
 import { IonButton } from '@ionic/react'
-import React from 'react'
+import { LessonContext } from './Lesson'
 
 interface Props {
   disabled?: boolean
@@ -8,11 +9,19 @@ interface Props {
 function LessonContinueButton({
   disabled
 }: Props) {
+  const {
+    dispatch,
+    actions
+  } = useContext(LessonContext)
+
   return (
     <IonButton
       color={disabled ? 'medium' : 'primary'}
       disabled={disabled}
       expand='full'
+      onClick={() => {
+        dispatch(actions.currentIdx.create.increment())
+      }}
     >
       Continue
     </IonButton>

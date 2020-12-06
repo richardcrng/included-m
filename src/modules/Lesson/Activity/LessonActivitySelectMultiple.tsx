@@ -1,6 +1,6 @@
 import React, { useMemo, useReducer, useState } from 'react';
 import {
-  IonButton, IonHeader, IonAlert
+  IonAlert
 } from '@ionic/react';
 import { Notification } from 'react-rainbow-components';
 import { shuffle } from 'lodash';
@@ -9,9 +9,8 @@ import LessonContent from '../LessonContent';
 import { SelectMultipleActivity } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
-import LessonToolbar from '../LessonToolbar';
-import LessonContinueButton from '../../LessonContinueButton';
 import LessonHeader from '../LessonHeader';
+import LessonContinueButton from '../LessonContinueButton';
 
 interface Props {
   activity: SelectMultipleActivity
