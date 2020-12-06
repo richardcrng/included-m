@@ -103,6 +103,7 @@ function LessonActivitySelectMultiple({
           <MultipleAnswerCard
             key={answer.text}
             answer={answer}
+            disabled={notification.isShowing}
             onClick={makeClickHandler(answer, idx)}
           />
         ))}
