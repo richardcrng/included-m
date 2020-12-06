@@ -2,7 +2,7 @@ import React from 'react';
 import { isSelectMultipleActivity, Activity, isSelectForEachBlankActivity } from '../lesson-types';
 import LessonActivityRead from './LessonActivityRead';
 import LessonActivitySelectMultiple from './LessonActivitySelectMultiple';
-import LessonActivitySelectForEachBlank from './LessonActivitySelectForEachBlank';
+import LessonActivitySelectForEachBlank from './SelectForEachBlank';
 
 interface Props {
   activity: Activity,
