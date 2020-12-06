@@ -3,8 +3,7 @@ import { Activity } from "./lesson-types"
 const readActivity: Activity = {
   activityType: 'read',
   blocks: [
-    "The startup Juicero was convinced that customers would pay nearly $700 for their product. By 2017, they had raised almost $120m and hired over 200 employees.",
-    "But sales were middling after product launch. Despite slashing prices, Juicero was steadily losing money, especially after it came out that squeezing their bags by hand was just as efficient.",
+    "Venture Capital (VC) is a form of private financing provided by VC funds to early-stage, high potential companies. Whilst providing capital to early-stage companies in exchange for equity is arguably the primary role of a VC investor, some also provide founders with other ‘services’ such as strategic guidance and expertise in relevant industries.",
   ]
 }
 
@@ -84,18 +83,20 @@ const swipeActivity: Activity = {
 }
 
 const activities: Activity[] = [
-  readActivity,
-  selectActivity,
-  selectForEachBlankSimpleActivity,
-  selectAnAnswerActivity,
-  swipeActivity,
-  { activityType: 'read', blocks: [] },
-  { activityType: 'read', blocks: [] },
-  { activityType: 'read', blocks: [] },
-  { activityType: 'read', blocks: [] },
-  { activityType: 'read', blocks: [] },
-  { activityType: 'read', blocks: [] },
-  { activityType: 'read', blocks: [] }
+  {
+    activityType: 'read',
+    blocks: [
+      "Venture Capital (VC) is a form of private financing provided by VC funds to early-stage, high potential companies. Whilst providing capital to early-stage companies in exchange for equity is arguably the primary role of a VC investor, some also provide founders with other ‘services’ such as strategic guidance and expertise in relevant industries.",
+    ]
+  },
+  {
+    activityType: 'read',
+    blocks: [
+      "Daniel Blomquist summed up Creandum’s purpose when announcing [their recent $300m fund](https://blog.creandum.com/creandum-v-6b11f646e14d):",
+      "> Over the past 15 years, we have developed from backing many of the Nordic BUSD companies, to now working with these founders from anywhere in Europe. With offices in Stockholm, Berlin, and San Francisco, we are able to serve European founders locally as well as in the US with the aim to support them in building globally leading companies.",
+      "> Our experience has taught us that it takes time to grow a hyper-successful, globally dominant business, and only those are the ones we continue to look for. This is a key part of our historic success: back disruptors early and stay with them long term."
+    ]
+  }
 ]
 
 
