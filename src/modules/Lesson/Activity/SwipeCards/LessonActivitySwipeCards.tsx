@@ -6,6 +6,7 @@ import { SwipeCard, SwipeCardsActivity } from '../../lesson-types';
 import LessonContent from '../../LessonContent';
 import LessonContentBlock from '../../LessonContentBlock';
 import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
+import LessonContinueButton from '../../LessonContinueButton';
 
 interface Props {
   activity: SwipeCardsActivity
@@ -91,22 +92,29 @@ function LessonActivitySwipeCards({
                 </Swing.Cards>
               </LessonContent>
               <IonFooter>
-                <IonButton
-                  disabled={notificationState.isShowing}
-                  expand='full'
-                  onClick={() => swingData.triggerThrow(false)}
-                >
-                  <IonIcon slot='start' icon={arrowBack} />
-                  {activity.choices[0]}
-                </IonButton>
-                <IonButton
-                  disabled={notificationState.isShowing}
-                  expand='full'
-                  onClick={() => swingData.triggerThrow(true)}
-                >
-                  <IonIcon slot='end' icon={arrowForward} />
-                  {activity.choices[1]}
-                </IonButton>
+                {cardsState.length > 0 && (
+                  <>
+                    <IonButton
+                      disabled={notificationState.isShowing}
+                      expand='full'
+                      onClick={() => swingData.triggerThrow(false)}
+                    >
+                      <IonIcon slot='start' icon={arrowBack} />
+                      {activity.choices[0]}
+                    </IonButton>
+                    <IonButton
+                      disabled={notificationState.isShowing}
+                      expand='full'
+                      onClick={() => swingData.triggerThrow(true)}
+                    >
+                      <IonIcon slot='end' icon={arrowForward} />
+                      {activity.choices[1]}
+                    </IonButton>
+                  </>
+                )}
+                {cardsState.length === 0 && (
+                  <LessonContinueButton />
+                )}
               </IonFooter>
             </>
           )
