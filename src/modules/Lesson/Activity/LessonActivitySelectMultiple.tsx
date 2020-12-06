@@ -11,6 +11,7 @@ import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
 import LessonToolbar from '../../../components/molecules/LessonToolbar';
 import LessonContinueButton from '../../LessonContinueButton';
+import LessonHeader from '../LessonHeader';
 
 interface Props {
   activity: SelectMultipleActivity
@@ -77,13 +78,11 @@ function LessonActivitySelectMultiple({
 
   return (
     <>
-      <IonHeader>
-        <LessonToolbar
-          currentPage={2}
-          totalPages={11}
-          message='Select all answers that apply'
-        />
-      </IonHeader>
+      <LessonHeader
+        currentPage={2}
+        totalPages={11}
+        message='Select all that apply'
+      />
       <IonAlert
         header={notification.header}
         isOpen={notification.isShowing}

@@ -3,6 +3,7 @@ import LessonContent from '../LessonContent';
 import { ContentBlock } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
+import LessonHeader from '../LessonHeader';
 
 interface Props {
   blocks: ContentBlock[]
@@ -13,6 +14,10 @@ function LessonActivityRead({
 }: Props) {
   return (
     <>
+      <LessonHeader
+        currentPage={1}
+        totalPages={11}
+      />
       <LessonContent>
         {blocks.map(block => (
           <LessonContentBlock

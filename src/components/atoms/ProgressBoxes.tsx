@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components'
 import useDimensions from 'react-cool-dimensions';
 
-import {
-  IoCheckboxSharp,
-  IoSquare,
-  IoSquareOutline,
-} from 'react-icons/io5'
+import {  
+  FaSquare,
+  FaCaretSquareRight,
+  FaRegSquare
+} from 'react-icons/fa';
 
 interface Props {
   className?: string;
@@ -54,10 +54,10 @@ function ProgressBoxes({
 
   const icons = Array.from(Array(totalPages).keys()).map(idx => {
     return idx < currentPage
-      ? IoCheckboxSharp
+      ? FaSquare
       : idx === currentPage
-        ? IoSquare
-        : IoSquareOutline
+        ? FaCaretSquareRight
+        : FaRegSquare
   }).map((Icon, idx) => <Icon key={idx} size={iconSize} />)
 
   return (
