@@ -1,14 +1,16 @@
 import React, { useMemo, useReducer, useState } from 'react';
 import {
-  IonAlert
+  IonAlert,
 } from '@ionic/react';
-import { Notification, Input } from 'react-rainbow-components';
+import styled from 'styled-components'
+import { Notification } from 'react-rainbow-components';
 import { shuffle } from 'lodash';
 import riduce from 'riduce';
 import LessonContent from '../LessonContent';
 import { SelectForEachBlankSimpleActivity } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
 import LessonContinueButton from '../LessonContinueButton';
+import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
 // import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
 
 interface Props {
@@ -24,6 +26,25 @@ export type SelectForEachBlankAnswer = {
   isSelected: boolean
 }
 
+interface BlankProps {
+  showFocus?: boolean
+}
+
+const Blank = styled.input`
+  display: inline-block;
+  width: 5rem;
+  height: 1rem;
+
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  -o-transition: all 0.15s ease-in-out;
+  outline: none;
+  border: ${(p: BlankProps) => p.showFocus ? '1px solid rgba(81, 203, 238, 1)' : '1px solid #DDDDDD'};
+  box-shadow: ${(p: BlankProps) => p.showFocus ? '0 0 5px rgba(81, 203, 238, 1)' : undefined};
+  background-color: ${(p: BlankProps) => p.showFocus ? 'rgba(81, 203, 238, 0.8)' : undefined};
+`
+
 const hasBlanks = (str: string) => str.match(/{{(.+?)}}/g)
 
 function LessonActivitySelectForEachBlank({
@@ -31,17 +52,17 @@ function LessonActivitySelectForEachBlank({
 }: Props) {
   const [notification, setNotification] = useState<Notification>({ message: '', isShowing: false })
 
+
   const answers = useMemo(() => (
     blocks.reduce(
       (acc, block) => {
         const matches = hasBlanks(block)
-        console.log(matches)
         return matches
           ? [
               ...acc,
               ...matches.map(str => ({
                 match: str,
-                text: str.substring(2, str.length - 3),
+                text: str.substring(2, str.length - 2),
                 isSelected: false
               }))
             ]
@@ -51,20 +72,25 @@ function LessonActivitySelectForEachBlank({
     )
   ), [blocks])
 
-
-  const shuffledAnswers = useMemo(
-    () => shuffle(answers),
+  const initialState = useMemo(
+    () => ({
+      // inputs: Object.fromEntries(answers.map(answer => [
+      //   answer.match, answer
+      // ])),
+      answers: shuffle(answers),
+      selectedInput: answers[0].match
+    }),
     [answers]
   )
 
   const [reducer, actions] = useMemo(
-    () => riduce(shuffledAnswers),
-    [shuffledAnswers]
+    () => riduce(initialState),
+    [initialState]
   )
 
-  const [answersState, dispatch] = useReducer(reducer, shuffledAnswers)
+  const [activityState, dispatch] = useReducer(reducer, initialState)
 
-  const allCorrectAnswersSelected = answersState.every(answer => answer.isSelected)
+  const allCorrectAnswersSelected = activityState.answers.every(answer => answer.isSelected)
 
   // const makeClickHandler = (
   //   answer: typeof answers[0],
@@ -135,7 +161,14 @@ function LessonActivitySelectForEachBlank({
                 const nodes = [
                   ...acc.nodes,
                   <span key={before}>{before}</span>,
-                  <input key={match} disabled style={{ width: '5rem' }} />
+                  <Blank
+                    key={match}
+                    onClick={() => {
+                      dispatch(actions.selectedInput.create.update(match))
+                    }}
+                    showFocus={activityState.selectedInput === match}
+                    readOnly
+                  />
                 ]
 
                 return { remaining, nodes }
@@ -158,13 +191,17 @@ function LessonActivitySelectForEachBlank({
             )
           }
         })}
-        {/* {answersState.map((answer, idx) => (
+        {activityState.answers.map((answer, idx) => (
           <MultipleAnswerCard
             key={answer.text}
-            answer={answer}
-            onClick={makeClickHandler(answer, idx)}
+            answer={{
+              ...answer,
+              isCorrect: false
+            }}
+            onClick={() => null}
+            // onClick={makeClickHandler(answer, idx)}
           />
-        ))} */}
+        ))}
       </LessonContent>
       <LessonContinueButton
         disabled={!allCorrectAnswersSelected}
