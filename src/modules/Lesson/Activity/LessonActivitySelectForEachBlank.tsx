@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useMemo } from 'react';
 import {
   IonAlert,
 } from '@ionic/react';
@@ -23,14 +23,21 @@ export type SelectForEachBlankAnswer = {
   match: string,
   text: string,
   isSelected: boolean,
-  isLocked: boolean
+  isLocked: boolean,
+  inputIndex: number
 }
 
-interface BlankProps {
+export type MatchPlaceholder = {
+  match: string,
+  text: string,
+  isComplete: boolean,
+}
+
+interface InputProps {
   showFocus?: boolean
 }
 
-const Blank = styled.input`
+const Input = styled.input`
   display: inline-block;
   width: 5rem;
   height: 1rem;
@@ -40,10 +47,16 @@ const Blank = styled.input`
   -ms-transition: all 0.15s ease-in-out;
   -o-transition: all 0.15s ease-in-out;
   outline: none;
-  border: ${(p: BlankProps) => p.showFocus ? '1px solid rgba(81, 203, 238, 1)' : '1px solid #DDDDDD'};
-  box-shadow: ${(p: BlankProps) => p.showFocus ? '0 0 5px rgba(81, 203, 238, 1)' : undefined};
-  background-color: ${(p: BlankProps) => p.showFocus ? 'rgba(81, 203, 238, 0.8)' : undefined};
+  border: ${(p: InputProps) => p.showFocus ? '1px solid rgba(81, 203, 238, 1)' : '1px solid #DDDDDD'};
+  box-shadow: ${(p: InputProps) => p.showFocus ? '0 0 5px rgba(81, 203, 238, 1)' : undefined};
+  background-color: ${(p: InputProps) => p.showFocus ? 'rgba(81, 203, 238, 0.8)' : undefined};
 `
+
+const LockedAnswer = styled.span`
+  font-weight: bold;
+  color: green;
+`
+
 
 const hasBlanks = (str: string) => str.match(/{{(.+?)}}/g)
 
@@ -54,32 +67,30 @@ function LessonActivitySelectForEachBlank({
 
 
   const answers = blocks.reduce(
-      (acc, block) => {
-        const matches = hasBlanks(block)
-        return matches
-          ? [
-              ...acc,
-              ...matches.map(str => ({
-                match: str,
-                text: str.substring(2, str.length - 2),
-                isSelected: false,
-                isLocked: false
-              }))
-            ]
-          : acc
-      },
-      [] as SelectForEachBlankAnswer[]
-    )
+    (acc, block, index) => {
+      const matches = hasBlanks(block)
+      return matches
+        ? [
+            ...acc,
+            ...matches.map(str => ({
+              match: str,
+              text: str.substring(2, str.length - 2),
+              isSelected: false,
+              isLocked: false,
+              inputIndex: index
+            }))
+          ]
+        : acc
+    },
+    [] as SelectForEachBlankAnswer[]
+  )
 
   const initialState = {
-      // inputs: Object.fromEntries(answers.map(answer => [
-      //   answer.match, answer
-      // ])),
-      answers: shuffle(answers),
-      selectedInputIndex: 0
-    }
+    answers: shuffle(answers),
+    selectedInputIndex: 0
+  }
   
-    
+
   const [reducer, actions] = riduce(initialState)
   
   const [activityState, dispatch] = useReducer(reducer, initialState)
@@ -89,7 +100,7 @@ function LessonActivitySelectForEachBlank({
     return selectedInput === answer.match
   }
 
-  const allCorrectAnswersSelected = activityState.answers.every(answer => answer.isSelected)
+  const allAnswersLocked = activityState.answers.every(answer => answer.isLocked)
 
   const makeClickHandler = (
     answer: typeof answers[0],
@@ -115,6 +126,29 @@ function LessonActivitySelectForEachBlank({
       })
     }
   }
+
+  const BlankOrText = useMemo(() => {
+    return function BlankorText({ matchingAnswer }: { matchingAnswer?: SelectForEachBlankAnswer  }) {
+      if (!matchingAnswer) return null
+
+      if (matchingAnswer.isLocked) {
+        return <LockedAnswer>{matchingAnswer.text}</LockedAnswer>
+      } else {
+        return (
+          <Input
+            key={matchingAnswer.match}
+            onClick={() => {
+              dispatch(actions.selectedInputIndex.create.update(
+                matchingAnswer.inputIndex
+              ))
+            }}
+            showFocus={answerMatchesInput(matchingAnswer)}
+            readOnly
+          />
+        )
+      }
+    }
+  }, [Input, dispatch, actions, answerMatchesInput])
 
   return (
     <>
@@ -148,13 +182,11 @@ function LessonActivitySelectForEachBlank({
                 const nodes = [
                   ...acc.nodes,
                   <span key={before}>{before}</span>,
-                  <Blank
+                  <BlankOrText
                     key={match}
-                    onClick={() => {
-                      dispatch(actions.selectedInputIndex.create.update(answers.findIndex(el => el.match === match)))
-                    }}
-                    showFocus={selectedInput === match}
-                    readOnly
+                    matchingAnswer={activityState.answers.find(
+                      answer => answer.match === match
+                    )}
                   />
                 ]
 
@@ -191,7 +223,7 @@ function LessonActivitySelectForEachBlank({
         ))}
       </LessonContent>
       <LessonContinueButton
-        disabled={!allCorrectAnswersSelected}
+        disabled={!allAnswersLocked}
       />
     </>
   )
