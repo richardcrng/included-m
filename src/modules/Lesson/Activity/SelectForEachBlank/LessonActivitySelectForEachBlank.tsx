@@ -93,7 +93,7 @@ function LessonActivitySelectForEachBlank({
           )))
         }}
         message={notification.message}
-        buttons={[notification.buttonText || 'Back']}
+        buttons={[notification.buttonText || 'Close']}
       />
       <LessonContent>
         {blocks.map(block => {
