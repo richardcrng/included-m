@@ -1,9 +1,4 @@
-import React, { useReducer, useState, useMemo } from 'react';
-import {
-  IonAlert,
-} from '@ionic/react';
-import styled from 'styled-components'
-import { Notification } from 'react-rainbow-components';
+import React, { useReducer, useState } from 'react';
 import { shuffle } from 'lodash';
 import riduce, { bundle } from 'riduce';
 import { answersFromBlocks, BlankOrText, hasBlanks } from './utils'
@@ -12,20 +7,17 @@ import { SelectForEachBlankSimpleActivity } from '../../lesson-types';
 import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
 import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
+import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
 
 interface Props {
   activity: SelectForEachBlankSimpleActivity
 }
 
-type Notification =
-  { header?: string, message: string, buttonText?: string, isShowing: boolean }
-
-
 
 function LessonActivitySelectForEachBlank({
   activity: { blocks, }
 }: Props) {
-  const [notification, setNotification] = useState<Notification>({ message: '', isShowing: false })
+  const [notification, setNotification] = useState<NotificationProps>({ message: '', isShowing: false })
 
   const answers = answersFromBlocks(blocks)
 
@@ -55,7 +47,11 @@ function LessonActivitySelectForEachBlank({
     dispatch(actions.answers[idx].isSelected.create.on())
 
     if (answerMatchesInput(answer)) {
-      setNotification({ message: 'Amazing!', isShowing: true })
+      setNotification({
+        message: 'Amazing!',
+        isShowing: true,
+        color: 'success'
+      })
       dispatch(bundle([
         actions.answers[idx].isLocked.create.on(),
         actions.selectedInput.create.do(() => {
@@ -70,16 +66,18 @@ function LessonActivitySelectForEachBlank({
     } else {
       setNotification({
         message: 'Not quite...',
-        isShowing: true
+        isShowing: true,
+        color: 'warning'
       })
     }
   }
 
   return (
     <>
-      <IonAlert
+      <Notification
         header={notification.header}
-        isOpen={notification.isShowing}
+        color={notification.color}
+        isShowing={notification.isShowing}
         onDidDismiss={() => {
           setNotification(prevState => ({
             ...prevState,
@@ -95,7 +93,7 @@ function LessonActivitySelectForEachBlank({
           )))
         }}
         message={notification.message}
-        buttons={[notification.buttonText || 'Back']}
+        buttons={[notification.buttonText || 'Close']}
       />
       <LessonContent>
         {blocks.map(block => {
@@ -154,6 +152,7 @@ function LessonActivitySelectForEachBlank({
               isSelected: answer.isLocked || answer.isSelected,
               isCorrect: answer.isLocked || answerMatchesInput(answer)
             }}
+            disabled={notification.isShowing}
             onClick={makeClickHandler(answer, idx)}
           />
         ))}

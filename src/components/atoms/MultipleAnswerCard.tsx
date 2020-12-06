@@ -1,4 +1,5 @@
 import React from 'react';
+import Markdown from 'markdown-to-jsx';
 import {
   IonCard,
   IonCardContent
@@ -7,12 +8,14 @@ import { SelectMultipleAnswer } from '../../modules/Lesson/lesson-types';
 
 interface Props {
   answer: SelectMultipleAnswer
-  onClick(): void
+  onClick(): void,
+  disabled?: boolean
 }
 
 function MultipleAnswerCard({
   answer: { text, isSelected, isCorrect },
-  onClick
+  onClick,
+  disabled
 }: Props) {
 
   const color = isSelected
@@ -23,9 +26,14 @@ function MultipleAnswerCard({
     <IonCard
       button
       color={color}
+      disabled={disabled}
       onClick={onClick}
     >
-      <IonCardContent>{text}</IonCardContent>
+      <IonCardContent>
+        <Markdown>
+          {text}
+        </Markdown>
+      </IonCardContent>
     </IonCard>
   )
 }

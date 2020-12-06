@@ -3,6 +3,7 @@ export type Activity =
     | SelectAnAnswerActivity
     | SelectMultipleActivity
     | SelectForEachBlankSimpleActivity
+    | SwipeCardsActivity
 
 export type ContentBlock = string
 
@@ -37,6 +38,18 @@ export type SelectMultipleAnswer = {
 export type SelectForEachBlankSimpleActivity = {
   activityType: 'select-for-each-blank',
   blocks: ContentBlock[]
+}
+
+export type SwipeCardsActivity = {
+  activityType: 'swipe-cards',
+  blocks: ContentBlock[],
+  cards: SwipeCard[],
+  choices: [string, string]
+}
+
+export type SwipeCard = {
+  text: string,
+  isRight: boolean
 }
 
 export function isSelectMultipleActivity(activity: Activity): activity is SelectMultipleActivity {

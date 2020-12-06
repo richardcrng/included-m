@@ -53,6 +53,9 @@ function LessonToolbar({
       
       case 'select-multiple':
         return 'Select all that apply'
+
+      case 'swipe-cards':
+        return 'Select an answer for each card'
       
       default:
         return 'Read and continue'
