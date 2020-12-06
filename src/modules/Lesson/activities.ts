@@ -148,7 +148,8 @@ const activities: Activity[] = [
   {
     activityType: 'read',
     blocks: [
-      "Regardless of the exact figure, it is pretty clear that a startup’s pathway to success is an arduous one, thus VC investors are exacting with their capital and are structured in a way so as to balance good governance with risk-taking while endeavouring to create substantial returns for their investors."
+      "Regardless of the exact figure, it is pretty clear that a startup’s pathway to success is an arduous one.",
+      "This means that VC investors have to be exacting with their capital, structured in a way so as to balance good governance with risk-taking while endeavouring to create substantial returns for their investors."
     ]
   }
 ]
