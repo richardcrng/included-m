@@ -27,6 +27,7 @@ const defaultStackConfig = {
 
 export interface Props<TCard> {
   cards: TCard[],
+  disabled?: boolean,
   getCardKey: (card: TCard) => string | number,
   renderCard?: ({ card, idx, ref }: RenderCardArg<TCard>) => React.ReactNode,
   onThrowOut(e: SwingCore.SwingEvent, stack: SwingCore.Stack): void,
@@ -37,6 +38,7 @@ export interface Props<TCard> {
 export default function Swing<TCard>({
   cards,
   children,
+  disabled,
   getCardKey,
   renderCard = ({ card }) => <div>{JSON.stringify(card)}</div>,
   onThrowOut,
@@ -50,11 +52,15 @@ export default function Swing<TCard>({
   // every time cards changes, add first card to the stack
   //  if not already there
   React.useEffect(() => {
-    if (stack && firstCardRef.current) {
-      !stack.getCard(firstCardRef.current)
-        && stack.createCard(firstCardRef.current);
+
+    if (disabled && stack && firstCardRef.current) {
+      stack.getCard(firstCardRef.current)?.destroy()
     }
-  }, [cards, firstCardRef, stack]);
+
+    if (!disabled && stack && firstCardRef.current) {
+      stack.createCard(firstCardRef.current)
+    }
+  }, [cards, firstCardRef, stack, disabled]);
 
   const triggerThrow = (thrownRight: boolean) => {
     const multiplier = thrownRight ? 1 : -1
@@ -89,6 +95,7 @@ export default function Swing<TCard>({
 
   const swingData = {
     cards,
+    disabled,
     firstCardRef,
     getCardKey,
     renderCard,

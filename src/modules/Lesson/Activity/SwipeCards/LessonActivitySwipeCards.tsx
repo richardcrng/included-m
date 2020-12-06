@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/react';
 import { arrowBack, arrowForward, card } from 'ionicons/icons';
 import Swing, { Core } from '../../../../lib/swing-react';
 import { SwipeCard, SwipeCardsActivity } from '../../lesson-types';
 import LessonContent from '../../LessonContent';
 import LessonContentBlock from '../../LessonContentBlock';
+import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
 
 interface Props {
   activity: SwipeCardsActivity
@@ -13,6 +14,7 @@ interface Props {
 function LessonActivitySwipeCards({
   activity,
 }: Props) {
+  const [notificationState, setNotificationState] = useState<NotificationProps>({ message: '', isShowing: false })
 
   const [cardsState, setCardsState] = React.useState(activity.cards.map(card => ({
     ...card,
@@ -22,6 +24,7 @@ function LessonActivitySwipeCards({
   return (
     <Swing.Provider
       cards={cardsState}
+      disabled={notificationState.isShowing}
       getCardKey={(card) => `${card.text}-${card.count}`}
       onThrowOut={(swingEvent, stack) => {
         const directionMatches = (
@@ -31,12 +34,22 @@ function LessonActivitySwipeCards({
         )
         if (directionMatches) {
           setCardsState(([first, ...rest]) => rest)
+          setNotificationState({
+            message: 'Amazing!',
+            color: 'success',
+            isShowing: true
+          })
         } else {
           // return card to top of stack
           setCardsState(([first, ...rest]) => [
             { ...first, count: first.count + 1 },
             ...rest
           ])
+          setNotificationState({
+            message: 'Not quite...',
+            color: 'warning',
+            isShowing: true
+          })
         }
       }}
       renderCard={({ card, idx }) => (
@@ -47,6 +60,21 @@ function LessonActivitySwipeCards({
         </IonCard>
       )}
     >
+      <Notification
+        isShowing={notificationState.isShowing}
+        color={notificationState.color}
+        header={notificationState.header}
+        message={notificationState.message}
+        position='top'
+        duration={1000}
+        buttons={[notificationState.buttonText || 'Close']}
+        onDidDismiss={() => {
+          setNotificationState(prevState => ({
+            ...prevState,
+            isShowing: false
+          }))
+        }}
+      />
       <Swing.Stack<SwipeCard>>
         {(cardNodes, swingData) => {
           return (
@@ -63,11 +91,19 @@ function LessonActivitySwipeCards({
                 </Swing.Cards>
               </LessonContent>
               <IonFooter>
-                <IonButton expand='full'>
+                <IonButton
+                  disabled={notificationState.isShowing}
+                  expand='full'
+                  onClick={() => swingData.triggerThrow(false)}
+                >
                   <IonIcon slot='start' icon={arrowBack} />
                   {activity.choices[0]}
                 </IonButton>
-                <IonButton expand='full' style={{ textAlign: 'left' }}>
+                <IonButton
+                  disabled={notificationState.isShowing}
+                  expand='full'
+                  onClick={() => swingData.triggerThrow(true)}
+                >
                   <IonIcon slot='end' icon={arrowForward} />
                   {activity.choices[1]}
                 </IonButton>
