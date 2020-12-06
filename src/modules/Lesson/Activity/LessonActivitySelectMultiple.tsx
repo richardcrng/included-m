@@ -61,6 +61,16 @@ function LessonActivitySelectMultiple({
           isShowing: true
         })
       }
+    } else if (answer.isCorrect) {
+      setNotification({
+        message: 'Amazing!',
+        isShowing: true
+      })
+    } else {
+      setNotification({
+        message: 'Not quite...',
+        isShowing: true
+      })
     }
   }
 
@@ -108,11 +118,13 @@ function LessonActivitySelectMultiple({
           />
         ))}
       </LessonContent>
-      {allCorrectAnswersSelected && (
-        <IonButton color='primary'>
+      <IonButton
+        color={allCorrectAnswersSelected ? 'primary' : 'medium'}
+        disabled={!allCorrectAnswersSelected}
+        expand='full'
+      >
           Continue
         </IonButton>
-      )}
     </>
   )
 }
