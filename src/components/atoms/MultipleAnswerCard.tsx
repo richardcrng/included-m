@@ -3,16 +3,22 @@ import {
   IonCard,
   IonCardContent
 } from '@ionic/react'
+import { SelectAnswer } from '../../modules/Lesson/lesson-types';
 
 interface Props {
-  text: string
+  answer: SelectAnswer
 }
 
 function MultipleAnswerCard({
-  text
+  answer: { text, selected, isCorrect }
 }: Props) {
+
+  const color = selected
+    ? isCorrect ? 'success' : 'warning'
+    : undefined
+
   return (
-    <IonCard button>
+    <IonCard button color={color}>
       {/* <IonCardHeader>
         <IonCheckbox />
       </IonCardHeader> */}

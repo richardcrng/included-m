@@ -15,11 +15,13 @@ const activity: Activity = {
   answers: [
     {
       text: "They needed more celebrity endorsements.",
-      isCorrect: false
+      isCorrect: false,
+      selected: true
     },
     {
       text: "They assumed they knew what customers wanted from the product.",
-      isCorrect: true
+      isCorrect: true,
+      selected: true
     },
     {
       text: "They didn't raise enough money.",

@@ -17,6 +17,7 @@ export type SelectAnswer = {
   text: string
   isCorrect: boolean
   feedback?: string
+  selected?: boolean
 }
 
 export type ContentBlock = string

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useMemo, useReducer } from 'react';
 import {
   IonButton,
 } from '@ionic/react';
+import { shuffle } from 'lodash';
+import riduce from 'riduce';
 import LessonContent from '../LessonContent';
 import { SelectMultipleActivity } from '../lesson-types';
 import LessonContentBlock from '../LessonContentBlock';
@@ -14,6 +16,18 @@ interface Props {
 function LessonActivitySelectMultiple({
   activity: { blocks, answers }
 }: Props) {
+  const shuffledAnswers = useMemo(
+    () => shuffle(answers),
+    [answers]
+  )
+
+  const [reducer, actions] = useMemo(
+    () => riduce(shuffledAnswers),
+    [shuffledAnswers]
+  )
+
+  const [answersState, dispatch] = useReducer(reducer, shuffledAnswers)
+
   return (
     <>
       <LessonContent>
@@ -23,14 +37,14 @@ function LessonActivitySelectMultiple({
             block={block}
           />
         ))}
-        {answers.map(answer => (
+        {answersState.map(answer => (
           <MultipleAnswerCard
             key={answer.text}
-            text={answer.text}
+            answer={answer}
           />
         ))}
       </LessonContent>
-      <IonButton color='success'>
+      <IonButton color='primary'>
         Continue
       </IonButton>
     </>
