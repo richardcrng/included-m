@@ -24,7 +24,6 @@ export type SelectForEachBlankAnswer = {
   text: string,
   isSelected: boolean,
   isLocked: boolean,
-  inputIndex: number
 }
 
 export type MatchPlaceholder = {
@@ -66,38 +65,39 @@ function LessonActivitySelectForEachBlank({
   const [notification, setNotification] = useState<Notification>({ message: '', isShowing: false })
 
 
-  const answers = blocks.reduce(
-    (acc, block, index) => {
+  const answers: Record<string, SelectForEachBlankAnswer> = blocks.reduce(
+    (acc, block) => {
       const matches = hasBlanks(block)
       return matches
-        ? [
+        ? {
             ...acc,
-            ...matches.map(str => ({
-              match: str,
-              text: str.substring(2, str.length - 2),
-              isSelected: false,
-              isLocked: false,
-              inputIndex: index
-            }))
-          ]
+            ...Object.fromEntries(matches.map(str => [
+              str,
+              {
+                match: str,
+                text: str.substring(2, str.length - 2),
+                isSelected: false,
+                isLocked: false
+              }
+            ]))
+          }
         : acc
     },
-    [] as SelectForEachBlankAnswer[]
+    {}
   )
 
   const initialState = {
     answers: shuffle(answers),
-    selectedInputIndex: 0
+    selectedInput: Object.keys(answers)[0]
   }
   
 
   const [reducer, actions] = riduce(initialState)
   
   const [activityState, dispatch] = useReducer(reducer, initialState)
-  const selectedInput = answers[activityState.selectedInputIndex]?.match
 
   const answerMatchesInput = (answer: SelectForEachBlankAnswer) => {
-    return selectedInput === answer.match
+    return activityState.selectedInput === answer.match
   }
 
   const allAnswersLocked = activityState.answers.every(answer => answer.isLocked)
@@ -110,13 +110,17 @@ function LessonActivitySelectForEachBlank({
 
     dispatch(actions.answers[idx].isSelected.create.on())
 
-    if (answer.match === selectedInput) {
+    if (answerMatchesInput(answer)) {
       setNotification({ message: 'Amazing!', isShowing: true })
       dispatch(bundle([
         actions.answers[idx].isLocked.create.on(),
-        actions.selectedInputIndex.create.do(idx => (
-          Math.min(answers.length, idx + 1)
-        ))
+        actions.selectedInput.create.do(() => {
+          const answersArr = Object.values(activityState.answers)
+          const currIndex = answersArr.findIndex(answerMatchesInput)
+          return currIndex < answersArr.length - 1
+            ? answersArr[currIndex + 1].match
+            : answersArr[0].match
+        })
       ]))
 
     } else {
@@ -129,6 +133,8 @@ function LessonActivitySelectForEachBlank({
 
   const BlankOrText = useMemo(() => {
     return function BlankorText({ matchingAnswer }: { matchingAnswer?: SelectForEachBlankAnswer  }) {
+      console.log(matchingAnswer)
+
       if (!matchingAnswer) return null
 
       if (matchingAnswer.isLocked) {
@@ -136,10 +142,9 @@ function LessonActivitySelectForEachBlank({
       } else {
         return (
           <Input
-            key={matchingAnswer.match}
             onClick={() => {
-              dispatch(actions.selectedInputIndex.create.update(
-                matchingAnswer.inputIndex
+              dispatch(actions.selectedInput.create.update(
+                matchingAnswer.match
               ))
             }}
             showFocus={answerMatchesInput(matchingAnswer)}
@@ -216,7 +221,7 @@ function LessonActivitySelectForEachBlank({
             answer={{
               ...answer,
               isSelected: answer.isLocked || answer.isSelected,
-              isCorrect: answer.isLocked || answer.match === selectedInput
+              isCorrect: answer.isLocked || answerMatchesInput(answer)
             }}
             onClick={makeClickHandler(answer, idx)}
           />
