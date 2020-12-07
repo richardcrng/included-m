@@ -88,7 +88,32 @@ const activities: Activity[] = [
     blocks: [
       "Venture Capital (VC) is a form of private financing provided by VC funds to early-stage, high potential companies.",
       "Whilst providing {{capital to early-stage companies in exchange for equity}} is arguably the *primary* role of a VC investor, some also provide founders with {{other ‘services’ such as strategic guidance and expertise in relevant industries}}.",
-    ]
+    ],
+    choices: {
+      '{{capital to early-stage companies in exchange for equity}}': [
+        {
+          text: 'capital to early-stage companies in exchange for equity',
+          isCorrect: true,
+          feedback: "Yep! If they don't provide capital, they're not a traditional VC."
+        },
+        {
+          text: "other ‘services’ such as strategic guidance and expertise in relevant industries",
+          isCorrect: false,
+          feedback: "Some VCs do this, but it's not normally thought of as the primary VC function."
+        }
+      ],
+      "{{other ‘services’ such as strategic guidance and expertise in relevant industries}}": [
+        {
+          text: 'capital to early-stage companies in exchange for equity',
+          isCorrect: false
+        },
+        {
+          text: "other ‘services’ such as strategic guidance and expertise in relevant industries",
+          isCorrect: true,
+          feedback: "We'll be learning more about the 'Platform' function of VCs in a later lesson!"
+        }
+      ]
+    }
   },
   {
     activityType: 'select-multiple',

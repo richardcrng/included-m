@@ -1,8 +1,8 @@
 export type Activity =
   ReadActivity
     | SelectAnAnswerActivity
+    | SelectForEachBlankActivity
     | SelectMultipleActivity
-    | SelectForEachBlankSimpleActivity
     | SwipeCardsActivity
 
 export type ContentBlock = string
@@ -12,10 +12,33 @@ export type ReadActivity = {
   blocks: ContentBlock[]
 }
 
+export type AnswerFeedback = string | {
+  header?: string,
+  message: string,
+  buttonText?: string
+}
+
 export type SelectAnAnswerActivity = {
   activityType: 'select-an-answer',
   blocks: ContentBlock[],
   answers: SelectMultipleAnswer[]
+}
+
+export type SelectForEachBlankActivity = SelectForEachBlankSimpleActivity | SelectForEachBlankComplexActivity
+
+export type SelectForEachBlankSimpleActivity = {
+  activityType: 'select-for-each-blank',
+  blocks: ContentBlock[]
+}
+
+export type SelectForEachBlankComplexActivity = SelectForEachBlankSimpleActivity & {
+  choices: {
+    [blankKey: string]: SelectMultipleAnswer[]
+  }
+}
+
+export type SelectForEachBlankChoices = {
+  [blankKey: string]: SelectMultipleAnswer[]
 }
 
 export type SelectMultipleActivity = {
@@ -27,17 +50,8 @@ export type SelectMultipleActivity = {
 export type SelectMultipleAnswer = {
   text: string
   isCorrect: boolean
-  feedback?: string | {
-    header?: string,
-    message: string,
-    buttonText?: string
-  }
+  feedback?: AnswerFeedback
   isSelected?: boolean
-}
-
-export type SelectForEachBlankSimpleActivity = {
-  activityType: 'select-for-each-blank',
-  blocks: ContentBlock[]
 }
 
 export type SwipeCardsActivity = {
@@ -56,6 +70,11 @@ export function isSelectMultipleActivity(activity: Activity): activity is Select
   return activity.activityType === 'select-multiple'
 }
 
-export function isSelectForEachBlankActivity(activity: Activity): activity is SelectForEachBlankSimpleActivity {
+export function isSelectForEachBlankActivity(activity: Activity): activity is SelectForEachBlankActivity {
   return activity.activityType === 'select-for-each-blank'
+}
+
+export function isComplexSelectForEachBlankActivity(activity: SelectForEachBlankActivity): activity is SelectForEachBlankComplexActivity {
+  // @ts-ignore
+  return activity.choices
 }

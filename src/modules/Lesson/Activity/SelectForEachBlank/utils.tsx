@@ -1,11 +1,17 @@
 import React from 'react';
 import styled from 'styled-components'
+import { AnswerFeedback } from '../../lesson-types';
 
-export type SelectForEachBlankAnswer = {
+export interface SelectForEachBlankAnswer {
   match: string,
   text: string,
   isSelected: boolean,
   isLocked: boolean,
+}
+
+export interface SelectForEachBlankAnswerComplex extends SelectForEachBlankAnswer {
+  isCorrect: boolean,
+  feedback?: AnswerFeedback
 }
 
 interface InputProps {
@@ -68,6 +74,8 @@ export function BlankOrText({
   onInputClick,
   showFocus
 }: BlankOrTextProps) {
+  // console.log(matchingAnswer)
+
   if (!matchingAnswer) return null
 
   if (matchingAnswer.isLocked) {

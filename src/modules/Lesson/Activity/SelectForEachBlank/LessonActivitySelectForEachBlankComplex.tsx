@@ -1,16 +1,17 @@
 import React, { useReducer, useState } from 'react';
 import { shuffle } from 'lodash';
 import riduce, { bundle } from 'riduce';
-import { answersFromBlocks, BlankOrText, hasBlanks } from './utils'
+import Markdown from 'markdown-to-jsx'
+import { BlankOrText, hasBlanks, SelectForEachBlankAnswerComplex } from './utils'
 import LessonContent from '../../LessonContent';
-import { SelectForEachBlankSimpleActivity, SelectMultipleAnswer } from '../../lesson-types';
 import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
 import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
 import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
+import { SelectForEachBlankComplexActivity } from '../../lesson-types';
 
 interface Props {
-  activity: SelectForEachBlankSimpleActivity
+  activity: SelectForEachBlankComplexActivity
 }
 
 function LessonActivitySelectForEachBlankComplex({
@@ -18,59 +19,68 @@ function LessonActivitySelectForEachBlankComplex({
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({ message: '', isShowing: false })
 
-  const answers = answersFromBlocks(blocks)
+  const choiceEntries = Object.entries(choices)
 
-  type Answer = typeof answers['any']
+  const shuffledChoices = Object.fromEntries(choiceEntries.map(([match, answers]) => [match, shuffle(answers.map(answer => ({
+    ...answer, isLocked: false, match, isSelected: false
+  })))]))
 
   const initialState = {
-    answers: shuffle(answers),
-    choices,
-    selectedInput: Object.keys(answers)[0]
+    choices: shuffledChoices,
+    selectedInput: choiceEntries[0][0]
   }
   
   const [reducer, actions] = riduce(initialState)
   
   const [activityState, dispatch] = useReducer(reducer, initialState)
 
-  const allAnswersLocked = activityState.answers.every(answer => answer.isLocked)
+  const activeChoices = activityState.choices[activityState.selectedInput]
 
-  const answerMatchesInput = (answer: Answer) => {
-    return activityState.selectedInput === answer.match
-  }
+  console.log(activeChoices)
 
-  const customChoices = choices && choices[activityState.selectedInput]
+  type Answer = typeof activeChoices[0]
+
+  const allChoicesLocked = Object.values(activityState.choices).every(answers => answers.some(answer => answer.isLocked))
+
 
   const makeClickHandler = (
     answer: Answer,
     idx: number
   ) => () => {
-    if (answer.isSelected || answer.isLocked) return
+    console.log(answer)
 
-    dispatch(actions.answers[idx].isSelected.create.on())
+    if (answer.isSelected || answer.isLocked || allChoicesLocked) return
 
-    if (answerMatchesInput(answer)) {
+    dispatch(actions.choices[activityState.selectedInput][idx].create.assign({ isSelected: true }))
+
+    const color = answer.isCorrect ? 'success' : 'warning'
+
+    const feedback = answer.feedback
+      ? answer.feedback
+      : answer.isCorrect ? "That's it!" : 'Not quite'
+
+    if (typeof feedback === 'string') {
       setNotification({
-        message: 'Amazing!',
-        isShowing: true,
-        color: 'success'
+        message: feedback,
+        color,
+        isShowing: true
       })
-      dispatch(bundle([
-        actions.answers[idx].isLocked.create.on(),
-        actions.selectedInput.create.do(() => {
-          const answersArr = Object.values(activityState.answers)
-          const currIndex = answersArr.findIndex(answerMatchesInput)
-          return currIndex < answersArr.length - 1
-            ? answersArr[currIndex + 1].match
-            : answersArr[0].match
-        })
-      ]))
-
     } else {
       setNotification({
-        message: 'Not quite...',
-        isShowing: true,
-        color: 'warning'
+        ...feedback,
+        color,
+        isShowing: true
       })
+    }
+
+    if (answer.isCorrect) {
+      const matchers = Object.keys(choices)
+      const currIdx = matchers.findIndex(key => key === answer.match)
+      dispatch(actions.choices[activityState.selectedInput][idx].create.assign({ isLocked: true }))
+
+      if (currIdx < matchers.length - 1) {
+        dispatch(actions.selectedInput.create.update(matchers[currIdx + 1]))
+      }
     }
   }
 
@@ -86,19 +96,11 @@ function LessonActivitySelectForEachBlankComplex({
             isShowing: false
           }))
 
-          !choices && dispatch(actions.answers.create.do(answers => (
-            answers.map(answer => (
-              answer.isSelected && !answerMatchesInput(answer)
-                ? { ...answer, isSelected: false }
-                : answer
-            ))
-          )))
-
-          choices && dispatch(actions.choices.create.do(choices => (
-            choices && Object.fromEntries(Object.entries(choices).map(
+          dispatch(actions.choices.create.do(choices => (
+            Object.fromEntries(Object.entries(choices).map(
               ([key, answers]) => [key, answers.map(answer => (
                 key === activityState.selectedInput
-                  && answer.isSelected && !answer.isCorrect
+                  && answer.isSelected && !answer.isCorrect && !answer.isLocked
                     ? { ...answer, isSelected: false }
                     : answer
               ))]
@@ -116,27 +118,22 @@ function LessonActivitySelectForEachBlankComplex({
               (acc, match) => {
                 const [before, remaining] = acc.remaining.split(match)
 
-                const matchingAnswer = activityState.answers.find(
-                  answer => answer.match === match
+                const matchingAnswer: SelectForEachBlankAnswerComplex | undefined = activityState.choices[match].find(
+                  answer => answer.isCorrect
                 )
 
                 const nodes = [
                   ...acc.nodes,
-                  <span key={before}>{before}</span>,
+                  <Markdown key={before}>{before}</Markdown>,
                   <BlankOrText
                     key={match}
                     matchingAnswer={matchingAnswer}
                     onInputClick={() => {
-                      if (matchingAnswer) {
-                        dispatch(actions.selectedInput.create.update(
-                        matchingAnswer.match
-                      ))
-                      }
+                      dispatch(actions.selectedInput.create.update(match))
                     }}
-                    showFocus={!!matchingAnswer && answerMatchesInput(matchingAnswer)}
+                    showFocus={activityState.selectedInput === match}
                   />
                 ]
-
                 return { remaining, nodes }
               },
               { remaining: block, nodes: [] as React.ReactNode[] }
@@ -157,51 +154,18 @@ function LessonActivitySelectForEachBlankComplex({
             )
           }
         })}
-        {!choices && activityState.answers.map((answer, idx) => (
-          <MultipleAnswerCard
-            key={answer.text}
-            answer={{
-              ...answer,
-              isSelected: answer.isLocked || answer.isSelected,
-              isCorrect: answer.isLocked || answerMatchesInput(answer)
-            }}
-            disabled={notification.isShowing}
-            onClick={makeClickHandler(answer, idx)}
-          />
-        ))}
-        {choices && choices[activityState.selectedInput] && (
-          choices[activityState.selectedInput].map((answer, idx) => (
+        {activeChoices && activeChoices.map((answer, idx) => (
             <MultipleAnswerCard
-              key={answer.text}
+              key={`${answer.match}-${answer.text}`}
               answer={answer}
               disabled={notification.isShowing}
-              onClick={() => {
-                const color = answer.isCorrect ? 'success' : 'warning'
-
-                const feedback = answer.feedback
-                  ? answer.feedback
-                  : answer.isCorrect ? "That's it!" : 'Not quite'
-
-                if (typeof feedback === 'string') {
-                  setNotification({
-                    message: feedback,
-                    color,
-                    isShowing: true
-                  })
-                } else {
-                  setNotification({
-                    ...feedback,
-                    color,
-                    isShowing: true
-                  })
-                }
-              }}
+              onClick={makeClickHandler(answer, idx)}
             />
           )
-        ))}
+        )}
       </LessonContent>
       <LessonContinueButton
-        disabled={!allAnswersLocked}
+        disabled={!allChoicesLocked}
       />
     </>
   )

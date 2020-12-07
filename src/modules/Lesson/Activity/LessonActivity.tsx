@@ -1,8 +1,9 @@
 import React from 'react';
-import { Activity } from '../lesson-types';
+import { Activity, isComplexSelectForEachBlankActivity } from '../lesson-types';
 import LessonActivityRead from './LessonActivityRead';
 import LessonActivitySelectMultiple from './LessonActivitySelectMultiple';
 import LessonActivitySelectForEachBlank from './SelectForEachBlank';
+import LessonActivitySelectForEachBlankComplex from './SelectForEachBlank/LessonActivitySelectForEachBlankComplex';
 import LessonActivitySwipeCards from './SwipeCards';
 
 interface Props {
@@ -26,11 +27,19 @@ function LessonActivity({
       />
     )
   } else if (activity.activityType === 'select-for-each-blank') {
-    return (
-      <LessonActivitySelectForEachBlank
-        activity={activity}
-      />
-    )
+    if (isComplexSelectForEachBlankActivity(activity)) {
+      return (
+        <LessonActivitySelectForEachBlankComplex
+          activity={activity}
+        />
+      )
+    } else {
+      return (
+        <LessonActivitySelectForEachBlank
+          activity={activity}
+        />
+      )
+    }
   } else if (activity.activityType === 'swipe-cards') {
     return (
       <LessonActivitySwipeCards
