@@ -107,6 +107,7 @@ function LessonActivitySwipeCards({
                       disabled={notificationState.isShowing}
                       expand='full'
                       onClick={() => swingData.triggerThrow(false)}
+                      size='large'
                     >
                       <IonIcon slot='start' icon={arrowBack} />
                       {activity.choices[0]}
@@ -115,6 +116,7 @@ function LessonActivitySwipeCards({
                       disabled={notificationState.isShowing}
                       expand='full'
                       onClick={() => swingData.triggerThrow(true)}
+                      size='large'
                     >
                       <IonIcon slot='end' icon={arrowForward} />
                       {activity.choices[1]}
