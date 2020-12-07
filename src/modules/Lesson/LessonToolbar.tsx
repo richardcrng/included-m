@@ -6,7 +6,8 @@ import {
 } from '@ionic/react';
 import {
   IoArrowBack,
-  IoClose,
+  // IoClose,
+  IoInformationCircleOutline
 } from 'react-icons/io5'
 import ProgressBoxes from '../../components/atoms/ProgressBoxes';
 import { LessonContext } from './Lesson';
@@ -73,7 +74,12 @@ function LessonToolbar({
         />
       </Buttons>
       <Buttons slot='end'>
-        <IoClose size={24} />
+        <IoInformationCircleOutline
+          size={24}
+          onClick={() => {
+            window.alert("This is a proof-of-concept for Included M. It's a work in progress!")
+          }}
+        />
       </Buttons>
       <Title>
         <ProgressBoxes

@@ -42,7 +42,7 @@ function LessonActivitySelectForEachBlank({
     answer: typeof answers[0],
     idx: number
   ) => () => {
-    if (answer.isSelected) return
+    if (answer.isSelected || answer.isLocked) return
 
     dispatch(actions.answers[idx].isSelected.create.on())
 

@@ -41,31 +41,35 @@ function LessonActivitySelectMultiple({
       isSelected: true
     }))
 
+    const color = answer.isCorrect ? 'success' : 'warning'
+
     if (answer.feedback) {
       if (typeof answer.feedback === 'string') {
         setNotification({
           message: answer.feedback,
-          isShowing: true
+          isShowing: true,
+          color
         })
       } else {
         setNotification({
           header: answer.feedback.header,
           message: answer.feedback.message,
           buttonText: answer.feedback.buttonText,
-          isShowing: true
+          isShowing: true,
+          color
         })
       }
     } else if (answer.isCorrect) {
       setNotification({
         message: 'Amazing!',
         isShowing: true,
-        color: 'success'
+        color
       })
     } else {
       setNotification({
         message: 'Not quite...',
         isShowing: true,
-        color: 'warning'
+        color
       })
     }
   }

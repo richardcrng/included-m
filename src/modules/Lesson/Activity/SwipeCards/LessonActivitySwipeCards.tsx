@@ -35,28 +35,36 @@ function LessonActivitySwipeCards({
           !cardsState[0].isRight && swingEvent.throwDirection === Core.Direction.LEFT
         )
         if (directionMatches) {
+          const feedback = cardsState[0].feedbackCorrect || 'Amazing!'
+          const newNotification = typeof feedback === 'string'
+            ? { message: feedback, color: 'success', isShowing: true }
+            : { ...feedback, color: 'success', isShowing: true }
+          setNotificationState(newNotification)
           setCardsState(([first, ...rest]) => rest)
-          setNotificationState({
-            message: 'Amazing!',
-            color: 'success',
-            isShowing: true
-          })
         } else {
+          const feedback = cardsState[0].feedbackNotCorrect || 'Not quite'
+          const newNotification = typeof feedback === 'string'
+            ? { message: feedback, color: 'warning', isShowing: true }
+            : { ...feedback, color: 'warning', isShowing: true }
+          setNotificationState(newNotification)
+
           // return card to top of stack
           setCardsState(([first, ...rest]) => [
             { ...first, count: first.count + 1 },
             ...rest
           ])
-          setNotificationState({
-            message: 'Not quite...',
-            color: 'warning',
-            isShowing: true
-          })
         }
       }}
       renderCard={({ card, idx }) => (
-        <IonCard key={card.text} >
-          <IonCardContent>
+        <IonCard key={card.text}>
+          <IonCardContent
+            style={{
+              height: '30vh',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
             {card.text}
           </IonCardContent>
         </IonCard>
