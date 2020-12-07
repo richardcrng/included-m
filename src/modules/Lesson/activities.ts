@@ -1,79 +1,22 @@
 import { Activity } from "./lesson-types"
 
-const readActivity: Activity = {
-  activityType: 'read',
-  blocks: [
-    "Venture Capital (VC) is a form of private financing provided by VC funds to early-stage, high potential companies. Whilst providing capital to early-stage companies in exchange for equity is arguably the primary role of a VC investor, some also provide founders with other ‘services’ such as strategic guidance and expertise in relevant industries.",
-  ]
-}
-
-const selectActivity: Activity = {
-  activityType: 'select-multiple',
-  blocks: [
-    "Within six months, Juicero had shuttered, offering a full refund to their customers.",
-    "What do you suppose were some of the missteps that led to Juicero's demise?",
-  ],
-  answers: [
-    {
-      text: "They needed more celebrity endorsements.",
-      isCorrect: false,
-    },
-    {
-      text: "They assumed they knew what customers wanted from the product.",
-      isCorrect: true,
-    },
-    {
-      text: "They didn't raise enough money.",
-      isCorrect: false
-    },
-    {
-      text: "They scaled prematurely without knowing for sure their business model worked.",
-      isCorrect: true
-    }
-  ]
-}
-
-const selectForEachBlankSimpleActivity: Activity = {
-  activityType: 'select-for-each-blank',
-  blocks: [
-    "To be successful, startups shouldn't just try to be a scaled-down version of a large company.",
-    "For existing companies with a known market, {{traditional product development}} can work just fine.",
-    "But if you're unsure about what you're selling and who you're going to sell it to, {{a startup model}} might be more appropriate."
-  ]
-}
-
-const selectAnAnswerActivity: Activity = {
-  activityType: 'select-an-answer',
-  blocks: [
-    "But what exactly is a startup? For our purposes, let's turn to Steve Blank's definition:",
-    "> A *startup* is a temporary organization in search of a scalable, repeatable, profitable business model.",
-    "Essentially, this means:"
-  ],
-  answers: [
-    {
-      text: 'All startups either get sold or shut down after a while.',
-      isCorrect: false
-    },
-    {
-      text: 'Startups are adaptable organizations whose primary goal is to *find* a business model - not to execute one.',
-      isCorrect: true
-    }
-  ]
-}
-
-const swipeActivity: Activity = {
-  activityType: 'swipe-cards',
-  blocks: ["Are the following examples startups or something else?"],
-  cards: [
-    { text: "A large conglomerate updates the colour of its best-selling product.", isRight: true },
-    { text: "A student wants to start a social network for children.", isRight: false },
-    { text: "A journalist quits her job and decides to go freelance.", isRight: true },
-    { text: "An engineer wants to design an app to sell.", isRight: false }
-  ],
-  choices: ["startup", "something else"]
-}
 
 const activities: Activity[] = [
+  {
+    activityType: 'read',
+    blocks: [
+      "Welcome to this proof-of-concept for **Included M**!",
+      "*M* stands for both 1000 (Roman numeral) and **M**obile. Clever, right?"
+    ]
+  },
+  {
+    activityType: 'read',
+    blocks: [
+      "This demo uses some of the content from IVC20's first 101 pack.",
+      "It's meant to be more indicative of functionality than of materials.",
+      "The lesson begins on the next page!"
+    ]
+  },
   {
     activityType: 'select-for-each-blank',
     blocks: [
@@ -177,18 +120,30 @@ const activities: Activity[] = [
     cards: [
       {
         text: "It's commonly estimated that around 30% of startups fail",
-        isRight: false
+        isRight: false,
+        feedbackCorrect: "You're right - it's much higher!",
+        feedbackNotCorrect: "You're such an optimist...!"
       },
       {
         text: 'Not all venture capital firms are profitable',
-        isRight: true
+        isRight: true,
+        feedbackCorrect: "Ah, the real world...",
+        feedbackNotCorrect: "Can profit ever be guaranteed...?"
       },
       {
         text: 'Fund performance is not the same as portfolio company failure rate',
-        isRight: true
+        isRight: true,
+        feedbackCorrect: "Right! We'll learn more about fund metrics soon.",
+        feedbackNotCorrect: "A VC fund can generate massive returns even with a high failure rate - we'll learn how soon!"
       }
     ],
     choices: ['false', 'true']
+  },
+  {
+    activityType: 'read',
+    blocks: [
+      "That's the end of this demo!"
+    ]
   }
 ]
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/react';
 import { arrowBack, arrowForward } from 'ionicons/icons';
-import { shuffle } from 'lodash';
+import { first, shuffle } from 'lodash';
 import Swing, { Core } from '../../../../lib/swing-react';
 import { SwipeCard, SwipeCardsActivity } from '../../lesson-types';
 import LessonContent from '../../LessonContent';
@@ -35,23 +35,24 @@ function LessonActivitySwipeCards({
           !cardsState[0].isRight && swingEvent.throwDirection === Core.Direction.LEFT
         )
         if (directionMatches) {
+          const feedback = cardsState[0].feedbackCorrect || 'Amazing!'
+          const newNotification = typeof feedback === 'string'
+            ? { message: feedback, color: 'success', isShowing: true }
+            : { ...feedback, color: 'success', isShowing: true }
+          setNotificationState(newNotification)
           setCardsState(([first, ...rest]) => rest)
-          setNotificationState({
-            message: 'Amazing!',
-            color: 'success',
-            isShowing: true
-          })
         } else {
+          const feedback = cardsState[0].feedbackNotCorrect || 'Not quite'
+          const newNotification = typeof feedback === 'string'
+            ? { message: feedback, color: 'warning', isShowing: true }
+            : { ...feedback, color: 'warning', isShowing: true }
+          setNotificationState(newNotification)
+
           // return card to top of stack
           setCardsState(([first, ...rest]) => [
             { ...first, count: first.count + 1 },
             ...rest
           ])
-          setNotificationState({
-            message: 'Not quite...',
-            color: 'warning',
-            isShowing: true
-          })
         }
       }}
       renderCard={({ card, idx }) => (

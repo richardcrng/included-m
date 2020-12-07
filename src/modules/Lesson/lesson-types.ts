@@ -63,7 +63,9 @@ export type SwipeCardsActivity = {
 
 export type SwipeCard = {
   text: string,
-  isRight: boolean
+  isRight: boolean,
+  feedbackCorrect?: AnswerFeedback,
+  feedbackNotCorrect?: AnswerFeedback
 }
 
 export function isSelectMultipleActivity(activity: Activity): activity is SelectMultipleActivity {
