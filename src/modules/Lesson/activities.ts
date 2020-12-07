@@ -105,7 +105,8 @@ const activities: Activity[] = [
       "{{other ‘services’ such as strategic guidance and expertise in relevant industries}}": [
         {
           text: 'capital to early-stage companies in exchange for equity',
-          isCorrect: false
+          isCorrect: false,
+          feedback: 'This is core, rather than an add-on'
         },
         {
           text: "other ‘services’ such as strategic guidance and expertise in relevant industries",
