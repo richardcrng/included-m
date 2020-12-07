@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react';
 import { shuffle } from 'lodash';
-import riduce, { bundle } from 'riduce';
+import riduce from 'riduce';
 import Markdown from 'markdown-to-jsx'
 import { BlankOrText, hasBlanks, SelectForEachBlankAnswerComplex } from './utils'
 import LessonContent from '../../LessonContent';

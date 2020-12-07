@@ -1,6 +1,5 @@
 import { IonToast } from '@ionic/react';
 import React from 'react';
-import Markdown from 'markdown-to-jsx'
 
 export interface NotificationProps {
   header?: string,
@@ -17,7 +16,6 @@ export interface NotificationProps {
 function Notification({
   header,
   message,
-  buttonText,
   isShowing,
   color,
   position = 'top',
