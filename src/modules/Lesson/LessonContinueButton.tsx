@@ -20,6 +20,7 @@ function LessonContinueButton({
       color={disabled ? 'medium' : 'primary'}
       disabled={disabled}
       expand='full'
+      size='large'
       onClick={() => {
         if (currentIdx < activities.length - 1) {
           dispatch(actions.currentIdx.create.increment())
