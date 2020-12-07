@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/react';
 import { arrowBack, arrowForward } from 'ionicons/icons';
-import { first, shuffle } from 'lodash';
+import { shuffle } from 'lodash';
 import Swing, { Core } from '../../../../lib/swing-react';
 import { SwipeCard, SwipeCardsActivity } from '../../lesson-types';
 import LessonContent from '../../LessonContent';
@@ -56,8 +56,15 @@ function LessonActivitySwipeCards({
         }
       }}
       renderCard={({ card, idx }) => (
-        <IonCard key={card.text} >
-          <IonCardContent>
+        <IonCard key={card.text}>
+          <IonCardContent
+            style={{
+              height: '30vh',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
             {card.text}
           </IonCardContent>
         </IonCard>

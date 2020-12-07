@@ -5,16 +5,24 @@ const activities: Activity[] = [
   {
     activityType: 'read',
     blocks: [
+      "# Included M",
       "Welcome to this proof-of-concept for **Included M**!",
-      "*M* stands for both 1000 (Roman numeral) and **M**obile. Clever, right?"
+      "*M* stands for both 1000 (Roman numeral) and **M**obile. Clever, right?",
+      "---",
+      "### About the demo",
+      "This demo uses some of the content from IVC20's first 101 pack.",
+      "It's meant to be more indicative of functionality than of materials.",
     ]
   },
   {
     activityType: 'read',
     blocks: [
-      "This demo uses some of the content from IVC20's first 101 pack.",
-      "It's meant to be more indicative of functionality than of materials.",
-      "The lesson begins on the next page!"
+      "# VC Fundamentals: Lesson 1",
+      "## What is Venture Capital?",
+      "In this lesson, we will learn a little bit about the basics of venture capital.",
+      "On most pages, there are activities that you will need to complete before you can move onto the next page.",
+      "(If you can't see the 'Continue' button, you haven't finished that page's activities!)",
+      "So... let's begin!"
     ]
   },
   {
@@ -142,7 +150,9 @@ const activities: Activity[] = [
   {
     activityType: 'read',
     blocks: [
-      "That's the end of this demo!"
+      "That's the end of this demo!",
+      "Please report the inevitable bugs or mistakes to Richard and he will try to fix them.",
+      "If you're interested in being involved"
     ]
   }
 ]
