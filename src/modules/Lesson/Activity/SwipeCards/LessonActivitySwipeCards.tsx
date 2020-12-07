@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/react';
-import { arrowBack, arrowForward, card } from 'ionicons/icons';
+import { arrowBack, arrowForward } from 'ionicons/icons';
 import { shuffle } from 'lodash';
 import Swing, { Core } from '../../../../lib/swing-react';
 import { SwipeCard, SwipeCardsActivity } from '../../lesson-types';

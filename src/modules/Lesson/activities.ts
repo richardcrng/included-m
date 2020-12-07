@@ -42,15 +42,6 @@ const selectForEachBlankSimpleActivity: Activity = {
   ]
 }
 
-const selectForEachBlankComplexActivity: Activity = {
-  activityType: 'select-for-each-blank',
-  blocks: [
-    "In the early days, a startup operates in 'search mode' - its business model is just a collection of unproven hypotheses.",
-    "During these first two phases, it's necessary to test these hypotheses by getting in front of customers {{early and often}}.",
-    "It's also important to limit spending until the {{customer creation and company building phases}}, when the business model is known."
-  ]
-}
-
 const selectAnAnswerActivity: Activity = {
   activityType: 'select-an-answer',
   blocks: [
