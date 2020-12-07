@@ -168,6 +168,27 @@ const activities: Activity[] = [
       "Regardless of the exact figure, it is pretty clear that a startup’s pathway to success is an arduous one.",
       "This means that VC investors have to be exacting with their capital, structured in a way so as to balance good governance with risk-taking while endeavouring to create substantial returns for their investors."
     ]
+  },
+  {
+    activityType: 'swipe-cards',
+    blocks: [
+      "Let's review: which of these are true and false?"
+    ],
+    cards: [
+      {
+        text: "It's commonly estimated that around 30% of startups fail",
+        isRight: false
+      },
+      {
+        text: 'Not all venture capital firms are profitable',
+        isRight: true
+      },
+      {
+        text: 'Fund performance is not the same as portfolio company failure rate',
+        isRight: true
+      }
+    ],
+    choices: ['false', 'true']
   }
 ]
 

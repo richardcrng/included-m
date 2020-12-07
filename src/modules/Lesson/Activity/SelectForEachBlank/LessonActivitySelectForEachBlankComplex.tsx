@@ -154,7 +154,7 @@ function LessonActivitySelectForEachBlankComplex({
             )
           }
         })}
-        {activeChoices && activeChoices.map((answer, idx) => (
+        {!allChoicesLocked && activeChoices && activeChoices.map((answer, idx) => (
             <MultipleAnswerCard
               key={`${answer.match}-${answer.text}`}
               answer={answer}
