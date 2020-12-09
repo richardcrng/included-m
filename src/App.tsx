@@ -27,9 +27,10 @@ import { useDispatch } from 'react-redux';
 import HomePage from './routes/HomePage';
 
 import { Course } from './content/types';
-import actions from './redux/actions';
+import actions from './redux/reducer';
 import { Route } from 'react-router';
 import CoursePage from './routes/CoursePage';
+import TopicPage from './routes/TopicPage';
 
 
 const App: React.FC = () => {
@@ -44,12 +45,13 @@ const App: React.FC = () => {
 
     getData()
 
-  }, [])
+  }, [dispatch])
 
   return (
   <IonApp>
     <IonReactRouter>
       <Route exact path='/course' component={CoursePage} />
+      <Route exact path='/topic' component={TopicPage} />
       <Route exact path='/' component={HomePage} />
     </IonReactRouter>
   </IonApp>

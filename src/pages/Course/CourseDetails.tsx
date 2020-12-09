@@ -12,7 +12,7 @@ import {
   IoArrowBack,
   IoInformationCircleOutline
 } from 'react-icons/io5'
-import { Course } from '../../content/types';
+import { Course, Topic } from '../../content/types';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -45,10 +45,14 @@ interface Props {
 }
 
 interface Props {
-  course: Course
+  course: Course,
+  onTopicStart?(topic: Topic): void
 }
 
-function CourseDetails({ course } : Props) {
+function CourseDetails({
+  course,
+  onTopicStart
+} : Props) {
   return (
     <>
       <IonToolbar>
@@ -87,7 +91,12 @@ function CourseDetails({ course } : Props) {
                   </h2>
                   <p className='ion-text-wrap'>{topic.description}</p>
                 </IonLabel>
-                <PickCourseButton slot='end' expand='full' color='success'>
+                <PickCourseButton
+                  slot='end'
+                  expand='full'
+                  color='success'
+                  onClick={() => onTopicStart && onTopicStart(topic)}
+                >
                   {'>'}
                 </PickCourseButton>
               </IonItem>
