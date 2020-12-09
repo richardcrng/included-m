@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components'
 import {
   IonButton,
@@ -8,20 +8,16 @@ import {
   IonContent,
   IonItem,
   IonItemDivider,
-  IonItemGroup,
   IonLabel,
   IonList,
-  IonListHeader,
-  IonNote,
   IonToolbar,
 } from '@ionic/react';
 import {
   IoArrowBack,
-  // IoClose,
   IoInformationCircleOutline
 } from 'react-icons/io5'
-import ProgressBoxes from '../../components/atoms/ProgressBoxes';
 import { Chapter } from '../Lesson/lesson-types';
+import vcFundamentals from '../../courseData/01-vc-fundamentals/chapters';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -68,33 +64,7 @@ interface Props {
   message?: string;
 }
 
-const chapters: Chapter[] = [
-  {
-    chapterTitle: 'What is Venture Capital?',
-    lessons: [
-      {
-        lessonTitle: 'The goals of venture capital',
-        isCompleted: true,
-        activities: []
-      }
-    ]
-  },
-  {
-    chapterTitle: 'Fund Structure',
-    lessons: [
-      {
-        lessonTitle: 'Management companies',
-        isCompleted: false,
-        activities: []
-      },
-      {
-        lessonTitle: 'General Partners',
-        isCompleted: false,
-        activities: []
-      }
-    ]
-  }
-]
+const chapters: Chapter[] = vcFundamentals
 
 function CourseDetails() {
   return (
@@ -157,7 +127,7 @@ function CourseDetails() {
                   </IonItem>
                 ))}
                 <IonItemDivider>
-                  {`${lessons.reduce((acc, { isCompleted }) => acc + Number(isCompleted), 0)} of ${lessons.length} completed`}
+                  {`${lessons.reduce((acc, { isCompleted }) => acc + Number(!!isCompleted), 0)} of ${lessons.length} completed`}
                 </IonItemDivider>
               </IonList>
               {chapterIdx < chapters.length - 1 ? <br /> : null}
