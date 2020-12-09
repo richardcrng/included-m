@@ -46,6 +46,7 @@ const MainCTAContent = styled(IonCardContent)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
 
   p {
     font-size: 1.15rem;
@@ -110,10 +111,20 @@ function TopicDetails({
           <p>{topic.description}</p>
           <IonCard>
             <MainCTAContent>
-              <p>Ready to begin?</p>
-              <p>Start learning now.</p>
-              <br />
-              <IonButton>Start Topic</IonButton>
+              {topic.chapters.length > 0 ? (
+                <>
+                  <p>Ready to begin?</p>
+                  <p>Start learning now.</p>
+                  <br />
+                  <IonButton>Start Topic</IonButton>
+                </>
+              ) : (
+                <>
+                  <p><b>Oops...!</b></p>
+                  <p>This topic is under construction. Why don't you try another?</p>
+                  <IonButton routerLink='/course'>Choose another</IonButton>
+                </>
+              )}
             </MainCTAContent>
           </IonCard>
           {topic.chapters.map(({ chapterTitle, lessons }, chapterIdx) => (
