@@ -11,7 +11,7 @@ import {
 } from 'react-icons/io5'
 import ProgressBoxes from '../../components/atoms/ProgressBoxes';
 import { LessonContext } from './LessonDetails';
-import { RouteChildrenProps, useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 
 const Buttons = styled(IonButtons)`
   margin: 1rem;
