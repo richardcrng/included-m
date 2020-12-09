@@ -1,12 +1,12 @@
-import { IonButton, IonContent, IonRouterLink, IonTitle, IonToolbar } from '@ionic/react';
-import React, { useState } from 'react';
+import { IonButton, IonContent, IonTitle, IonToolbar } from '@ionic/react';
+import React from 'react';
 import styled from 'styled-components'
 
 const Container = styled.div`
   margin: 1rem;
 `
 
-function Home() {
+function HomePage() {
 
   return (
     <>
@@ -18,7 +18,7 @@ function Home() {
       <IonContent>
         <Container>
           Included M blah blah
-          <IonButton href='/course'>
+          <IonButton routerLink='/course'>
             Start
           </IonButton>
         </Container>
@@ -27,4 +27,4 @@ function Home() {
   )
 }
 
-export default Home;
+export default HomePage;

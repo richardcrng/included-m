@@ -1,6 +1,6 @@
 import { Course, Lesson, Topic } from "../content/types";
 
-interface State {
+export interface ReduxState {
   loaded: {
     course: Course,
     topic: Topic,
@@ -9,7 +9,7 @@ interface State {
   }
 }
 
-const initialState: State = {
+const initialState: ReduxState = {
   loaded: {
     course: {
       courseTitle: 'Included M',
