@@ -1,3 +1,9 @@
+export type Topic = {
+  topicTitle: string,
+  description: string,
+  chapters: Chapter[]
+}
+
 export type Chapter = {
   chapterTitle: string,
   lessons: Lesson[]
