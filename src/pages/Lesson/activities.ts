@@ -150,9 +150,11 @@ const activities: Activity[] = [
   {
     activityType: 'read',
     blocks: [
+      "# *Fin*",
       "That's the end of this demo!",
       "Please report the inevitable bugs or mistakes to Richard and he will try to fix them.",
-      "If you're interested in being involved"
+      "Contributions are also welcomed, both in: \n\n1. Converting content from 101s to Included M format; and \n2. Building technical features.",
+      "Get in touch: [hi@richard.ng](mailto:hi@richard.ng)"
     ]
   }
 ]
