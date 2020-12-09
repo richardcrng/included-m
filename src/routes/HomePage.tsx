@@ -17,8 +17,13 @@ function HomePage() {
       </IonToolbar>
       <IonContent>
         <Container>
-          Included M blah blah
-          <IonButton routerLink='/course'>
+          <h1>Welcome - and be careful!</h1>
+          <p>Welcome to this proof of concept for Included M.</p>
+          <p>It's under construction - so expect bugs and incomplete content!</p>
+          <IonButton
+            routerLink='/course'
+            expand='full'
+          >
             Start
           </IonButton>
         </Container>
