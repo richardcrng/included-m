@@ -122,7 +122,7 @@ function CourseDetails() {
                       </h2>
                     </IonLabel>
                     <LessonStartButton slot='end' expand='full' color='success'>
-                      >
+                      {'>'}
                     </LessonStartButton>
                   </IonItem>
                 ))}

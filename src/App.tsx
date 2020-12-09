@@ -4,7 +4,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-import CourseDetails from './modules/Course/CourseDetails';
+import CourseDetails from './pages/Course/CourseDetails';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
