@@ -7,6 +7,8 @@ import {
   IonCardContent,
   IonContent,
   IonItem,
+  IonItemDivider,
+  IonItemGroup,
   IonLabel,
   IonList,
   IonListHeader,
@@ -104,39 +106,36 @@ function CourseDetails() {
             </MainCTAContent>
           </IonCard>
           <IonList>
-            <IonListHeader>
-              <IonLabel>
-                Chapter 01
-              </IonLabel>
-            </IonListHeader>
-            <IonListHeader>
-              <IonNote>What is Venture Capital?</IonNote>
-            </IonListHeader>
+            <IonItemDivider>
+              Chapter 01
+            </IonItemDivider>
+            <IonItem color='medium'>
+              <h2>What is Venture Capital?</h2>
+            </IonItem>
             <IonItem>
               <IonLabel>
                 <p>Lesson 1</p>
                 <h2>The goals of Venture Capital</h2>
               </IonLabel>
-              <LessonStartButton slot='end' expand='full'>
+              <LessonStartButton slot='end' expand='full' color='success'>
                 >
               </LessonStartButton>
             </IonItem>
           </IonList>
+          <br />
           <IonList>
-            <IonListHeader>
-              <IonLabel>
-                Chapter 02
-              </IonLabel>
-            </IonListHeader>
-            <IonListHeader>
-              <IonNote>Fund Structure</IonNote>
-            </IonListHeader>
+            <IonItemDivider>
+              Chapter 02
+            </IonItemDivider>
+            <IonItem color='medium'>
+              <h2>Fund Structure</h2>
+            </IonItem>
             <IonItem>
               <IonLabel>
                 <p>Lesson 1</p>
                 <h2>Management Companies</h2>
               </IonLabel>
-              <LessonStartButton slot='end' expand='full'>
+              <LessonStartButton slot='end' expand='full' color='success'>
                 >
               </LessonStartButton>
             </IonItem>
@@ -145,7 +144,7 @@ function CourseDetails() {
                 <p>Lesson 1</p>
                 <h2>Management Companies</h2>
               </IonLabel>
-              <LessonStartButton slot='end' expand='full'>
+              <LessonStartButton slot='end' expand='full' color='success'>
                 >
               </LessonStartButton>
             </IonItem>
