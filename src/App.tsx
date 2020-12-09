@@ -3,8 +3,8 @@ import {
   IonApp,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Provider } from 'react-redux'
-
+import { useDispatch } from 'react-redux';
+import Home from './routes';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -24,18 +24,31 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import Home from './routes';
-import store from './redux';
+import { Course } from './content/types';
+import actions from './redux/actions';
 
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+  const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    const getData = async () => {
+      const res = await fetch('https://api.jsonbin.io/b/5fd14a6082e9306ae6ff98c2')
+      const json: Course = await res.json()
+      dispatch(actions.loaded.course.create.update(json))
+    }
+
+    getData()
+    
+  }, [])
+
+  return (
   <IonApp>
-    <Provider store={store}>
-      <IonReactRouter>
-        <Home />
-      </IonReactRouter>
-    </Provider>
+    <IonReactRouter>
+      <Home />
+    </IonReactRouter>
   </IonApp>
-);
+)
+}
 
 export default App;
