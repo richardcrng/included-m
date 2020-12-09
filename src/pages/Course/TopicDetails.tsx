@@ -66,7 +66,7 @@ interface Props {
 
 const chapters: Chapter[] = vcFundamentals
 
-function CourseDetails() {
+function TopicDetails() {
   return (
     <>
       <IonToolbar>
@@ -88,7 +88,7 @@ function CourseDetails() {
         </Buttons>
         <Title>
           <Message>
-            Course Details
+            Topic Details
           </Message>
         </Title>
       </IonToolbar>
@@ -139,4 +139,4 @@ function CourseDetails() {
   )
 }
 
-export default CourseDetails
+export default TopicDetails

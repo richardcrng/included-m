@@ -4,7 +4,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-import CourseDetails from './pages/Course/CourseDetails';
+import TopicDetails from './pages/Course/TopicDetails';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -32,7 +32,7 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       {/* <Lesson /> */}
-      <CourseDetails />
+      <TopicDetails />
     </IonReactRouter>
   </IonApp>
 );
