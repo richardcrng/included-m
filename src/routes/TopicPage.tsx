@@ -11,7 +11,7 @@ function TopicPage({ history }: RouteComponentProps) {
   const topic = useSelector(selectors.getLoadedTopic)
 
   if ([topic.topicTitle, topic.description].includes(LOADING_STRING)) {
-    history.push('/course')
+    history.push('/')
   }
 
   return (

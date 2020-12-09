@@ -48,6 +48,8 @@ function LessonToolbar({
   } = useContext(LessonContext)
 
   const getCurrentActivityType = () => {
+    if (!activities || !activities[currentIdx]) return 'Loading...'
+
     switch (activities[currentIdx].activityType) {
       case 'select-an-answer':
         return 'Select an answer'
@@ -71,7 +73,11 @@ function LessonToolbar({
       <Buttons slot='start'>
         <IoArrowBack
           onClick={() => {
-            dispatch(actions.currentIdx.create.do((n: number) => Math.max(0, n-1)))
+            if (currentIdx === 0) {
+              history.goBack()
+            } else {
+              dispatch(actions.currentIdx.create.do((n: number) => Math.max(0, n-1)))
+            }
           }}
           size={24}
         />

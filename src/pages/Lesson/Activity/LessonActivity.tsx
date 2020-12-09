@@ -13,7 +13,9 @@ interface Props {
 function LessonActivity({
   activity
 }: Props) {
-  if (activity.activityType === 'select-an-answer') {
+  if (!activity) {
+    return null
+  } else if (activity.activityType === 'select-an-answer') {
     return (
       <LessonActivitySelectMultiple
         activity={activity}

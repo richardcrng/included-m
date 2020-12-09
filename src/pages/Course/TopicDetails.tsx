@@ -116,7 +116,11 @@ function TopicDetails({
                   <p>Ready to begin?</p>
                   <p>Start learning now.</p>
                   <br />
-                  <IonButton>Start Topic</IonButton>
+                  <IonButton
+                    onClick={createLessonSelectHandler(topic.chapters[0].lessons[0])}
+                  >
+                    Start Topic
+                  </IonButton>
                 </>
               ) : (
                 <>

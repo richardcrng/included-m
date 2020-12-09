@@ -10,7 +10,7 @@ function LessonPage({ history }: RouteComponentProps) {
   const lesson = useSelector(selectors.getLoadedLesson)
 
   if (lesson.lessonTitle === LOADING_STRING) {
-    history.push('/topic')
+    history.push('/')
   }
 
   return (
