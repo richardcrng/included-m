@@ -161,5 +161,4 @@ const theGoalsOfVentureCapital: Lesson = {
   ]
 }
 
-
 export default theGoalsOfVentureCapital

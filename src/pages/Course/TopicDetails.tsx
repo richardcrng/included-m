@@ -107,8 +107,8 @@ function TopicDetails({ topic }: Props) {
             </MainCTAContent>
           </IonCard>
           {topic.chapters.map(({ chapterTitle, lessons }, chapterIdx) => (
-            <>
-              <IonList key={chapterTitle}>
+            <React.Fragment key={chapterTitle}>
+              <IonList>
                 <IonItemDivider color='primary'>
                   Chapter {chapterIdx < 9 ? `0${chapterIdx + 1}` : chapterIdx + 1}
                 </IonItemDivider>
@@ -133,7 +133,7 @@ function TopicDetails({ topic }: Props) {
                 </IonItemDivider>
               </IonList>
               {chapterIdx < topic.chapters.length - 1 ? <br /> : null}
-            </>
+            </React.Fragment>
           ))}
         </Container>
       </IonContent>

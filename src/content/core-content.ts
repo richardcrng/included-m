@@ -14,6 +14,4 @@ const coreCourse: Course = {
   ]
 }
 
-console.log(JSON.stringify(coreCourse))
-
 export default coreCourse

@@ -79,8 +79,8 @@ function CourseDetails({ course } : Props) {
           <h1>{course.courseTitle}</h1>
           <p>{course.description}</p>
           {course.topics.map((topic, idx) => (
-            <>
-              <IonItem key={topic.topicTitle}>
+            <React.Fragment key={topic.topicTitle}>
+              <IonItem>
                 <IonLabel>
                   <h2 className='ion-text-wrap'>
                     <b>{topic.topicTitle}</b>
@@ -92,7 +92,7 @@ function CourseDetails({ course } : Props) {
                 </PickCourseButton>
               </IonItem>
               {idx < course.topics.length - 1 ? <br /> : null}
-            </>
+            </React.Fragment>
           ))}
         </Container>
       </IonContent>

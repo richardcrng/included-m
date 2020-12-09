@@ -3,9 +3,8 @@ import {
   IonApp,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { Provider } from 'react-redux'
 
-import CourseDetails from './pages/Course/CourseDetails';
-import coreCourse from './content/core-content';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -25,15 +24,17 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-
-
+import Home from './routes';
+import store from './redux';
 
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <CourseDetails course={coreCourse} />
-    </IonReactRouter>
+    <Provider store={store}>
+      <IonReactRouter>
+        <Home />
+      </IonReactRouter>
+    </Provider>
   </IonApp>
 );
 
