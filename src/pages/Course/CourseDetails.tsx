@@ -62,7 +62,7 @@ function CourseDetails({
         <Buttons slot='start'>
           <IoArrowBack
             onClick={() => {
-              history.push('/topic')
+              history.push('/')
             }}
             size={24}
           />
