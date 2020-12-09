@@ -21,6 +21,7 @@ import {
   IoInformationCircleOutline
 } from 'react-icons/io5'
 import ProgressBoxes from '../../components/atoms/ProgressBoxes';
+import { Chapter } from '../Lesson/lesson-types';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -67,13 +68,14 @@ interface Props {
   message?: string;
 }
 
-const chapters = [
+const chapters: Chapter[] = [
   {
     chapterTitle: 'What is Venture Capital?',
     lessons: [
       {
         lessonTitle: 'The goals of venture capital',
-        isCompleted: true
+        isCompleted: true,
+        activities: []
       }
     ]
   },
@@ -82,11 +84,13 @@ const chapters = [
     lessons: [
       {
         lessonTitle: 'Management companies',
-        isCompleted: false
+        isCompleted: false,
+        activities: []
       },
       {
         lessonTitle: 'General Partners',
-        isCompleted: false
+        isCompleted: false,
+        activities: []
       }
     ]
   }

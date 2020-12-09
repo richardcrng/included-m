@@ -1,3 +1,14 @@
+export type Chapter = {
+  chapterTitle: string,
+  lessons: Lesson[]
+}
+
+export type Lesson = {
+  lessonTitle: string,
+  activities: Activity[],
+  isCompleted?: boolean
+}
+
 export type Activity =
   ReadActivity
     | SelectAnAnswerActivity
