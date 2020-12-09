@@ -1,3 +1,9 @@
+export type Course = {
+  courseTitle: string,
+  description: string,
+  topics: Topic[]
+}
+
 export type Topic = {
   topicTitle: string,
   description: string,
