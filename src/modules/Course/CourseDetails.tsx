@@ -67,6 +67,31 @@ interface Props {
   message?: string;
 }
 
+const chapters = [
+  {
+    chapterTitle: 'What is Venture Capital?',
+    lessons: [
+      {
+        lessonTitle: 'The goals of venture capital',
+        isCompleted: true
+      }
+    ]
+  },
+  {
+    chapterTitle: 'Fund Structure',
+    lessons: [
+      {
+        lessonTitle: 'Management companies',
+        isCompleted: false
+      },
+      {
+        lessonTitle: 'General Partners',
+        isCompleted: false
+      }
+    ]
+  }
+]
+
 function CourseDetails() {
   return (
     <>
@@ -105,50 +130,35 @@ function CourseDetails() {
               <IonButton>Start Course</IonButton>
             </MainCTAContent>
           </IonCard>
-          <IonList>
-            <IonItemDivider>
-              Chapter 01
-            </IonItemDivider>
-            <IonItem color='medium'>
-              <h2>What is Venture Capital?</h2>
-            </IonItem>
-            <IonItem>
-              <IonLabel>
-                <p>Lesson 1</p>
-                <h2>The goals of Venture Capital</h2>
-              </IonLabel>
-              <LessonStartButton slot='end' expand='full' color='success'>
-                >
-              </LessonStartButton>
-            </IonItem>
-          </IonList>
-          <br />
-          <IonList>
-            <IonItemDivider>
-              Chapter 02
-            </IonItemDivider>
-            <IonItem color='medium'>
-              <h2>Fund Structure</h2>
-            </IonItem>
-            <IonItem>
-              <IonLabel>
-                <p>Lesson 1</p>
-                <h2>Management Companies</h2>
-              </IonLabel>
-              <LessonStartButton slot='end' expand='full' color='success'>
-                >
-              </LessonStartButton>
-            </IonItem>
-            <IonItem>
-              <IonLabel>
-                <p>Lesson 1</p>
-                <h2>Management Companies</h2>
-              </IonLabel>
-              <LessonStartButton slot='end' expand='full' color='success'>
-                >
-              </LessonStartButton>
-            </IonItem>
-          </IonList>
+          {chapters.map(({ chapterTitle, lessons }, chapterIdx) => (
+            <>
+              <IonList key={chapterTitle}>
+                <IonItemDivider color='primary'>
+                  Chapter {chapterIdx < 9 ? `0${chapterIdx + 1}` : chapterIdx + 1}
+                </IonItemDivider>
+                <IonItem color='medium'>
+                  <h2>{chapterTitle}</h2>
+                </IonItem>
+                {lessons.map(({ lessonTitle }, lessonIdx) => (
+                  <IonItem key={lessonTitle}>
+                    <IonLabel>
+                      <p>Lesson {lessonIdx + 1}</p>
+                      <h2 className='ion-text-wrap'>
+                        {lessonTitle}
+                      </h2>
+                    </IonLabel>
+                    <LessonStartButton slot='end' expand='full' color='success'>
+                      >
+                    </LessonStartButton>
+                  </IonItem>
+                ))}
+                <IonItemDivider>
+                  {`${lessons.reduce((acc, { isCompleted }) => acc + Number(isCompleted), 0)} of ${lessons.length} completed`}
+                </IonItemDivider>
+              </IonList>
+              {chapterIdx < chapters.length - 1 ? <br /> : null}
+            </>
+          ))}
         </Container>
       </IonContent>
     </>
