@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import { RouteComponentProps } from 'react-router';
 import riduce, { Action, ActionsProxy } from 'riduce'
 import { Activity, Lesson } from '../../content/types';
 import LessonActivity from './Activity/LessonActivity';
@@ -20,7 +21,9 @@ interface Props {
   lesson: Lesson
 }
 
-function LessonDetails({ lesson } : Props) {
+function LessonDetails({
+  lesson,
+} : Props) {
   const initialLessonState = {
     activities: lesson.activities,
     currentIdx: 0

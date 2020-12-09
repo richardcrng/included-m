@@ -6,11 +6,12 @@ import {
 } from '@ionic/react';
 import {
   IoArrowBack,
-  // IoClose,
-  IoInformationCircleOutline
+  IoClose,
+  // IoInformationCircleOutline
 } from 'react-icons/io5'
 import ProgressBoxes from '../../components/atoms/ProgressBoxes';
 import { LessonContext } from './LessonDetails';
+import { RouteChildrenProps, useHistory } from 'react-router';
 
 const Buttons = styled(IonButtons)`
   margin: 1rem;
@@ -31,12 +32,14 @@ const Message = styled.p`
 `
 
 interface Props {
-  message?: string;
+  message?: string
 }
 
 function LessonToolbar({
   message
 }: Props) {
+
+  const history = useHistory()
 
   const {
     dispatch,
@@ -74,10 +77,10 @@ function LessonToolbar({
         />
       </Buttons>
       <Buttons slot='end'>
-        <IoInformationCircleOutline
+        <IoClose
           size={24}
           onClick={() => {
-            window.alert("This is a proof-of-concept for Included M. It's a work in progress!")
+            history.goBack()
           }}
         />
       </Buttons>
@@ -87,7 +90,7 @@ function LessonToolbar({
           totalPages={activities.length}
         />
         <Message>
-          {getCurrentActivityType()}
+          {message || getCurrentActivityType()}
         </Message>
       </Title>
     </IonToolbar>

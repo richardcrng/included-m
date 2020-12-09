@@ -13,6 +13,7 @@ import {
   IoInformationCircleOutline
 } from 'react-icons/io5'
 import { Course, Topic } from '../../content/types';
+import { RouteChildrenProps, useHistory } from 'react-router';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -53,13 +54,15 @@ function CourseDetails({
   course,
   onTopicStart
 } : Props) {
+  const history = useHistory()
+
   return (
     <>
       <IonToolbar>
         <Buttons slot='start'>
           <IoArrowBack
             onClick={() => {
-              console.log('back')
+              history.push('/topic')
             }}
             size={24}
           />
