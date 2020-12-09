@@ -1,6 +1,6 @@
 import React from 'react';
 import LessonContent from '../LessonContent';
-import { ContentBlock } from '../lesson-types';
+import { ContentBlock } from '../../../courseData/types';
 import LessonContentBlock from '../LessonContentBlock';
 import LessonContinueButton from '../LessonContinueButton';
 

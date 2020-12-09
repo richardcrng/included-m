@@ -1,6 +1,6 @@
 import React from 'react';
 import Markdown from 'markdown-to-jsx';
-import { ContentBlock } from './lesson-types';
+import { ContentBlock } from '../../courseData/types';
 
 interface Props {
   block: ContentBlock

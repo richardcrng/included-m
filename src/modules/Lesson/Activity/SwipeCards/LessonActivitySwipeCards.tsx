@@ -3,7 +3,7 @@ import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/r
 import { arrowBack, arrowForward } from 'ionicons/icons';
 import { shuffle } from 'lodash';
 import Swing, { Core } from '../../../../lib/swing-react';
-import { SwipeCard, SwipeCardsActivity } from '../../lesson-types';
+import { SwipeCard, SwipeCardsActivity } from '../../../../courseData/types';
 import LessonContent from '../../LessonContent';
 import LessonContentBlock from '../../LessonContentBlock';
 import Notification, { NotificationProps } from '../../../../components/atoms/Notification';

@@ -1,4 +1,4 @@
-import { Lesson } from "../../../modules/Lesson/lesson-types"
+import { Lesson } from "../../types"
 
 const theGoalsOfVentureCapital: Lesson = {
   lessonTitle: 'The goals of venture capital',

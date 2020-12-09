@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import { AnswerFeedback } from '../../lesson-types';
+import { AnswerFeedback } from '../../../../courseData/types';
 
 export interface SelectForEachBlankAnswer {
   match: string,

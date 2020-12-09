@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, isComplexSelectForEachBlankActivity } from '../lesson-types';
+import { Activity, isComplexSelectForEachBlankActivity } from '../../../courseData/types';
 import LessonActivityRead from './LessonActivityRead';
 import LessonActivitySelectMultiple from './LessonActivitySelectMultiple';
 import LessonActivitySelectForEachBlank from './SelectForEachBlank';

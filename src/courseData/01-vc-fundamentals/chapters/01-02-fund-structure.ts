@@ -1,4 +1,4 @@
-import { Chapter } from "../../../modules/Lesson/lesson-types";
+import { Chapter } from "../../types";
 
 
 const fundStructure: Chapter = {
