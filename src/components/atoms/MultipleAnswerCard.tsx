@@ -4,7 +4,7 @@ import {
   IonCard,
   IonCardContent
 } from '@ionic/react'
-import { SelectMultipleAnswer } from '../../courseData/types';
+import { SelectMultipleAnswer } from '../../content/types';
 
 interface Props {
   answer: SelectMultipleAnswer

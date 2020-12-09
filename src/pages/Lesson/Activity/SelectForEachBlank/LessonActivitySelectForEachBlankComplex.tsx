@@ -8,7 +8,7 @@ import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
 import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
 import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
-import { SelectForEachBlankComplexActivity } from '../../../../courseData/types';
+import { SelectForEachBlankComplexActivity } from '../../../../content/types';
 
 interface Props {
   activity: SelectForEachBlankComplexActivity

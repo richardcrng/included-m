@@ -2,7 +2,7 @@ import React, { useMemo, useReducer, useState } from 'react';
 import { shuffle } from 'lodash';
 import riduce from 'riduce';
 import LessonContent from '../LessonContent';
-import { SelectAnAnswerActivity, SelectMultipleActivity } from '../../../courseData/types';
+import { SelectAnAnswerActivity, SelectMultipleActivity } from '../../../content/types';
 import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
 import LessonContinueButton from '../LessonContinueButton';

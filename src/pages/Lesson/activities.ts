@@ -1,4 +1,4 @@
-import { Activity } from "../../courseData/types"
+import { Activity } from "../../content/types"
 
 
 const activities: Activity[] = [

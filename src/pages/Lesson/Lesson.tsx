@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import riduce, { Action, ActionsProxy } from 'riduce'
-import { Activity } from '../../courseData/types';
+import { Activity } from '../../content/types';
 import LessonActivity from './Activity/LessonActivity';
 import LessonToolbar from './LessonToolbar';
 import activities from './activities';

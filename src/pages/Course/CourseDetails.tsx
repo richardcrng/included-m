@@ -16,8 +16,8 @@ import {
   IoArrowBack,
   IoInformationCircleOutline
 } from 'react-icons/io5'
-import { Chapter } from '../../courseData/types';
-import vcFundamentals from '../../courseData/01-vc-fundamentals/chapters';
+import { Chapter } from '../../content/types';
+import vcFundamentals from '../../content/01-vc-fundamentals/chapters';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
