@@ -74,7 +74,6 @@ export function BlankOrText({
   onInputClick,
   showFocus
 }: BlankOrTextProps) {
-  // console.log(matchingAnswer)
 
   if (!matchingAnswer) return null
 

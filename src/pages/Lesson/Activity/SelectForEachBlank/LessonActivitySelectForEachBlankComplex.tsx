@@ -36,8 +36,6 @@ function LessonActivitySelectForEachBlankComplex({
 
   const activeChoices = activityState.choices[activityState.selectedInput]
 
-  console.log(activeChoices)
-
   type Answer = typeof activeChoices[0]
 
   const allChoicesLocked = Object.values(activityState.choices).every(answers => answers.some(answer => answer.isLocked))
