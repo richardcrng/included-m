@@ -6,6 +6,11 @@ import {
   IonCard,
   IonCardContent,
   IonContent,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonNote,
   IonToolbar,
 } from '@ionic/react';
 import {
@@ -52,6 +57,10 @@ const MainCTAContent = styled(IonCardContent)`
   }
 `
 
+const LessonStartButton = styled(IonButton)`
+  height: 100%
+`
+
 interface Props {
   message?: string;
 }
@@ -85,7 +94,7 @@ function CourseDetails() {
       <IonContent>
         <Container>
           <h1>VC Fundamentals</h1>
-          <p>Learn about the structure of a Venture Capital fund.</p>
+          <p>Learn about the basic fundamentals of Venture Capital - the fund structures, financial dynamics and performance metrics that sit on top of everything.</p>
           <IonCard>
             <MainCTAContent>
               <p>Ready to begin?</p>
@@ -94,6 +103,53 @@ function CourseDetails() {
               <IonButton>Start Course</IonButton>
             </MainCTAContent>
           </IonCard>
+          <IonList>
+            <IonListHeader>
+              <IonLabel>
+                Chapter 01
+              </IonLabel>
+            </IonListHeader>
+            <IonListHeader>
+              <IonNote>What is Venture Capital?</IonNote>
+            </IonListHeader>
+            <IonItem>
+              <IonLabel>
+                <p>Lesson 1</p>
+                <h2>The goals of Venture Capital</h2>
+              </IonLabel>
+              <LessonStartButton slot='end' expand='full'>
+                >
+              </LessonStartButton>
+            </IonItem>
+          </IonList>
+          <IonList>
+            <IonListHeader>
+              <IonLabel>
+                Chapter 02
+              </IonLabel>
+            </IonListHeader>
+            <IonListHeader>
+              <IonNote>Fund Structure</IonNote>
+            </IonListHeader>
+            <IonItem>
+              <IonLabel>
+                <p>Lesson 1</p>
+                <h2>Management Companies</h2>
+              </IonLabel>
+              <LessonStartButton slot='end' expand='full'>
+                >
+              </LessonStartButton>
+            </IonItem>
+            <IonItem>
+              <IonLabel>
+                <p>Lesson 1</p>
+                <h2>Management Companies</h2>
+              </IonLabel>
+              <LessonStartButton slot='end' expand='full'>
+                >
+              </LessonStartButton>
+            </IonItem>
+          </IonList>
         </Container>
       </IonContent>
     </>
