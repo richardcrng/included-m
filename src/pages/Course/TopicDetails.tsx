@@ -16,7 +16,6 @@ import {
   IoArrowBack,
   IoInformationCircleOutline
 } from 'react-icons/io5'
-import vcFundamentals from '../../content/01-vc-fundamentals';
 import { Topic } from '../../content/types';
 
 const Buttons = styled(IonButtons)`
@@ -64,7 +63,6 @@ interface Props {
   message?: string;
 }
 
-const topic = vcFundamentals
 
 interface Props {
   topic: Topic
