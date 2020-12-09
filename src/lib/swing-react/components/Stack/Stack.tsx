@@ -1,14 +1,8 @@
 import React from 'react';
-import styled from 'styled-components'
 import OuterCard from '../OuterCard';
 import useSwingData from '../../hooks/useSwingData';
 import { SwingProps, SwingData } from '../Swing';
 import StackedCards from '../StackedCards';
-
-const Viewport = styled.div`
-  height: 100%;
-  width: 100%;
-`
 
 interface StackProps<TCard> {
   children?(cardNodes: React.ReactNode[], swingData: SwingData<TCard>, StackedCards: React.FC): React.ReactNode,

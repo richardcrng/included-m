@@ -16,7 +16,6 @@ export interface NotificationProps {
 function Notification({
   header,
   message,
-  buttonText,
   isShowing,
   color,
   position = 'top',

@@ -11,7 +11,8 @@ function LessonContinueButton({
 }: Props) {
   const {
     dispatch,
-    actions
+    actions,
+    state: { activities, currentIdx }
   } = useContext(LessonContext)
 
   return (
@@ -19,8 +20,13 @@ function LessonContinueButton({
       color={disabled ? 'medium' : 'primary'}
       disabled={disabled}
       expand='full'
+      size='large'
       onClick={() => {
-        dispatch(actions.currentIdx.create.increment())
+        if (currentIdx < activities.length - 1) {
+          dispatch(actions.currentIdx.create.increment())
+        } else {
+          window.alert("You've reached the end of the demo!")
+        }
       }}
     >
       Continue

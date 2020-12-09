@@ -3,7 +3,7 @@ import { shuffle } from 'lodash';
 import riduce, { bundle } from 'riduce';
 import { answersFromBlocks, BlankOrText, hasBlanks } from './utils'
 import LessonContent from '../../LessonContent';
-import { SelectForEachBlankSimpleActivity } from '../../lesson-types';
+import { SelectForEachBlankSimpleActivity } from '../../../../content/types';
 import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
 import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
@@ -42,7 +42,7 @@ function LessonActivitySelectForEachBlank({
     answer: typeof answers[0],
     idx: number
   ) => () => {
-    if (answer.isSelected) return
+    if (answer.isSelected || answer.isLocked) return
 
     dispatch(actions.answers[idx].isSelected.create.on())
 

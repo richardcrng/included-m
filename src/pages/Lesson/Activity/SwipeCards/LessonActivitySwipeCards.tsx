@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/react';
-import { arrowBack, arrowForward, card } from 'ionicons/icons';
+import { arrowBack, arrowForward } from 'ionicons/icons';
 import { shuffle } from 'lodash';
 import Swing, { Core } from '../../../../lib/swing-react';
-import { SwipeCard, SwipeCardsActivity } from '../../lesson-types';
+import { SwipeCard, SwipeCardsActivity } from '../../../../content/types';
 import LessonContent from '../../LessonContent';
 import LessonContentBlock from '../../LessonContentBlock';
 import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
@@ -35,28 +35,36 @@ function LessonActivitySwipeCards({
           !cardsState[0].isRight && swingEvent.throwDirection === Core.Direction.LEFT
         )
         if (directionMatches) {
+          const feedback = cardsState[0].feedbackCorrect || 'Amazing!'
+          const newNotification = typeof feedback === 'string'
+            ? { message: feedback, color: 'success', isShowing: true }
+            : { ...feedback, color: 'success', isShowing: true }
+          setNotificationState(newNotification)
           setCardsState(([first, ...rest]) => rest)
-          setNotificationState({
-            message: 'Amazing!',
-            color: 'success',
-            isShowing: true
-          })
         } else {
+          const feedback = cardsState[0].feedbackNotCorrect || 'Not quite'
+          const newNotification = typeof feedback === 'string'
+            ? { message: feedback, color: 'warning', isShowing: true }
+            : { ...feedback, color: 'warning', isShowing: true }
+          setNotificationState(newNotification)
+
           // return card to top of stack
           setCardsState(([first, ...rest]) => [
             { ...first, count: first.count + 1 },
             ...rest
           ])
-          setNotificationState({
-            message: 'Not quite...',
-            color: 'warning',
-            isShowing: true
-          })
         }
       }}
       renderCard={({ card, idx }) => (
-        <IonCard key={card.text} >
-          <IonCardContent>
+        <IonCard key={card.text}>
+          <IonCardContent
+            style={{
+              height: '30vh',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
             {card.text}
           </IonCardContent>
         </IonCard>
@@ -99,6 +107,7 @@ function LessonActivitySwipeCards({
                       disabled={notificationState.isShowing}
                       expand='full'
                       onClick={() => swingData.triggerThrow(false)}
+                      size='large'
                     >
                       <IonIcon slot='start' icon={arrowBack} />
                       {activity.choices[0]}
@@ -107,6 +116,7 @@ function LessonActivitySwipeCards({
                       disabled={notificationState.isShowing}
                       expand='full'
                       onClick={() => swingData.triggerThrow(true)}
+                      size='large'
                     >
                       <IonIcon slot='end' icon={arrowForward} />
                       {activity.choices[1]}
