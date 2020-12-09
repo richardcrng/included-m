@@ -1,5 +1,7 @@
 import { Course, Lesson, Topic } from "../content/types";
 
+export const LOADING_STRING = 'Loading...'
+
 export interface ReduxState {
   loaded: {
     course: Course,
@@ -13,16 +15,16 @@ const initialState: ReduxState = {
   loaded: {
     course: {
       courseTitle: 'Included M',
-      description: 'Loading...',
+      description: LOADING_STRING,
       topics: []
     },
     topic: {
-      topicTitle: 'Included M',
-      description: 'Loading...',
+      topicTitle: LOADING_STRING,
+      description: LOADING_STRING,
       chapters: []
     },
     lesson: {
-      lessonTitle: 'Included M',
+      lessonTitle: LOADING_STRING,
       activities: []
     },
     activityIdx: 0

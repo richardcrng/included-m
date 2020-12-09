@@ -10,7 +10,7 @@ import {
   IoInformationCircleOutline
 } from 'react-icons/io5'
 import ProgressBoxes from '../../components/atoms/ProgressBoxes';
-import { LessonContext } from './Lesson';
+import { LessonContext } from './LessonDetails';
 
 const Buttons = styled(IonButtons)`
   margin: 1rem;

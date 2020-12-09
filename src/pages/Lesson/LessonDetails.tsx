@@ -20,7 +20,7 @@ interface Props {
   lesson: Lesson
 }
 
-function Lesson({ lesson } : Props) {
+function LessonDetails({ lesson } : Props) {
   const initialLessonState = {
     activities: lesson.activities,
     currentIdx: 0
@@ -46,4 +46,4 @@ function Lesson({ lesson } : Props) {
   )
 }
 
-export default Lesson
+export default LessonDetails

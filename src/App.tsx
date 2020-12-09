@@ -31,6 +31,7 @@ import actions from './redux/reducer';
 import { Route } from 'react-router';
 import CoursePage from './routes/CoursePage';
 import TopicPage from './routes/TopicPage';
+import LessonPage from './routes/LessonPage';
 
 
 const App: React.FC = () => {
@@ -52,6 +53,7 @@ const App: React.FC = () => {
     <IonReactRouter>
       <Route exact path='/course' component={CoursePage} />
       <Route exact path='/topic' component={TopicPage} />
+      <Route exact path='/lesson' component={LessonPage} />
       <Route exact path='/' component={HomePage} />
     </IonReactRouter>
   </IonApp>

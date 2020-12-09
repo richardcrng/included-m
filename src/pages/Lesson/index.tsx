@@ -1,6 +1,6 @@
-import Lesson, { LessonContext } from "./Lesson";
+import LessonDetails, { LessonContext } from "./LessonDetails";
 
-export default Lesson
+export default LessonDetails
 
 export {
   LessonContext

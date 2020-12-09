@@ -4,10 +4,15 @@ import selectors from '../redux/selectors';
 import CourseDetails from '../pages/Course/CourseDetails';
 import { RouteComponentProps } from 'react-router';
 import actions from '../redux/reducer';
+import { LOADING_STRING } from '../redux/state';
 
 function CoursePage({ history } : RouteComponentProps) {
   const dispatch = useDispatch()
   const course = useSelector(selectors.getLoadedCourse)
+
+  if ([course.courseTitle, course.description].includes(LOADING_STRING)) {
+    history.push('/')
+  }
 
   return (
     <CourseDetails

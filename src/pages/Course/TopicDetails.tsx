@@ -16,7 +16,7 @@ import {
   IoArrowBack,
   IoInformationCircleOutline
 } from 'react-icons/io5'
-import { Topic } from '../../content/types';
+import { Lesson, Topic } from '../../content/types';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -65,10 +65,17 @@ interface Props {
 
 
 interface Props {
-  topic: Topic
+  topic: Topic,
+  onLessonSelect?(lesson: Lesson): void
 }
 
-function TopicDetails({ topic }: Props) {
+function TopicDetails({
+  topic,
+  onLessonSelect
+}: Props) {
+
+  const createLessonSelectHandler = (lesson: Lesson) => () => onLessonSelect && onLessonSelect(lesson)
+
   return (
     <>
       <IonToolbar>
@@ -115,15 +122,19 @@ function TopicDetails({ topic }: Props) {
                 <IonItem color='medium'>
                   <h2>{chapterTitle}</h2>
                 </IonItem>
-                {lessons.map(({ lessonTitle }, lessonIdx) => (
-                  <IonItem key={lessonTitle}>
+                {lessons.map((lesson, lessonIdx) => (
+                  <IonItem key={lesson.lessonTitle}>
                     <IonLabel>
                       <p>Lesson {lessonIdx + 1}</p>
                       <h2 className='ion-text-wrap'>
-                        {lessonTitle}
+                        {lesson.lessonTitle}
                       </h2>
                     </IonLabel>
-                    <LessonStartButton slot='end' expand='full' color='success'>
+                    <LessonStartButton
+                      slot='end'
+                      expand='full' color='success'
+                      onClick={createLessonSelectHandler(lesson)}
+                    >
                       {'>'}
                     </LessonStartButton>
                   </IonItem>
