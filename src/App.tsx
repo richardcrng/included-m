@@ -24,6 +24,8 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import TopicDetails from './pages/Course/TopicDetails';
+import vcFundamentals from './content/01-vc-fundamentals';
 
 
 
@@ -31,7 +33,8 @@ import './theme/variables.css';
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <CourseDetails />
+      <TopicDetails topic={vcFundamentals} />
+      {/* <CourseDetails /> */}
     </IonReactRouter>
   </IonApp>
 );

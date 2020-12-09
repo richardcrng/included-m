@@ -18,7 +18,7 @@ import {
   IoInformationCircleOutline
 } from 'react-icons/io5'
 import { Chapter } from '../../content/types';
-import vcFundamentals from '../../content/01-vc-fundamentals/chapters';
+import vcFundamentals from '../../content/01-vc-fundamentals';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -65,7 +65,7 @@ interface Props {
   message?: string;
 }
 
-const chapters: Chapter[] = vcFundamentals
+// const chapters: Chapter[] = vcFundamentals
 
 function CourseDetails() {
   return (

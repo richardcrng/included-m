@@ -16,8 +16,8 @@ import {
   IoArrowBack,
   IoInformationCircleOutline
 } from 'react-icons/io5'
-import { Chapter } from '../../content/types';
-import vcFundamentals from '../../content/01-vc-fundamentals/chapters';
+import vcFundamentals from '../../content/01-vc-fundamentals';
+import { Topic } from '../../content/types';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -64,9 +64,13 @@ interface Props {
   message?: string;
 }
 
-const chapters: Chapter[] = vcFundamentals
+const topic = vcFundamentals
 
-function TopicDetails() {
+interface Props {
+  topic: Topic
+}
+
+function TopicDetails({ topic }: Props) {
   return (
     <>
       <IonToolbar>
@@ -94,17 +98,17 @@ function TopicDetails() {
       </IonToolbar>
       <IonContent>
         <Container>
-          <h1>VC Fundamentals</h1>
-          <p>Learn about the basic fundamentals of Venture Capital - the fund structures, financial dynamics and performance metrics that sit on top of everything.</p>
+          <h1>{topic.topicTitle}</h1>
+          <p>{topic.description}</p>
           <IonCard>
             <MainCTAContent>
               <p>Ready to begin?</p>
               <p>Start learning now.</p>
               <br />
-              <IonButton>Start Course</IonButton>
+              <IonButton>Start Topic</IonButton>
             </MainCTAContent>
           </IonCard>
-          {chapters.map(({ chapterTitle, lessons }, chapterIdx) => (
+          {topic.chapters.map(({ chapterTitle, lessons }, chapterIdx) => (
             <>
               <IonList key={chapterTitle}>
                 <IonItemDivider color='primary'>
@@ -130,7 +134,7 @@ function TopicDetails() {
                   {`${lessons.reduce((acc, { isCompleted }) => acc + Number(!!isCompleted), 0)} of ${lessons.length} completed`}
                 </IonItemDivider>
               </IonList>
-              {chapterIdx < chapters.length - 1 ? <br /> : null}
+              {chapterIdx < topic.chapters.length - 1 ? <br /> : null}
             </>
           ))}
         </Container>
