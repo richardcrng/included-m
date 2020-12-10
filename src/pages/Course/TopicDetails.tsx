@@ -17,6 +17,7 @@ import {
   IoInformationCircleOutline
 } from 'react-icons/io5'
 import { Lesson, Topic } from '../../content/types';
+import { useHistory } from 'react-router';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
