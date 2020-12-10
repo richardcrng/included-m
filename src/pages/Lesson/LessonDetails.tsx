@@ -1,5 +1,4 @@
 import React, { useReducer } from 'react';
-import { RouteComponentProps } from 'react-router';
 import riduce, { Action, ActionsProxy } from 'riduce'
 import { Activity, Lesson } from '../../content/types';
 import LessonActivity from './Activity/LessonActivity';
