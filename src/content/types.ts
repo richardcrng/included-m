@@ -1,3 +1,26 @@
+export type Course = {
+  courseTitle: string,
+  description: string,
+  topics: Topic[]
+}
+
+export type Topic = {
+  topicTitle: string,
+  description: string,
+  chapters: Chapter[]
+}
+
+export type Chapter = {
+  chapterTitle: string,
+  lessons: Lesson[]
+}
+
+export type Lesson = {
+  lessonTitle: string,
+  activities: Activity[],
+  isCompleted?: boolean
+}
+
 export type Activity =
   ReadActivity
     | SelectAnAnswerActivity

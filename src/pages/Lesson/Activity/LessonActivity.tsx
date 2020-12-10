@@ -1,5 +1,8 @@
+import { IonButton } from '@ionic/react';
 import React from 'react';
-import { Activity, isComplexSelectForEachBlankActivity } from '../lesson-types';
+import { useHistory } from 'react-router';
+import { Activity, isComplexSelectForEachBlankActivity } from '../../../content/types';
+import LessonContent from '../LessonContent';
 import LessonActivityRead from './LessonActivityRead';
 import LessonActivitySelectMultiple from './LessonActivitySelectMultiple';
 import LessonActivitySelectForEachBlank from './SelectForEachBlank';
@@ -13,7 +16,28 @@ interface Props {
 function LessonActivity({
   activity
 }: Props) {
-  if (activity.activityType === 'select-an-answer') {
+  const history = useHistory()
+
+  if (!activity) {
+    return (
+      <>
+        <LessonContent>
+          <h1>Under construction...!</h1>
+          <p>This lesson is still under construction.</p>
+          <p>Why don't you try another?</p>
+          <IonButton
+            onClick={() => {
+              history.push('/topic')
+            }}
+            expand='full'
+          >
+              Go back
+          </IonButton>
+        </LessonContent>
+      </>
+    )
+    
+  } else if (activity.activityType === 'select-an-answer') {
     return (
       <LessonActivitySelectMultiple
         activity={activity}

@@ -8,7 +8,7 @@ import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
 import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
 import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
-import { SelectForEachBlankComplexActivity } from '../../lesson-types';
+import { SelectForEachBlankComplexActivity } from '../../../../content/types';
 
 interface Props {
   activity: SelectForEachBlankComplexActivity
@@ -35,8 +35,6 @@ function LessonActivitySelectForEachBlankComplex({
   const [activityState, dispatch] = useReducer(reducer, initialState)
 
   const activeChoices = activityState.choices[activityState.selectedInput]
-
-  console.log(activeChoices)
 
   type Answer = typeof activeChoices[0]
 

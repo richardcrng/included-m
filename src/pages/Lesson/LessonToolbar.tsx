@@ -6,11 +6,12 @@ import {
 } from '@ionic/react';
 import {
   IoArrowBack,
-  // IoClose,
-  IoInformationCircleOutline
+  IoClose,
+  // IoInformationCircleOutline
 } from 'react-icons/io5'
 import ProgressBoxes from '../../components/atoms/ProgressBoxes';
-import { LessonContext } from './Lesson';
+import { LessonContext } from './LessonDetails';
+import { useHistory } from 'react-router';
 
 const Buttons = styled(IonButtons)`
   margin: 1rem;
@@ -31,12 +32,14 @@ const Message = styled.p`
 `
 
 interface Props {
-  message?: string;
+  message?: string
 }
 
 function LessonToolbar({
   message
 }: Props) {
+
+  const history = useHistory()
 
   const {
     dispatch,
@@ -45,6 +48,8 @@ function LessonToolbar({
   } = useContext(LessonContext)
 
   const getCurrentActivityType = () => {
+    if (!activities || !activities[currentIdx]) return 'Loading...'
+
     switch (activities[currentIdx].activityType) {
       case 'select-an-answer':
         return 'Select an answer'
@@ -68,16 +73,20 @@ function LessonToolbar({
       <Buttons slot='start'>
         <IoArrowBack
           onClick={() => {
-            dispatch(actions.currentIdx.create.do((n: number) => Math.max(0, n-1)))
+            if (currentIdx === 0) {
+              history.goBack()
+            } else {
+              dispatch(actions.currentIdx.create.do((n: number) => Math.max(0, n-1)))
+            }
           }}
           size={24}
         />
       </Buttons>
       <Buttons slot='end'>
-        <IoInformationCircleOutline
+        <IoClose
           size={24}
           onClick={() => {
-            window.alert("This is a proof-of-concept for Included M. It's a work in progress!")
+            history.goBack()
           }}
         />
       </Buttons>
@@ -87,7 +96,7 @@ function LessonToolbar({
           totalPages={activities.length}
         />
         <Message>
-          {getCurrentActivityType()}
+          {message || getCurrentActivityType()}
         </Message>
       </Title>
     </IonToolbar>

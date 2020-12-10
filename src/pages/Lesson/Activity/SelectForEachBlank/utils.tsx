@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import { AnswerFeedback } from '../../lesson-types';
+import { AnswerFeedback } from '../../../../content/types';
 
 export interface SelectForEachBlankAnswer {
   match: string,
@@ -74,7 +74,6 @@ export function BlankOrText({
   onInputClick,
   showFocus
 }: BlankOrTextProps) {
-  // console.log(matchingAnswer)
 
   if (!matchingAnswer) return null
 

@@ -1,9 +1,8 @@
 import React, { useReducer } from 'react';
 import riduce, { Action, ActionsProxy } from 'riduce'
-import { Activity } from './lesson-types';
+import { Activity, Lesson } from '../../content/types';
 import LessonActivity from './Activity/LessonActivity';
 import LessonToolbar from './LessonToolbar';
-import activities from './activities';
 
 type LessonCtx = {
   dispatch: React.Dispatch<Action>,
@@ -17,9 +16,15 @@ type LessonCtx = {
 // @ts-ignore
 export const LessonContext = React.createContext<LessonCtx>({})
 
-function Lesson() {
+interface Props {
+  lesson: Lesson
+}
+
+function LessonDetails({
+  lesson,
+} : Props) {
   const initialLessonState = {
-    activities,
+    activities: lesson.activities,
     currentIdx: 0
   }
 
@@ -43,4 +48,4 @@ function Lesson() {
   )
 }
 
-export default Lesson
+export default LessonDetails
