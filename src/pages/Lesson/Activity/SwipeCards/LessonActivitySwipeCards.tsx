@@ -110,7 +110,7 @@ function LessonActivitySwipeCards({
                       size='large'
                     >
                       <IonIcon slot='start' icon={arrowBack} />
-                      {activity.choices[0]}
+                      {cardsState[0].choiceLeft}
                     </IonButton>
                     <IonButton
                       disabled={notificationState.isShowing}
@@ -119,7 +119,7 @@ function LessonActivitySwipeCards({
                       size='large'
                     >
                       <IonIcon slot='end' icon={arrowForward} />
-                      {activity.choices[1]}
+                      {cardsState[0].choiceRight}
                     </IonButton>
                   </>
                 )}

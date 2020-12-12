@@ -1,7 +1,7 @@
 import { ActiveClass, Schema, relations } from 'fireactive'
 import { ChoicesCRUD } from '../content/types'
 import Answer from './Answer'
-import { indexVals, numericKeys } from './utils';
+import { numericKeys } from './utils';
 
 const choiceSchema = {
   textMatch: Schema.string,

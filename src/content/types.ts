@@ -106,14 +106,15 @@ export type SwipeCardsActivityCRUD = ActivityCRUDBase & {
   activityType: 'swipe-cards',
   blocks: ContentBlock[],
   cards: SwipeCard[],
-  choices: [string, string]
 }
 
 export type SwipeCard = {
   text: string,
   isRight: boolean,
   feedbackCorrect?: AnswerFeedback,
-  feedbackNotCorrect?: AnswerFeedback
+  feedbackNotCorrect?: AnswerFeedback,
+  choiceLeft: string,
+  choiceRight: string
 }
 
 export function isSelectMultipleActivityCRUD(activity: ActivityCRUD): activity is SelectMultipleActivityCRUD {

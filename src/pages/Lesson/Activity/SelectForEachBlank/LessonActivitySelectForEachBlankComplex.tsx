@@ -45,8 +45,6 @@ function LessonActivityCRUDSelectForEachBlankComplex({
     answer: Answer,
     idx: number
   ) => () => {
-    console.log(answer)
-
     if (answer.isSelected || answer.isLocked || allChoicesLocked) return
 
     dispatch(actions.choices[activityState.selectedInput][idx].create.assign({ isSelected: true }))
