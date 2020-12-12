@@ -1,24 +1,24 @@
 import { ActiveClass, Schema, relations } from 'fireactive'
-import { SelectForEachBlankChoices } from '../content/types'
+import { ChoicesCRUD } from '../content/types'
 import Answer from './Answer'
-import { indexVals } from './utils';
+import { indexVals, numericKeys } from './utils';
 
 const choiceSchema = {
   textMatch: Schema.string,
-  answerIds: Schema.indexed.boolean
+  answerIdsOrdered: Schema.indexed.string
 }
 
 export default class Choice extends ActiveClass(choiceSchema) {
 
-  answers = relations.findByIds<Choice, Answer>(Answer, () => Object.keys(this.answerIds))
+  answers = relations.findByIds<Choice, Answer>(Answer, () => Object.values(this.answerIdsOrdered))
 
-  static async createFromChoicesCRUD(data: SelectForEachBlankChoices) {
+  static async createFromRaw(data: ChoicesCRUD) {
     const entries = Object.entries(data)
     let res: Choice[] = []
     for (let [textMatch, answersData] of entries) {
       const answers = await Answer.createMany(...answersData)
       const answerIds = answers.map(answer => answer.getId())
-      const choice = await this.create({ textMatch, answerIds: indexVals(answerIds) })
+      const choice = await this.create({ textMatch, answerIdsOrdered: numericKeys(answerIds) })
       res.push(choice)
     }
     return res

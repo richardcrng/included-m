@@ -5557,19 +5557,19 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-fireactive@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/fireactive/-/fireactive-0.1.13.tgz#06594f34e6143def3cd31adac0359486270888fb"
-  integrity sha512-CvYs8hRmXYd/wYMJvp/1Q+R0OZFu7DrF3aP1Yvp18yHQvr7zGVrhG0BPDMD2CEzzYNsEAk3E421O3q+dyRFfBg==
+fireactive@^0.1.14:
+  version "0.1.14"
+  resolved "https://registry.yarnpkg.com/fireactive/-/fireactive-0.1.14.tgz#9be813eac3eb99eb745b1976dabdfa29a1cc115a"
+  integrity sha512-LAc22Ds9ixP2Ie53SFMP6n5sPvErmBTgEU53R+3hIagpDCudPoxUczw49kMbtMLZPDU89eGWrPZHeSO0tPuVbQ==
   dependencies:
     dotenv "^8.2.0"
-    firebase "^7.12.0"
+    firebase "7.24.0"
     lodash "^4.17.15"
     on-change "^1.8.1"
     pluralize "^8.0.0"
     ramda "^0.27.0"
 
-firebase@^7.12.0:
+firebase@7.24.0:
   version "7.24.0"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-7.24.0.tgz#dab53b9c0f1c9538d2d6f4f51769897b0b6d60d8"
   integrity sha512-j6jIyGFFBlwWAmrlUg9HyQ/x+YpsPkc/TTkbTyeLwwAJrpAmmEHNPT6O9xtAnMV4g7d3RqLL/u9//aZlbY4rQA==

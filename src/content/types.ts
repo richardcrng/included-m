@@ -1,36 +1,57 @@
-export interface CourseData {
-  
-}
-
-export type CourseCRUD = {
+export interface CourseCRUD {
   courseTitle: string,
   description: string,
   topics: TopicCRUD[]
 }
 
-export type TopicCRUD = {
+export interface TopicCRUD {
   topicTitle: string,
   description: string,
   chapters: ChapterCRUD[]
 }
 
-export type ChapterCRUD = {
+export interface ChapterCRUD {
   chapterTitle: string,
   lessons: LessonCRUD[]
 }
 
-export type LessonCRUD = {
+export interface LessonCRUD {
   lessonTitle: string,
   activities: ActivityCRUD[],
   isCompleted?: boolean
 }
 
-export type ActivityCRUD =
-  ReadActivityCRUD
-    | SelectAnAnswerActivityCRUD
-    | SelectForEachBlankActivityCRUD
-    | SelectMultipleActivityCRUD
-    | SwipeCardsActivityCRUD
+type ActivityType = 'read' | 'select-an-answer' | 'select-for-each-blank' | 'select-multiple' | 'swipe-cards'
+
+export interface ActivityCRUD {
+  activityType: ActivityType,
+  blocks: string[],
+  answers?: AnswerCRUD[],
+  choices?: {
+    [blankKey: string]: AnswerCRUD[]
+  }
+  cards?: CardCRUD[]
+}
+
+export interface ChoicesCRUD {
+  [match: string]: AnswerCRUD[]
+}
+
+export interface CardCRUD {
+  text: string,
+  isRight: boolean,
+  choiceRight: string,
+  choiceLeft: string,
+  feedbackOnCorrect?: string,
+  feedbackOnNotCorrect?: string
+}
+
+// export type ActivityCRUD =
+//   ReadActivityCRUD
+//     | SelectAnAnswerActivityCRUD
+//     | SelectForEachBlankActivityCRUD
+//     | SelectMultipleActivityCRUD
+//     | SwipeCardsActivityCRUD
 
 export type ContentBlock = string
 
