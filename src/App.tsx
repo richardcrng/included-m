@@ -44,6 +44,14 @@ const App: React.FC = () => {
       const res = await fetch('https://api.jsonbin.io/b/5fd14a6082e9306ae6ff98c2')
       const json: CourseCRUD = await res.json()
 
+      const lesson = await Lesson.findById('-MON89cFtj9ThpafSl2B')
+      if (lesson) {
+        console.log(Object.values(lesson.activityIdsOrdered))
+        const activities = await lesson.activities()
+        console.log('activities', JSON.stringify(activities))
+      }
+      console.log(JSON.stringify(lesson))
+
       dispatch(actions.loaded.course.create.update(json))
     }
 

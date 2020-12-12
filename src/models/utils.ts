@@ -8,7 +8,7 @@ export const indexVals = (arr: string[]): Record<string, true> => arr.reduce(
 
 export const numericKeys = <T = any>(arr: T[] = []): Record<string, T> => arr.reduce(
   (acc, val, idx) => {
-    acc[String(idx)] = val
+    acc[`${10 + idx}`] = val
     return acc
   },
   {} as Record<string, T>
