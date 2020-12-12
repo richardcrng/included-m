@@ -32,6 +32,10 @@ export default class Chapter extends ActiveClass(lessonSchema) {
       this.createFromRaw(doc)
     )))
   }
+
+  get lessonIds(): string[] {
+    return Object.values(this.lessonIdsOrdered)
+  }
 }
 
 relations.store(Chapter)

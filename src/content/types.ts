@@ -53,11 +53,11 @@ export type ActivityCRUD =
     | SelectMultipleActivityCRUD
     | SwipeCardsActivityCRUD
 
-export type ContentBlock = string
+export type ContentBlockCRUD = string
 
 export type ReadActivityCRUD = {
   activityType: 'read',
-  blocks: ContentBlock[]
+  blocks: ContentBlockCRUD[]
 }
 
 export type AnswerFeedback = string | {
@@ -68,7 +68,7 @@ export type AnswerFeedback = string | {
 
 export type SelectAnAnswerActivityCRUD = {
   activityType: 'select-an-answer',
-  blocks: ContentBlock[],
+  blocks: ContentBlockCRUD[],
   answers: AnswerCRUD[]
 }
 
@@ -76,7 +76,7 @@ export type SelectForEachBlankActivityCRUD = SelectForEachBlankSimpleActivityCRU
 
 export type SelectForEachBlankSimpleActivityCRUD = {
   activityType: 'select-for-each-blank',
-  blocks: ContentBlock[]
+  blocks: ContentBlockCRUD[]
 }
 
 export type SelectForEachBlankComplexActivityCRUD = SelectForEachBlankSimpleActivityCRUD & {
@@ -91,7 +91,7 @@ export type SelectForEachBlankChoices = {
 
 export type SelectMultipleActivityCRUD = {
   activityType: 'select-multiple',
-  blocks: ContentBlock[],
+  blocks: ContentBlockCRUD[],
   answers: AnswerCRUD[]
 }
 
@@ -104,7 +104,7 @@ export type AnswerCRUD = {
 
 export type SwipeCardsActivityCRUD = ActivityCRUDBase & {
   activityType: 'swipe-cards',
-  blocks: ContentBlock[],
+  blocks: ContentBlockCRUD[],
   cards: SwipeCard[],
 }
 

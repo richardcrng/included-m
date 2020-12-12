@@ -27,6 +27,10 @@ export default class Course extends ActiveClass(courseSchema) {
     })
     return chapter
   }
+
+  get topicIds(): string[] {
+    return Object.values(this.topicIdsOrdered)
+  }
 }
 
 relations.store(Course)

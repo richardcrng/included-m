@@ -23,4 +23,8 @@ export default class Choice extends ActiveClass(choiceSchema) {
     }
     return res
   }
+
+  get answerIds(): string[] {
+    return Object.values(this.answerIdsOrdered)
+  }
 }

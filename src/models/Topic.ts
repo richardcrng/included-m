@@ -34,6 +34,10 @@ export default class Topic extends ActiveClass(topicSchema) {
       this.createFromRaw(doc)
     )))
   }
+
+  get chapterIds(): string[] {
+    return Object.values(this.chapterIdsOrdered)
+  }
 }
 
 relations.store(Topic)

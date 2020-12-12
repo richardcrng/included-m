@@ -32,6 +32,10 @@ export default class Lesson extends ActiveClass(lessonSchema) {
       this.createFromRaw(doc)
     )))
   }
+
+  get activityIds(): string[] {
+    return Object.values(this.activityIdsOrdered)
+  }
 }
 
 relations.store(Lesson)
