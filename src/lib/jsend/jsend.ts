@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-export const jsend = <B extends JSendBase = JSendBase>(
+export const jsend = <B extends { status: JSendStatus, data?: any, message?: string }>(
   res: Response,
   body: B
 ) => {

@@ -151,3 +151,83 @@ describe('/courses', () => {
   })
 
 })
+
+describe('/courses/:id', () => {
+  describe('GET', () => {
+    describe('valid id', () => {
+      let res: supertest.Response
+      let course: Course
+
+      beforeAll(async () => {
+        await db.ref().set(null)
+        const courses = await Course.createMany({
+          courseTitle: 'Bananas',
+          description: 'About fruit'
+        }, {
+          courseTitle: 'Tomato',
+          description: 'Also fruit'
+        })
+
+        course = courses[1]
+        res = await supertest(app).get(`/courses/${courses[1].getId()}`)
+      })
+
+      it('is JSend compliant', () => {
+        expect(res.body).toMatchObject({
+          status: 'success'
+        })
+      })
+
+      it('follows HTTP conventions', () => {
+        expect(res.status).toBe(200)
+      })
+
+      it('return the course data', () => {
+        expect(res.body.data.course).toBeDefined()
+        expect(res.body.data.course).toHaveProperty('_id', course.getId())
+      })
+
+      it('has found the relevant courses', async () => {
+        expect(res.body.data.course).toMatchObject({
+          courseTitle: course.courseTitle,
+          description: course.description
+        })
+      })
+
+      describe('invalid id', () => {
+        let res: supertest.Response
+        let course: Course
+
+        const gibberishId = 'gibberishIdHere'
+
+        beforeAll(async () => {
+          await db.ref().set(null)
+          const courses = await Course.createMany({
+            courseTitle: 'Bananas',
+            description: 'About fruit'
+          }, {
+            courseTitle: 'Tomato',
+            description: 'Also fruit'
+          })
+
+          course = courses[1]
+          res = await supertest(app).get(`/courses/${gibberishId}`)
+        })
+
+        it('is JSend compliant', () => {
+          expect(res.body).toMatchObject({
+            status: 'fail'
+          })
+        })
+
+        it('follows HTTP conventions', () => {
+          expect(res.status).toBe(404)
+        })
+
+        it('return the dodgy id', () => {
+          expect(res.body.data.id).toBe(gibberishId)
+        })
+      })
+    })
+  })
+})

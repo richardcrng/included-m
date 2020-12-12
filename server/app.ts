@@ -1,7 +1,7 @@
 import express from 'express'
+import { Optional } from 'utility-types';
 import Course from '../src/models/Course';
 import { JSendBase, jsend } from '../src/lib/jsend';
-import { CourseCRUD } from '../src/content/types';
 
 const app = express()
 
@@ -13,7 +13,18 @@ app.use(express.json())
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 
-export type ResGenericError = JSendBase<{}, 'error'>
+/**
+ * An error occurred in processing the request,
+ * i.e. an exception was thrown
+ */
+export type ResGenericError = Optional<JSendBase<{}, 'error'>, 'data'>
+
+/**
+ * There was a problem with the data submitted,
+ * or some pre-condition of the API call wasn't
+ * satisfied
+ */
+export type ResGenericFail = Optional<JSendBase<{}, 'fail'>, 'data'>
 
 export type PostCoursesSuccess = JSendBase<{ course: Course }, 'success'>
 
@@ -46,6 +57,28 @@ app.get('/courses', async (req, res) => {
       courses
     }
   })
+})
+
+export type GetCourseIdSuccess = JSendBase<{ course: Course }, 'success'>
+
+app.get('/courses/:id', async (req, res) => {
+  try {
+    const course = await Course.findByIdOrFail(req.params.id)
+    jsend<GetCourseIdSuccess>(res, {
+      status: 'success',
+      data: {
+        course
+      }
+    })
+  } catch (err) {
+    jsend<ResGenericFail>(res.status(404), {
+      status: 'fail',
+      message: "Couldn't find a course with that id",
+      data: {
+        id: req.params.id
+      }
+    })
+  }
 })
 
 export default app
