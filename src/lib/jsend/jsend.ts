@@ -27,5 +27,3 @@ export interface JSendBase<D = any, S extends JSendStatus = JSendStatus> {
   message?: string,
   data: D
 }
-
-export default jsend

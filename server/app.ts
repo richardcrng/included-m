@@ -1,6 +1,6 @@
 import express from 'express'
 import Course from '../src/models/Course';
-import { JSendBase, jsend } from '../src/lib/jsend/jsend';
+import { JSendBase, jsend } from '../src/lib/jsend';
 
 const app = express()
 
@@ -12,24 +12,35 @@ app.use(express.json())
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 
-type PostCoursesSuccess = JSendBase<{
-  course: Course
-}, 'success'>
+export type ResGenericError = JSendBase<{}, 'error'>
+
+export type PostCoursesSuccess = JSendBase<{ course: Course }, 'success'>
 
 app.post('/courses', async (req, res) => {
-  const course = await Course.createFromRaw(req.body)
+  try {
+    const course = await Course.createFromRaw(req.body)
   
-  jsend<PostCoursesSuccess>(res, {
-    status: 'success',
-    data: {
-      course
-    }
-  })
+    jsend<PostCoursesSuccess>(res, {
+      status: 'success',
+      data: {
+        course
+      }
+    })
+  } catch (err) {
+    jsend<ResGenericError>(res, {
+      status: 'error',
+      message: 'Oops',
+      data: JSON.stringify(err)
+    })
+  }
 })
+
+export type GetCoursesSuccess = JSendBase<{ courses: Course[] }, 'success'>
 
 app.get('/courses', async (req, res) => {
   const courses = await Course.find({})
-  res.json({
+  jsend<GetCoursesSuccess>(res, {
+    status: 'success',
     data: {
       courses
     }
