@@ -26,12 +26,15 @@ import { IonReactRouter } from '@ionic/react-router';
 import { useDispatch } from 'react-redux';
 import HomePage from './routes/HomePage';
 
-import { Course } from './content/types';
+import { CourseCRUD } from './content/types';
 import actions from './redux/reducer';
 import { Route } from 'react-router';
 import CoursePage from './routes/CoursePage';
 import TopicPage from './routes/TopicPage';
 import LessonPage from './routes/LessonPage';
+import Course from './models/Course';
+import Answer from './models/Answer';
+import Choice from './models/Choice';
 
 
 const App: React.FC = () => {
@@ -40,7 +43,35 @@ const App: React.FC = () => {
   React.useEffect(() => {
     const getData = async () => {
       const res = await fetch('https://api.jsonbin.io/b/5fd14a6082e9306ae6ff98c2')
-      const json: Course = await res.json()
+      const json: CourseCRUD = await res.json()
+
+      Choice.createFromChoicesCRUD({
+        '{{capital to early-stage companies in exchange for equity}}': [
+          {
+            text: 'capital to early-stage companies in exchange for equity',
+            isCorrect: true,
+            feedback: "Yep! If they don't provide capital, they're not a traditional VC."
+          },
+          {
+            text: "other ‘services’ such as strategic guidance and expertise in relevant industries",
+            isCorrect: false,
+            feedback: "Some VCs do this, but it's not normally thought of as the primary VC function."
+          }
+        ],
+        "{{other ‘services’ such as strategic guidance and expertise in relevant industries}}": [
+          {
+            text: 'capital to early-stage companies in exchange for equity',
+            isCorrect: false,
+            feedback: 'This is core, rather than an add-on'
+          },
+          {
+            text: "other ‘services’ such as strategic guidance and expertise in relevant industries",
+            isCorrect: true,
+            feedback: "We'll be learning more about the 'Platform' function of VCs in a later lesson!"
+          }
+        ]
+      })
+
       dispatch(actions.loaded.course.create.update(json))
     }
 

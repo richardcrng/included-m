@@ -2,14 +2,14 @@ import React, { useMemo, useReducer, useState } from 'react';
 import { shuffle } from 'lodash';
 import riduce from 'riduce';
 import LessonContent from '../LessonContent';
-import { SelectAnAnswerActivity, SelectMultipleActivity } from '../../../content/types';
+import { SelectAnAnswerActivityCRUD, SelectMultipleActivityCRUD } from '../../../content/types';
 import LessonContentBlock from '../LessonContentBlock';
 import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
 import LessonContinueButton from '../LessonContinueButton';
 import Notification, { NotificationProps } from '../../../components/atoms/Notification';
 
 interface Props {
-  activity: SelectMultipleActivity | SelectAnAnswerActivity
+  activity: SelectMultipleActivityCRUD | SelectAnAnswerActivityCRUD
 }
 
 function LessonActivitySelectMultiple({
@@ -51,13 +51,13 @@ function LessonActivitySelectMultiple({
           color
         })
       } else {
-        setNotification({
-          header: answer.feedback.header,
-          message: answer.feedback.message,
-          buttonText: answer.feedback.buttonText,
-          isShowing: true,
-          color
-        })
+        // setNotification({
+        //   header: answer.feedback.header,
+        //   message: answer.feedback.message,
+        //   buttonText: answer.feedback.buttonText,
+        //   isShowing: true,
+        //   color
+        // })
       }
     } else if (answer.isCorrect) {
       setNotification({

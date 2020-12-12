@@ -1,12 +1,12 @@
-import { Course, Lesson, Topic } from "../content/types";
+import { CourseCRUD, LessonCRUD, TopicCRUD } from "../content/types";
 
 export const LOADING_STRING = 'Loading...'
 
 export interface ReduxState {
   loaded: {
-    course: Course,
-    topic: Topic,
-    lesson: Lesson,
+    course: CourseCRUD,
+    topic: TopicCRUD,
+    lesson: LessonCRUD,
     activityIdx: number
   }
 }

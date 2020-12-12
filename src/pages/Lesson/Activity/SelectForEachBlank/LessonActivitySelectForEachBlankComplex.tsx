@@ -8,13 +8,13 @@ import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
 import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
 import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
-import { SelectForEachBlankComplexActivity } from '../../../../content/types';
+import { SelectForEachBlankComplexActivityCRUD } from '../../../../content/types';
 
 interface Props {
-  activity: SelectForEachBlankComplexActivity
+  activity: SelectForEachBlankComplexActivityCRUD
 }
 
-function LessonActivitySelectForEachBlankComplex({
+function LessonActivityCRUDSelectForEachBlankComplex({
   activity: { blocks, choices }
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({ message: '', isShowing: false })
@@ -64,11 +64,11 @@ function LessonActivitySelectForEachBlankComplex({
         isShowing: true
       })
     } else {
-      setNotification({
-        ...feedback,
-        color,
-        isShowing: true
-      })
+      // setNotification({
+      //   ...feedback,
+      //   color,
+      //   isShowing: true
+      // })
     }
 
     if (answer.isCorrect) {
@@ -169,4 +169,4 @@ function LessonActivitySelectForEachBlankComplex({
   )
 }
 
-export default LessonActivitySelectForEachBlankComplex;
+export default LessonActivityCRUDSelectForEachBlankComplex;

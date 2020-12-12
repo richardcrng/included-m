@@ -3,14 +3,14 @@ import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/r
 import { arrowBack, arrowForward } from 'ionicons/icons';
 import { shuffle } from 'lodash';
 import Swing, { Core } from '../../../../lib/swing-react';
-import { SwipeCard, SwipeCardsActivity } from '../../../../content/types';
+import { SwipeCard, SwipeCardsActivityCRUD } from '../../../../content/types';
 import LessonContent from '../../LessonContent';
 import LessonContentBlock from '../../LessonContentBlock';
 import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
 import LessonContinueButton from '../../LessonContinueButton';
 
 interface Props {
-  activity: SwipeCardsActivity
+  activity: SwipeCardsActivityCRUD
 }
 
 function LessonActivitySwipeCards({

@@ -1,3 +1,7 @@
+export interface CourseData {
+  
+}
+
 export type CourseCRUD = {
   courseTitle: string,
   description: string,
@@ -44,7 +48,7 @@ export type AnswerFeedback = string | {
 export type SelectAnAnswerActivityCRUD = {
   activityType: 'select-an-answer',
   blocks: ContentBlock[],
-  answers: SelectMultipleAnswer[]
+  answers: AnswerCRUD[]
 }
 
 export type SelectForEachBlankActivityCRUD = SelectForEachBlankSimpleActivityCRUD | SelectForEachBlankComplexActivityCRUD
@@ -56,24 +60,24 @@ export type SelectForEachBlankSimpleActivityCRUD = {
 
 export type SelectForEachBlankComplexActivityCRUD = SelectForEachBlankSimpleActivityCRUD & {
   choices: {
-    [blankKey: string]: SelectMultipleAnswer[]
+    [blankKey: string]: AnswerCRUD[]
   }
 }
 
 export type SelectForEachBlankChoices = {
-  [blankKey: string]: SelectMultipleAnswer[]
+  [blankKey: string]: AnswerCRUD[]
 }
 
 export type SelectMultipleActivityCRUD = {
   activityType: 'select-multiple',
   blocks: ContentBlock[],
-  answers: SelectMultipleAnswer[]
+  answers: AnswerCRUD[]
 }
 
-export type SelectMultipleAnswer = {
+export type AnswerCRUD = {
   text: string
   isCorrect: boolean
-  feedback?: AnswerFeedback
+  feedback?: string
   isSelected?: boolean
 }
 

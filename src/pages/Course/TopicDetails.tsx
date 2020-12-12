@@ -16,7 +16,7 @@ import {
   IoArrowBack,
   IoInformationCircleOutline
 } from 'react-icons/io5'
-import { Lesson, Topic } from '../../content/types';
+import { LessonCRUD, TopicCRUD } from '../../content/types';
 import { useHistory } from 'react-router';
 
 const Buttons = styled(IonButtons)`
@@ -67,8 +67,8 @@ interface Props {
 
 
 interface Props {
-  topic: Topic,
-  onLessonSelect?(lesson: Lesson): void
+  topic: TopicCRUD,
+  onLessonSelect?(lesson: LessonCRUD): void
 }
 
 function TopicDetails({
@@ -78,7 +78,7 @@ function TopicDetails({
 
   const history = useHistory()
 
-  const createLessonSelectHandler = (lesson: Lesson) => () => onLessonSelect && onLessonSelect(lesson)
+  const createLessonSelectHandler = (lesson: LessonCRUD) => () => onLessonSelect && onLessonSelect(lesson)
 
   return (
     <>

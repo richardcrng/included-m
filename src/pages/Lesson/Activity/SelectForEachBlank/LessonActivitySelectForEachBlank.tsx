@@ -3,14 +3,14 @@ import { shuffle } from 'lodash';
 import riduce, { bundle } from 'riduce';
 import { answersFromBlocks, BlankOrText, hasBlanks } from './utils'
 import LessonContent from '../../LessonContent';
-import { SelectForEachBlankSimpleActivity } from '../../../../content/types';
+import { SelectForEachBlankSimpleActivityCRUD } from '../../../../content/types';
 import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
 import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
 import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
 
 interface Props {
-  activity: SelectForEachBlankSimpleActivity
+  activity: SelectForEachBlankSimpleActivityCRUD
 }
 
 
