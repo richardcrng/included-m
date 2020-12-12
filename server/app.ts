@@ -13,13 +13,13 @@ app.use(express.json())
 // app.use(bodyParser.urlencoded({ extended: true }));
 
 type PostCoursesSuccess = JSendBase<{
-  courses: Course[]
+  course: Course
 }, 'success'>
 
 app.post('/courses', async (req, res) => {
   const course = await Course.createFromRaw(req.body)
   
-  jsend(res, {
+  jsend<PostCoursesSuccess>(res, {
     status: 'success',
     data: {
       course
