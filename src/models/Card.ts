@@ -1,5 +1,4 @@
 import { ActiveClass, Schema } from 'fireactive'
-import { CardCRUD } from '../content/types';
 
 const cardSchema = {
   text: Schema.string,

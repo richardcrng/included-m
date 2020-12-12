@@ -1,5 +1,5 @@
 import { ActiveClass, Schema, relations } from 'fireactive'
-import { ActivityCRUD } from '../content/types'
+import { ActivityCRUDBase } from '../content/types'
 import Answer from './Answer'
 import Card from './Card'
 import Choice from './Choice'
@@ -28,8 +28,8 @@ export default class Activity extends ActiveClass(activitySchema) {
   answers = relations.findByIds<Activity, Answer>(Answer, () => Object.values(this.answerIdsOrdered))
   cards = relations.findByIds<Activity, Card>(Card, () => Object.values(this.cardIdsOrdered))
 
-  // static
-  static async createFromCRUD(data: ActivityCRUD) {
+  static async createFromRaw(data: ActivityCRUDBase) {
+
     let choiceIdsOrdered: Record<string, string> = {}
     let cardIdsOrdered: Record<string, string> = {}
 
@@ -40,7 +40,7 @@ export default class Activity extends ActiveClass(activitySchema) {
     const blocks = numericKeys(data.blocks)
 
     if (data.choices) {
-      const choices = await Choice.createFromRaw(data.choices)
+      const choices = await Choice.createManyFromRaw(data.choices)
       choiceIdsOrdered = numericKeys(
         choices.map(choice => choice.getId())
       )
@@ -53,8 +53,17 @@ export default class Activity extends ActiveClass(activitySchema) {
     }
 
     return await this.create({
-      activityType, blocks, choiceIdsOrdered, cardIdsOrdered
+      activityType,
+      blocks,
+      choiceIdsOrdered,
+      cardIdsOrdered
     })
+  }
+
+  static async createManyFromRaw(...docs: ActivityCRUDBase[]): Promise<Activity[]> {
+    return await Promise.all(docs.map(doc => (
+      this.createFromRaw(doc)
+    )))
   }
 }
 

@@ -23,7 +23,7 @@ export interface LessonCRUD {
 
 type ActivityType = 'read' | 'select-an-answer' | 'select-for-each-blank' | 'select-multiple' | 'swipe-cards'
 
-export interface ActivityCRUD {
+export type ActivityCRUDBase = {
   activityType: ActivityType,
   blocks: string[],
   answers?: AnswerCRUD[],
@@ -46,12 +46,12 @@ export interface CardCRUD {
   feedbackOnNotCorrect?: string
 }
 
-// export type ActivityCRUD =
-//   ReadActivityCRUD
-//     | SelectAnAnswerActivityCRUD
-//     | SelectForEachBlankActivityCRUD
-//     | SelectMultipleActivityCRUD
-//     | SwipeCardsActivityCRUD
+export type ActivityCRUD =
+  ReadActivityCRUD
+    | SelectAnAnswerActivityCRUD
+    | SelectForEachBlankActivityCRUD
+    | SelectMultipleActivityCRUD
+    | SwipeCardsActivityCRUD
 
 export type ContentBlock = string
 
@@ -102,7 +102,7 @@ export type AnswerCRUD = {
   isSelected?: boolean
 }
 
-export type SwipeCardsActivityCRUD = {
+export type SwipeCardsActivityCRUD = ActivityCRUDBase & {
   activityType: 'swipe-cards',
   blocks: ContentBlock[],
   cards: SwipeCard[],
