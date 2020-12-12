@@ -1,36 +1,36 @@
-export type Course = {
+export type CourseCRUD = {
   courseTitle: string,
   description: string,
-  topics: Topic[]
+  topics: TopicCRUD[]
 }
 
-export type Topic = {
+export type TopicCRUD = {
   topicTitle: string,
   description: string,
-  chapters: Chapter[]
+  chapters: ChapterCRUD[]
 }
 
-export type Chapter = {
+export type ChapterCRUD = {
   chapterTitle: string,
-  lessons: Lesson[]
+  lessons: LessonCRUD[]
 }
 
-export type Lesson = {
+export type LessonCRUD = {
   lessonTitle: string,
-  activities: Activity[],
+  activities: ActivityCRUD[],
   isCompleted?: boolean
 }
 
-export type Activity =
-  ReadActivity
-    | SelectAnAnswerActivity
-    | SelectForEachBlankActivity
-    | SelectMultipleActivity
-    | SwipeCardsActivity
+export type ActivityCRUD =
+  ReadActivityCRUD
+    | SelectAnAnswerActivityCRUD
+    | SelectForEachBlankActivityCRUD
+    | SelectMultipleActivityCRUD
+    | SwipeCardsActivityCRUD
 
 export type ContentBlock = string
 
-export type ReadActivity = {
+export type ReadActivityCRUD = {
   activityType: 'read',
   blocks: ContentBlock[]
 }
@@ -41,20 +41,20 @@ export type AnswerFeedback = string | {
   buttonText?: string
 }
 
-export type SelectAnAnswerActivity = {
+export type SelectAnAnswerActivityCRUD = {
   activityType: 'select-an-answer',
   blocks: ContentBlock[],
   answers: SelectMultipleAnswer[]
 }
 
-export type SelectForEachBlankActivity = SelectForEachBlankSimpleActivity | SelectForEachBlankComplexActivity
+export type SelectForEachBlankActivityCRUD = SelectForEachBlankSimpleActivityCRUD | SelectForEachBlankComplexActivityCRUD
 
-export type SelectForEachBlankSimpleActivity = {
+export type SelectForEachBlankSimpleActivityCRUD = {
   activityType: 'select-for-each-blank',
   blocks: ContentBlock[]
 }
 
-export type SelectForEachBlankComplexActivity = SelectForEachBlankSimpleActivity & {
+export type SelectForEachBlankComplexActivityCRUD = SelectForEachBlankSimpleActivityCRUD & {
   choices: {
     [blankKey: string]: SelectMultipleAnswer[]
   }
@@ -64,7 +64,7 @@ export type SelectForEachBlankChoices = {
   [blankKey: string]: SelectMultipleAnswer[]
 }
 
-export type SelectMultipleActivity = {
+export type SelectMultipleActivityCRUD = {
   activityType: 'select-multiple',
   blocks: ContentBlock[],
   answers: SelectMultipleAnswer[]
@@ -77,7 +77,7 @@ export type SelectMultipleAnswer = {
   isSelected?: boolean
 }
 
-export type SwipeCardsActivity = {
+export type SwipeCardsActivityCRUD = {
   activityType: 'swipe-cards',
   blocks: ContentBlock[],
   cards: SwipeCard[],
@@ -91,15 +91,15 @@ export type SwipeCard = {
   feedbackNotCorrect?: AnswerFeedback
 }
 
-export function isSelectMultipleActivity(activity: Activity): activity is SelectMultipleActivity {
+export function isSelectMultipleActivityCRUD(activity: ActivityCRUD): activity is SelectMultipleActivityCRUD {
   return activity.activityType === 'select-multiple'
 }
 
-export function isSelectForEachBlankActivity(activity: Activity): activity is SelectForEachBlankActivity {
+export function isSelectForEachBlankActivityCRUD(activity: ActivityCRUD): activity is SelectForEachBlankActivityCRUD {
   return activity.activityType === 'select-for-each-blank'
 }
 
-export function isComplexSelectForEachBlankActivity(activity: SelectForEachBlankActivity): activity is SelectForEachBlankComplexActivity {
+export function isComplexSelectForEachBlankActivityCRUD(activity: SelectForEachBlankActivityCRUD): activity is SelectForEachBlankComplexActivityCRUD {
   // @ts-ignore
   return activity.choices
 }

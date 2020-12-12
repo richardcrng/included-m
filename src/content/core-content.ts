@@ -1,7 +1,7 @@
-import { Course } from "./types";
+import { CourseCRUD } from "./types";
 import vcFundamentals from "./01-vc-fundamentals";
 
-const coreCourse: Course = {
+const coreCourse: CourseCRUD = {
   courseTitle: 'Included M',
   description: 'Included M is a free learning pathway in venture capital, brought to you by Included VC.',
   topics: [

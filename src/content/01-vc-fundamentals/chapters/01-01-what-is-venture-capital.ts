@@ -1,7 +1,7 @@
-import { Chapter } from "../../types";
+import { ChapterCRUD } from "../../types";
 import theGoalsOfVentureCapital from "../lessons/01-01-01-goals-of-vc";
 
-const whatIsVentureCapital: Chapter = {
+const whatIsVentureCapital: ChapterCRUD = {
   chapterTitle: 'What is Venture Capital?',
   lessons: [
     theGoalsOfVentureCapital

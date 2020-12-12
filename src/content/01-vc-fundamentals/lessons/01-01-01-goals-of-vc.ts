@@ -1,6 +1,6 @@
-import { Lesson } from "../../types"
+import { LessonCRUD } from "../../types"
 
-const theGoalsOfVentureCapital: Lesson = {
+const theGoalsOfVentureCapital: LessonCRUD = {
   lessonTitle: 'The goals of venture capital',
   activities: [
     {

@@ -1,7 +1,7 @@
-import { Chapter } from "../../types";
+import { ChapterCRUD } from "../../types";
 
 
-const fundStructure: Chapter = {
+const fundStructure: ChapterCRUD = {
   chapterTitle: 'Fund Structure',
   lessons: [
     {
