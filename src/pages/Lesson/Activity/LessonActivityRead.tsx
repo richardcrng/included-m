@@ -1,11 +1,11 @@
 import React from 'react';
 import LessonContent from '../LessonContent';
-import { ContentBlock } from '../../../content/types';
+import { ContentBlockCRUD } from '../../../content/types';
 import LessonContentBlock from '../LessonContentBlock';
 import LessonContinueButton from '../LessonContinueButton';
 
 interface Props {
-  blocks: ContentBlock[]
+  blocks: ContentBlockCRUD[]
 }
 
 function LessonActivityRead({

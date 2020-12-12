@@ -25,7 +25,7 @@ type ActivityType = 'read' | 'select-an-answer' | 'select-for-each-blank' | 'sel
 
 export type ActivityCRUDBase = {
   activityType: ActivityType,
-  blocks: string[],
+  blocks: ContentBlockCRUD[],
   answers?: AnswerCRUD[],
   choices?: {
     [blankKey: string]: AnswerCRUD[]
@@ -53,7 +53,7 @@ export type ActivityCRUD =
     | SelectMultipleActivityCRUD
     | SwipeCardsActivityCRUD
 
-export type ContentBlockCRUD = string
+export type ContentBlockCRUD = string | {}
 
 export type ReadActivityCRUD = {
   activityType: 'read',
@@ -111,8 +111,8 @@ export type SwipeCardsActivityCRUD = ActivityCRUDBase & {
 export type SwipeCard = {
   text: string,
   isRight: boolean,
-  feedbackCorrect?: AnswerFeedback,
-  feedbackNotCorrect?: AnswerFeedback,
+  feedbackOnCorrect?: AnswerFeedback,
+  feedbackOnNotCorrect?: AnswerFeedback,
   choiceLeft: string,
   choiceRight: string
 }

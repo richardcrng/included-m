@@ -12,6 +12,7 @@ export default class ContentBlock extends ActiveClass(contentBlockSchema) {
         markdown: data
       })
     } else {
+      // @ts-ignore
       return await this.create(data)
     }
   }

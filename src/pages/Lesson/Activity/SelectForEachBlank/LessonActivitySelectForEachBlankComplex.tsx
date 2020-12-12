@@ -55,19 +55,11 @@ function LessonActivityCRUDSelectForEachBlankComplex({
       ? answer.feedback
       : answer.isCorrect ? "That's it!" : 'Not quite'
 
-    if (typeof feedback === 'string') {
-      setNotification({
+    setNotification({
         message: feedback,
         color,
         isShowing: true
       })
-    } else {
-      // setNotification({
-      //   ...feedback,
-      //   color,
-      //   isShowing: true
-      // })
-    }
 
     if (answer.isCorrect) {
       const matchers = Object.keys(choices)
@@ -108,6 +100,12 @@ function LessonActivityCRUDSelectForEachBlankComplex({
       />
       <LessonContent>
         {blocks.map(block => {
+          if (typeof block !== 'string') {
+            // TODO handle non-string block
+            return null
+          }
+
+
           const blockBlanks = hasBlanks(block)
           if (blockBlanks) {
             const { remaining, nodes } = blockBlanks.reduce(
