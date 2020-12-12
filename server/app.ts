@@ -1,6 +1,7 @@
 import express from 'express'
 import Course from '../src/models/Course';
 import { JSendBase, jsend } from '../src/lib/jsend';
+import { CourseCRUD } from '../src/content/types';
 
 const app = express()
 
@@ -20,7 +21,7 @@ app.post('/courses', async (req, res) => {
   try {
     const course = await Course.createFromRaw(req.body)
   
-    jsend<PostCoursesSuccess>(res, {
+    jsend<PostCoursesSuccess>(res.status(201), {
       status: 'success',
       data: {
         course
