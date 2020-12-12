@@ -15,8 +15,7 @@ export default class Lesson extends ActiveClass(lessonSchema) {
 
   activities = relations.findByIds<Lesson, Activity>(Activity, () => Object.values(this.activityIdsOrdered))
 
-  static async createFromRaw(data: LessonCRUD) {
-
+  static async createFromRaw(data: LessonCRUD): Promise<Lesson> {
     const activities = await Activity.createManyFromRaw(...data.activities)
     const activityIdsOrdered = numericKeys(
       activities.map((activity: Activity) => activity.getId())
@@ -26,6 +25,12 @@ export default class Lesson extends ActiveClass(lessonSchema) {
       activityIdsOrdered
     })
     return lesson
+  }
+
+  static async createManyFromRaw(...docs: LessonCRUD[]): Promise<Lesson[]> {
+    return await Promise.all(docs.map(doc => (
+      this.createFromRaw(doc)
+    )))
   }
 }
 
