@@ -4,15 +4,15 @@ import {
   IonCard,
   IonCardContent
 } from '@ionic/react'
-import { SelectMultipleAnswer } from '../../content/types';
+import { AnswerCRUD } from '../../content/types';
 
 interface Props {
-  answer: SelectMultipleAnswer
+  answer: AnswerCRUD
   onClick(): void,
   disabled?: boolean
 }
 
-function MultipleAnswerCard({
+function MultipleAnswerCRUDCard({
   answer: { text, isSelected, isCorrect },
   onClick,
   disabled
@@ -38,4 +38,4 @@ function MultipleAnswerCard({
   )
 }
 
-export default MultipleAnswerCard
+export default MultipleAnswerCRUDCard

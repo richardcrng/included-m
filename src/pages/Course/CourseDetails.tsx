@@ -12,7 +12,7 @@ import {
   IoArrowBack,
   IoInformationCircleOutline
 } from 'react-icons/io5'
-import { Course, Topic } from '../../content/types';
+import { CourseCRUD, TopicCRUD } from '../../content/types';
 import { useHistory } from 'react-router';
 
 const Buttons = styled(IonButtons)`
@@ -46,8 +46,8 @@ interface Props {
 }
 
 interface Props {
-  course: Course,
-  onTopicStart?(topic: Topic): void
+  course: CourseCRUD,
+  onTopicStart?(topic: TopicCRUD): void
 }
 
 function CourseDetails({

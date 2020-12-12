@@ -26,7 +26,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { useDispatch } from 'react-redux';
 import HomePage from './routes/HomePage';
 
-import { Course } from './content/types';
+import { CourseCRUD } from './content/types';
 import actions from './redux/reducer';
 import { Route } from 'react-router';
 import CoursePage from './routes/CoursePage';
@@ -39,8 +39,9 @@ const App: React.FC = () => {
 
   React.useEffect(() => {
     const getData = async () => {
-      const res = await fetch('https://api.jsonbin.io/b/5fd14a6082e9306ae6ff98c2')
-      const json: Course = await res.json()
+      const res = await fetch('https://api.jsonbin.io/b/5fd513e9fbb23c2e36a5e8ca')
+      const json: CourseCRUD = await res.json()
+
       dispatch(actions.loaded.course.create.update(json))
     }
 
