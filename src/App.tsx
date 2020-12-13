@@ -23,21 +23,15 @@ import {
   IonApp,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import HomePage from './routes/HomePage';
 
-import actions from './redux/reducer';
 import { Redirect, Route, Switch } from 'react-router';
-import TopicPage from './routes/TopicPage';
 import CoursePageRoute from './routes/course/CoursePageRoute';
-import { useFireactiveCourse } from './lib/useFireactive/useFireactiveDocument';
 import TopicPageRoute from './routes/topic/TopicPageRoute';
 import LessonPageRoute from './routes/lesson/LessonPageRoute';
 
-
-
 const App: React.FC = () => {
-  const dispatch = useDispatch()
 
   // const [doc, state] = useFireactiveCourse({
   //   getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
@@ -63,7 +57,6 @@ const App: React.FC = () => {
     <IonReactRouter>
       <Switch>
         <Route exact path='/course/:id' component={CoursePageRoute.Firebase} />
-        <Route exact path='/course' component={CoursePageRoute.Redux} />
         <Route exact path='/topic/:id' component={TopicPageRoute.Firebase} />
         <Route exact path='/lesson/:id' component={LessonPageRoute.Firebase} />
         <Route exact path='/' component={HomePage} />

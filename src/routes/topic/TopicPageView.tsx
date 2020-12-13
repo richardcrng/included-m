@@ -19,6 +19,7 @@ import {
 import { useHistory } from 'react-router';
 import { TopicRawDeep } from '../../models/Topic';
 import { LessonRawDeep } from '../../models/Lesson';
+import { DEFAULT_COURSE_ID } from '../../constants';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -122,7 +123,7 @@ function TopicPageView({
                 <>
                   <p><b>Oops...!</b></p>
                   <p>This topic is under construction. Why don't you try another?</p>
-                  <IonButton routerLink='/course'>Choose another</IonButton>
+                  <IonButton routerLink={`/course/${DEFAULT_COURSE_ID}`}>Choose another</IonButton>
                 </>
               )}
             </MainCTAContent>
