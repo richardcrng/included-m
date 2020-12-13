@@ -34,6 +34,7 @@ import LessonPage from './routes/LessonPage';
 import Course from './models/Course';
 import CoursePageRoute from './routes/course/CoursePageRoute';
 import { useFireactiveCourse } from './lib/useFireactive/useFireactiveDocument';
+import TopicPageRoute from './routes/topic/TopicPageRoute';
 
 
 
@@ -64,6 +65,7 @@ const App: React.FC = () => {
     <IonReactRouter>
       <Route exact path='/course/:id' component={CoursePageRoute.Firebase} />
       <Route exact path='/course' component={CoursePageRoute.Redux} />
+      <Route exact path='/topic/:id' component={TopicPageRoute.Firebase} />
       <Route exact path='/topic' component={TopicPage} />
       <Route exact path='/lesson' component={LessonPage} />
       <Route exact path='/' component={HomePage} />

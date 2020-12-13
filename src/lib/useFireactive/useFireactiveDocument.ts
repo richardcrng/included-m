@@ -2,6 +2,7 @@ import { ActiveDocument } from 'fireactive/dist/types/class.types';
 import { isEqual } from 'lodash'
 import { useState, useEffect } from 'react';
 import Course from '../../models/Course';
+import Topic from '../../models/Topic';
 
 type Opts<C extends new (...args: any) => any, S = unknown> = {
   getDocument(activeClass: C): Promise<InstanceType<C> | null>,
@@ -44,8 +45,6 @@ export const makeUseFireactiveDocument = <C extends new (...args: any) => any>(a
   }
 }
 
-export const useFireactiveCourse = makeUseFireactiveDocument(Course, (course, updateFn) => course.on('value', updateFn))
-
 // export default function useFireactiveDocument<D, S = unknown>(
 //   { getDocument, documentToState, }: Opts<D, S>,
 //   callback?: (doc: D, updateFn: Listener) => void
@@ -75,3 +74,7 @@ export const useFireactiveCourse = makeUseFireactiveDocument(Course, (course, up
 
 //   return [document, state]
 // }
+
+export const useFireactiveCourse = makeUseFireactiveDocument(Course, (course, updateFn) => course.on('value', updateFn))
+
+export const useFireactiveTopic = makeUseFireactiveDocument(Topic, (topic, updateFn) => topic.on('value', updateFn))

@@ -82,7 +82,7 @@ function TopicPageView({
         <Buttons slot='start'>
           <IoArrowBack
             onClick={() => {
-              history.push('/course')
+              history.goBack()
             }}
             size={24}
           />
