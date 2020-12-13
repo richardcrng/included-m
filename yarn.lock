@@ -5705,10 +5705,10 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-fireactive@0.1.15:
-  version "0.1.15"
-  resolved "https://registry.yarnpkg.com/fireactive/-/fireactive-0.1.15.tgz#789b17b07ac74e621180ab55bdaacffba72b3b3d"
-  integrity sha512-ZfAlGdbjR+UGDN0EK5zZfj3Jk3RE8w+HlI7DIKUHIVlekd4X1IrwM1ZmHnz6wlsF3b0cUASsez6YbqoNA8PUlA==
+fireactive@0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/fireactive/-/fireactive-0.1.16.tgz#9c9217ea7b47826ee74d263029f3e438b8a920f8"
+  integrity sha512-qDO2hPOpDY1Bo1KBIH2n0lybYc5BZtclunjgdpX4sjJY8X2u2Uix3EiKMNNNVn74WzJSdYaO7OdBTh9JTuyT1Q==
   dependencies:
     dotenv "^8.2.0"
     firebase "7.24.0"
