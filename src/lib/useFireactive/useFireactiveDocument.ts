@@ -51,6 +51,8 @@ export function makeUseFireactiveDocument<C extends new (...args: any) => any>(
       fetchData()
     })
 
+    console.log('state and doc', state, document)
+
     return [state, document]
   }
 }
