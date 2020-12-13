@@ -6,8 +6,8 @@ import LessonContent from '../../LessonContent';
 import { SelectForEachBlankSimpleActivityCRUD } from '../../../../content/types';
 import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
-import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
-import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
+import MultipleAnswerCard from '../../../../ui/atoms/MultipleAnswerCard';
+import Notification, { NotificationProps } from '../../../../ui/atoms/Notification';
 
 interface Props {
   activity: SelectForEachBlankSimpleActivityCRUD

@@ -4,9 +4,9 @@ import riduce from 'riduce';
 import LessonContent from '../LessonContent';
 import { SelectAnAnswerActivityCRUD, SelectMultipleActivityCRUD } from '../../../content/types';
 import LessonContentBlock from '../LessonContentBlock';
-import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
+import MultipleAnswerCard from '../../../ui/atoms/MultipleAnswerCard';
 import LessonContinueButton from '../LessonContinueButton';
-import Notification, { NotificationProps } from '../../../components/atoms/Notification';
+import Notification, { NotificationProps } from '../../../ui/atoms/Notification';
 
 interface Props {
   activity: SelectMultipleActivityCRUD | SelectAnAnswerActivityCRUD

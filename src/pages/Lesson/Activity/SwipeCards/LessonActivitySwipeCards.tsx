@@ -6,7 +6,7 @@ import Swing, { Core } from '../../../../lib/swing-react';
 import { SwipeCard, SwipeCardsActivityCRUD } from '../../../../content/types';
 import LessonContent from '../../LessonContent';
 import LessonContentBlock from '../../LessonContentBlock';
-import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
+import Notification, { NotificationProps } from '../../../../ui/atoms/Notification';
 import LessonContinueButton from '../../LessonContinueButton';
 
 interface Props {

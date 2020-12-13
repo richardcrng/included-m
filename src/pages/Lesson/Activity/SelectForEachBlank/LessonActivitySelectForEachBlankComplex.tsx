@@ -6,8 +6,8 @@ import { BlankOrText, hasBlanks, SelectForEachBlankAnswerComplex } from './utils
 import LessonContent from '../../LessonContent';
 import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
-import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
-import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
+import MultipleAnswerCard from '../../../../ui/atoms/MultipleAnswerCard';
+import Notification, { NotificationProps } from '../../../../ui/atoms/Notification';
 import { SelectForEachBlankComplexActivityCRUD } from '../../../../content/types';
 
 interface Props {

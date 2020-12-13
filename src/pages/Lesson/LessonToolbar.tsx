@@ -9,7 +9,7 @@ import {
   IoClose,
   // IoInformationCircleOutline
 } from 'react-icons/io5'
-import ProgressBoxes from '../../components/atoms/ProgressBoxes';
+import ProgressBoxes from '../../ui/atoms/ProgressBoxes';
 import { LessonContext } from './LessonDetails';
 import { useHistory } from 'react-router';
 
