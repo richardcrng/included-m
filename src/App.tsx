@@ -33,25 +33,6 @@ import LessonPageRoute from './routes/lesson/LessonPageRoute';
 
 const App: React.FC = () => {
 
-  // const [doc, state] = useFireactiveCourse({
-  //   getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
-  //   documentToState: course => course.toRawDeep(false)
-  // })
-
-  // console.log(doc, state)
-  
-  // React.useEffect(() => {
-  //   const getData = async () => {
-  //     const res = await fetch('https://api.jsonbin.io/b/5fd513e9fbb23c2e36a5e8ca')
-  //     const json: CourseCRUD = await res.json()
-
-  //     dispatch(actions.loaded.course.create.update(json))
-  //   }
-
-  //   getData()
-
-  // }, [dispatch])
-
   return (
   <IonApp>
     <IonReactRouter>
