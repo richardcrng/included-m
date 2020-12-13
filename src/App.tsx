@@ -42,7 +42,7 @@ const App: React.FC = () => {
 
   const [doc, state] = useFireactiveDocument<Course, CourseRaw>({
     getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
-    documentToState: (c: Course) => c.toRaw()
+    documentToState: course => course.toRaw()
   }, (course, updateFn) => course.on('value', updateFn))
 
   console.log(state, doc)

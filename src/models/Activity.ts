@@ -1,5 +1,5 @@
 import { ActiveClass, Schema, relations } from 'fireactive'
-import { ActivityCRUDBase } from '../content/types'
+import { ActivityCRUDBase, ActivityType } from '../content/types'
 import Answer from './Answer'
 import Card from './Card'
 import Choice from './Choice'
@@ -19,6 +19,15 @@ const activitySchema = {
   choiceIdsOrdered: Schema.indexed.string,
   answerIdsOrdered: Schema.indexed.string,
   cardIdsOrdered: Schema.indexed.string
+}
+
+interface ActivityRaw {
+  lessonId?: string,
+  activityType: ActivityType,
+  contentBlockIds: string[],
+  choiceIds: string[],
+  answerIds: string[],
+  cardIds: string[]
 }
 
 export default class Activity extends ActiveClass(activitySchema) {
@@ -84,6 +93,17 @@ export default class Activity extends ActiveClass(activitySchema) {
 
   get cardIds(): string[] {
     return Object.values(this.cardIdsOrdered)
+  }
+
+  toRaw(): ActivityRaw {
+    return {
+      lessonId: this.lessonId ? this.lessonId : undefined,
+      activityType: this.activityType,
+      contentBlockIds: this.contentBlockIds,
+      cardIds: this.cardIds,
+      answerIds: this.answerIds,
+      choiceIds: this.choiceIds
+    }
   }
 }
 

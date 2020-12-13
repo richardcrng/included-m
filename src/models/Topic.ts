@@ -10,6 +10,13 @@ const topicSchema = {
   chapterIdsOrdered: Schema.indexed.string,
 }
 
+export interface TopicRaw {
+  courseId?: string,
+  topicTitle: string,
+  description: string,
+  chapterIds: string[]
+}
+
 export default class Topic extends ActiveClass(topicSchema) {
 
   course = relations.findById('Course', 'courseId')
@@ -37,6 +44,19 @@ export default class Topic extends ActiveClass(topicSchema) {
 
   get chapterIds(): string[] {
     return Object.values(this.chapterIdsOrdered)
+  }
+
+  toRaw(): TopicRaw {
+    const {
+      courseId, topicTitle, description, chapterIds
+    } = this
+
+    return {
+      courseId: courseId ? courseId : undefined,
+      topicTitle,
+      description,
+      chapterIds
+    }
   }
 }
 

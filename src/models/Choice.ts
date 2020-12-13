@@ -8,6 +8,11 @@ const choiceSchema = {
   answerIdsOrdered: Schema.indexed.string
 }
 
+interface ChoiceRaw {
+  textMatch: string,
+  answerIds: string[]
+}
+
 export default class Choice extends ActiveClass(choiceSchema) {
 
   answers = relations.findByIds<Choice, Answer>(Answer, () => Object.values(this.answerIdsOrdered))
@@ -26,5 +31,12 @@ export default class Choice extends ActiveClass(choiceSchema) {
 
   get answerIds(): string[] {
     return Object.values(this.answerIdsOrdered)
+  }
+
+  toRaw(): ChoiceRaw {
+    return {
+      textMatch: this.textMatch,
+      answerIds: this.answerIds
+    }
   }
 }

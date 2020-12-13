@@ -9,4 +9,25 @@ const cardSchema = {
   feedbackOnNotCorrect: Schema.string({ optional: true })
 }
 
-export default class Card extends ActiveClass(cardSchema) {}
+export interface CardRaw {
+  text: string,
+  isRight: boolean,
+  choiceRight: string,
+  choiceLeft: string,
+  feedbackOnCorrect?: string,
+  feedbackOnNotCorrect?: string
+}
+
+export default class Card extends ActiveClass(cardSchema) {
+
+  toRaw(): CardRaw {
+    return {
+      text: this.text,
+      isRight: this.isRight,
+      choiceRight: this.choiceRight,
+      choiceLeft: this.choiceLeft,
+      feedbackOnCorrect: this.feedbackOnCorrect ? this.feedbackOnCorrect : undefined,
+      feedbackOnNotCorrect: this.feedbackOnNotCorrect ? this.feedbackOnNotCorrect : undefined
+    }
+  }
+}

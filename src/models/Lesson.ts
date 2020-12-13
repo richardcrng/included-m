@@ -9,6 +9,12 @@ const lessonSchema = {
   activityIdsOrdered: Schema.indexed.string,
 }
 
+export interface LessonRaw {
+  chapterId?: string,
+  lessonTitle: string,
+  activityIds: string[]
+}
+
 export default class Lesson extends ActiveClass(lessonSchema) {
 
   chapter = relations.findById('Chapter', 'chapterId')
@@ -35,6 +41,14 @@ export default class Lesson extends ActiveClass(lessonSchema) {
 
   get activityIds(): string[] {
     return Object.values(this.activityIdsOrdered)
+  }
+
+  toRaw(): LessonRaw {
+    return {
+      chapterId: this.chapterId ? this.chapterId : undefined,
+      lessonTitle: this.lessonTitle,
+      activityIds: this.activityIds
+    }
   }
 }
 
