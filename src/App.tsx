@@ -24,6 +24,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useDispatch } from 'react-redux';
+import { isEqual } from 'lodash';
 import HomePage from './routes/HomePage';
 
 import { CourseCRUD } from './content/types';
@@ -32,10 +33,33 @@ import { Route } from 'react-router';
 import CoursePage from './routes/CoursePage';
 import TopicPage from './routes/TopicPage';
 import LessonPage from './routes/LessonPage';
+import Course, { CourseRaw } from './models/Course';
 
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
+
+  const [course, setCourse] = React.useState<CourseRaw | undefined>(undefined)
+
+  React.useEffect(() => {
+    const getCourse = async () => {
+      const foundCourse = await Course.findOne({ courseTitle: 'Included M' })
+
+      if (foundCourse) {
+        const updateIfNew = () => {
+          console.log('running effect')
+          const asRaw = foundCourse.toRaw()
+          if (isEqual(course, asRaw)) return
+          console.log('replacing', course, asRaw)
+          setCourse(asRaw)
+          
+        }
+        foundCourse.on('value', updateIfNew)
+      }
+    }
+
+    getCourse()
+  })
 
   React.useEffect(() => {
     const getData = async () => {

@@ -9,6 +9,12 @@ const courseSchema = {
   topicIdsOrdered: Schema.indexed.string,
 }
 
+export interface CourseRaw {
+  courseTitle: string,
+  description: string,
+  topicIds: string[]
+}
+
 export default class Course extends ActiveClass(courseSchema) {
 
   course = relations.findById('Course', 'courseId')
@@ -26,6 +32,16 @@ export default class Course extends ActiveClass(courseSchema) {
       topicIdsOrdered
     })
     return chapter
+  }
+
+  toRaw(): CourseRaw {
+    const {
+      courseTitle, description, topicIds
+    } = this
+
+    return JSON.parse(JSON.stringify({
+      courseTitle, description, topicIds
+    }))
   }
 
   get topicIds(): string[] {
