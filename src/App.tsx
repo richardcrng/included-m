@@ -40,12 +40,12 @@ import useFireactiveDocument from './lib/useFireactive/useFireactiveDocument';
 const App: React.FC = () => {
   const dispatch = useDispatch()
 
-  const doc = useFireactiveDocument<CourseRaw, Course>({
+  const [doc, state] = useFireactiveDocument<Course, CourseRaw>({
     getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
     documentToState: (c: Course) => c.toRaw()
   }, (course, updateFn) => course.on('value', updateFn))
 
-  console.log(doc)
+  console.log(state, doc)
   
   React.useEffect(() => {
     const getData = async () => {
