@@ -16,6 +16,17 @@ interface CoursePageRouteFirebaseProps extends RouteComponentProps<{
 function CoursePageRouteFirebase({ 
   history, match
 }: CoursePageRouteFirebaseProps) {
+  console.log('running course page')
+
+  const [count, setCount] = React.useState(0)
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      console.log('ran effect')
+      setCount(c => c+1)
+    }, 2000)
+  })
+
   const [state] = useFireactiveCourse({
     getDocument: (docClass) => docClass.findById(match.params.id),
     documentToState: doc => doc.toRawDeep(false)
