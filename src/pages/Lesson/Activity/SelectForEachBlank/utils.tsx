@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import { AnswerFeedback } from '../../../../content/types';
+import { AnswerFeedback, ContentBlockCRUD } from '../../../../content/types';
 
 export interface SelectForEachBlankAnswer {
   match: string,
@@ -40,9 +40,17 @@ const LockedAnswer = styled.span`
 
 export const hasBlanks = (str: string) => str.match(/{{(.+?)}}/g)
 
-export const answersFromBlocks = (blocks: string[]): Record<string, SelectForEachBlankAnswer> => {
+export const answersFromBlocks = (blocks: ContentBlockCRUD[]): Record<string, SelectForEachBlankAnswer> => {
   return blocks.reduce(
-    (acc, block) => {
+    (
+      acc: Record<string, SelectForEachBlankAnswer>,
+      block
+    ) => {
+      // TODO: handle non-string blocks
+      if (typeof block !== 'string') {
+        return acc
+      }
+
       const matches = hasBlanks(block)
       return matches
         ? {
@@ -59,7 +67,7 @@ export const answersFromBlocks = (blocks: string[]): Record<string, SelectForEac
           }
         : acc
     },
-    {}
+    {} as Record<string, SelectForEachBlankAnswer>
   )
 }
 

@@ -97,6 +97,11 @@ function LessonActivitySelectForEachBlank({
       />
       <LessonContent>
         {blocks.map(block => {
+          if (typeof block !== 'string') {
+            // TODO handle non-string block later
+            return null
+          }
+
           const blockBlanks = hasBlanks(block)
           if (blockBlanks) {
             const { remaining, nodes } = blockBlanks.reduce(

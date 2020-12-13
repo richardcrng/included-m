@@ -35,17 +35,13 @@ function LessonActivitySwipeCards({
           !cardsState[0].isRight && swingEvent.throwDirection === Core.Direction.LEFT
         )
         if (directionMatches) {
-          const feedback = cardsState[0].feedbackCorrect || 'Amazing!'
-          const newNotification = typeof feedback === 'string'
-            ? { message: feedback, color: 'success', isShowing: true }
-            : { ...feedback, color: 'success', isShowing: true }
+          const feedback = cardsState[0].feedbackOnCorrect || 'Amazing!'
+          const newNotification = { message: feedback, color: 'success', isShowing: true }
           setNotificationState(newNotification)
           setCardsState(([first, ...rest]) => rest)
         } else {
-          const feedback = cardsState[0].feedbackNotCorrect || 'Not quite'
-          const newNotification = typeof feedback === 'string'
-            ? { message: feedback, color: 'warning', isShowing: true }
-            : { ...feedback, color: 'warning', isShowing: true }
+          const feedback = cardsState[0].feedbackOnNotCorrect || 'Not quite'
+          const newNotification = { message: feedback, color: 'warning', isShowing: true }
           setNotificationState(newNotification)
 
           // return card to top of stack

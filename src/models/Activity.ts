@@ -3,6 +3,7 @@ import { ActivityCRUDBase } from '../content/types'
 import Answer from './Answer'
 import Card from './Card'
 import Choice from './Choice'
+import ContentBlock from './ContentBlock'
 import { numericKeys } from './utils';
 
 const activitySchema = {
@@ -14,7 +15,7 @@ const activitySchema = {
     'select-multiple',
     'swipe-cards'
   ]),
-  blocks: Schema.indexed.string,
+  contentBlockIdsOrdered: Schema.indexed.string,
   choiceIdsOrdered: Schema.indexed.string,
   answerIdsOrdered: Schema.indexed.string,
   cardIdsOrdered: Schema.indexed.string
@@ -37,7 +38,10 @@ export default class Activity extends ActiveClass(activitySchema) {
       activityType
     } = data
 
-    const blocks = numericKeys(data.blocks)
+    const blocks = await ContentBlock.createManyFromRaw(...data.blocks)
+    const contentBlockIdsOrdered = numericKeys(
+      blocks.map(block => block.getId())
+    )
 
     if (data.choices) {
       const choices = await Choice.createManyFromRaw(data.choices)
@@ -54,7 +58,7 @@ export default class Activity extends ActiveClass(activitySchema) {
 
     return await this.create({
       activityType,
-      blocks,
+      contentBlockIdsOrdered,
       choiceIdsOrdered,
       cardIdsOrdered
     })
@@ -64,6 +68,22 @@ export default class Activity extends ActiveClass(activitySchema) {
     return await Promise.all(docs.map(doc => (
       this.createFromRaw(doc)
     )))
+  }
+
+  get contentBlockIds(): string[] {
+    return Object.values(this.contentBlockIdsOrdered)
+  }
+
+  get choiceIds(): string[] {
+    return Object.values(this.choiceIdsOrdered)
+  }
+
+  get answerIds(): string[] {
+    return Object.values(this.answerIdsOrdered)
+  }
+
+  get cardIds(): string[] {
+    return Object.values(this.cardIdsOrdered)
   }
 }
 
