@@ -7,7 +7,15 @@ import { initialize } from 'fireactive'
 import store from './redux';
 
 initialize({
-  databaseURL: 'https://included-m-default-rtdb.europe-west1.firebasedatabase.app/'
+  apiKey: "AIzaSyBPAfs2hzOGiIBmDm_iZG4hQsZfNdZaRz0",
+  authDomain: "included-m.firebaseapp.com",
+  databaseURL: "https://included-m-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "included-m",
+  storageBucket: "included-m.appspot.com",
+  messagingSenderId: "120205799819",
+  // @ts-ignore
+  appId: "1:120205799819:web:7b8b7a05d2abf5b4e87f8e",
+  measurementId: "G-E602LNZPCN"
 })
 
 const app = (
