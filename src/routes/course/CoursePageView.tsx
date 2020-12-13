@@ -40,11 +40,6 @@ const Container = styled.div`
 const PickCourseButton = styled(IonButton)`
   height: 100%
 `
-
-interface Props {
-  message?: string;
-}
-
 interface Props {
   course: CourseCRUD,
   onTopicStart?(topic: TopicCRUD): void

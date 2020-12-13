@@ -29,11 +29,11 @@ import HomePage from './routes/HomePage';
 import { CourseCRUD } from './content/types';
 import actions from './redux/reducer';
 import { Route } from 'react-router';
-import CoursePage from './routes/CoursePage';
 import TopicPage from './routes/TopicPage';
 import LessonPage from './routes/LessonPage';
 import Course from './models/Course';
 import { makeUseFireactiveDocument } from './lib/useFireactive/useFireactiveDocument';
+import CoursePageRoute from './routes/course/CoursePageRoute';
 
 
 const useFireactiveCourse = makeUseFireactiveDocument(Course, (course, updateFn) => course.on('value', updateFn))
@@ -41,27 +41,27 @@ const useFireactiveCourse = makeUseFireactiveDocument(Course, (course, updateFn)
 const App: React.FC = () => {
   const dispatch = useDispatch()
 
-  const [doc, state] = useFireactiveCourse({
-    getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
-    documentToState: course => course.toRaw()
-  })
+  // const [doc, state] = useFireactiveCourse({
+  //   getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
+  //   documentToState: course => course.toRaw()
+  // })
   
-  React.useEffect(() => {
-    const getData = async () => {
-      const res = await fetch('https://api.jsonbin.io/b/5fd513e9fbb23c2e36a5e8ca')
-      const json: CourseCRUD = await res.json()
+  // React.useEffect(() => {
+  //   const getData = async () => {
+  //     const res = await fetch('https://api.jsonbin.io/b/5fd513e9fbb23c2e36a5e8ca')
+  //     const json: CourseCRUD = await res.json()
 
-      dispatch(actions.loaded.course.create.update(json))
-    }
+  //     dispatch(actions.loaded.course.create.update(json))
+  //   }
 
-    getData()
+  //   getData()
 
-  }, [dispatch])
+  // }, [dispatch])
 
   return (
   <IonApp>
     <IonReactRouter>
-      <Route exact path='/course' component={CoursePage} />
+      <Route exact path='/course' component={CoursePageRoute.Redux} />
       <Route exact path='/topic' component={TopicPage} />
       <Route exact path='/lesson' component={LessonPage} />
       <Route exact path='/' component={HomePage} />

@@ -1,6 +1,6 @@
 import { ActiveClass, Schema, relations } from 'fireactive'
 import { ChapterCRUD } from '../content/types'
-import Lesson from './Lesson'
+import Lesson, { LessonRaw, LessonRawDeep } from './Lesson'
 import { numericKeys } from './utils'
 
 const lessonSchema = {
@@ -15,6 +15,14 @@ export interface ChapterRaw {
   lessonIds: string[]
 }
 
+export type ChapterRawDeep<R extends boolean = true> = ChapterRaw & {
+  lessons: R extends true
+    ? LessonRawDeep[]
+    : R extends false
+      ? LessonRaw[]
+      : (LessonRaw | LessonRawDeep)[]
+}
+
 export default class Chapter extends ActiveClass(lessonSchema) {
 
   topic = relations.findById('Topic', 'topicId')
@@ -24,7 +32,7 @@ export default class Chapter extends ActiveClass(lessonSchema) {
   static async createFromRaw(data: ChapterCRUD): Promise<Chapter> {
     const lessons = await Lesson.createManyFromRaw(...data.lessons)
     const lessonIdsOrdered = numericKeys(
-      lessons.map((activity: Lesson) => activity.getId())
+      lessons.map((lesson: Lesson) => lesson.getId())
     )
     const chapter = await this.create({
       chapterTitle: data.chapterTitle,
@@ -48,6 +56,32 @@ export default class Chapter extends ActiveClass(lessonSchema) {
       topicId: this.topicId? this.topicId : undefined,
       chapterTitle: this.chapterTitle,
       lessonIds: this.lessonIds
+    }
+  }
+
+  async toRawDeep(recursive: true): Promise<ChapterRawDeep<true>>
+  async toRawDeep(): Promise<ChapterRawDeep<true>>
+  async toRawDeep(recursive: false): Promise<ChapterRawDeep<false>>
+
+  async toRawDeep(recursive = true): Promise<ChapterRawDeep<boolean>> {
+    if (recursive) {
+      const lessons = await this.lessons()
+      const rawLessons = await Promise.all(lessons.map(
+        lesson => lesson.toRawDeep()
+      ))
+      return {
+        ...this.toRaw(),
+        lessons: rawLessons
+      }
+    } else {
+      const lessons = await this.lessons()
+      const rawLessons = lessons.map(
+        lesson => lesson.toRaw()
+      )
+      return {
+        ...this.toRaw(),
+        lessons: rawLessons
+      }
     }
   }
 }
