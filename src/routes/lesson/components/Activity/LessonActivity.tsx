@@ -1,7 +1,7 @@
 import { IonButton } from '@ionic/react';
 import React from 'react';
 import { useHistory } from 'react-router';
-import { ActivityCRUD, isComplexSelectForEachBlankActivityCRUD } from '../../../content/types';
+import { ActivityRawDeep } from '../../../../models/Activity';
 import LessonContent from '../LessonContent';
 import LessonActivityRead from './LessonActivityRead';
 import LessonActivitySelectMultiple from './LessonActivitySelectMultiple';
@@ -10,7 +10,7 @@ import LessonActivitySelectForEachBlankComplex from './SelectForEachBlank/Lesson
 import LessonActivitySwipeCards from './SwipeCards';
 
 interface Props {
-  activity: ActivityCRUD,
+  activity: ActivityRawDeep,
 }
 
 function LessonActivity({
@@ -51,7 +51,7 @@ function LessonActivity({
       />
     )
   } else if (activity.activityType === 'select-for-each-blank') {
-    if (isComplexSelectForEachBlankActivityCRUD(activity)) {
+    if (activity.choices.length > 0) {
       return (
         <LessonActivitySelectForEachBlankComplex
           activity={activity}
@@ -73,7 +73,7 @@ function LessonActivity({
   } else {
     return (
       <LessonActivityRead
-        blocks={activity.blocks}
+        blocks={activity.contentBlocks}
       />
     )
   }

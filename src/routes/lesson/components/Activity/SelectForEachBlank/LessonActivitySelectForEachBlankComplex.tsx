@@ -2,32 +2,48 @@ import React, { useReducer, useState } from 'react';
 import { shuffle } from 'lodash';
 import riduce from 'riduce';
 import Markdown from 'markdown-to-jsx'
-import { BlankOrText, hasBlanks, SelectForEachBlankAnswerComplex } from './utils'
+import { BlankOrText, hasBlanks } from './utils'
 import LessonContent from '../../LessonContent';
 import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
-import MultipleAnswerCard from '../../../../ui/atoms/MultipleAnswerCard';
-import Notification, { NotificationProps } from '../../../../ui/atoms/Notification';
-import { SelectForEachBlankComplexActivityCRUD } from '../../../../content/types';
+import MultipleAnswerCard from '../../../../../ui/atoms/MultipleAnswerCard';
+import Notification, { NotificationProps } from '../../../../../ui/atoms/Notification';
+import { ActivityRawDeep } from '../../../../../models/Activity';
+import { AnswerRaw } from '../../../../../models/Answer';
 
 interface Props {
-  activity: SelectForEachBlankComplexActivityCRUD
+  activity: ActivityRawDeep
+}
+
+export interface ChoiceAnswerState extends AnswerRaw {
+  isLocked: boolean,
+  isSelected: boolean,
+  textMatch: string
 }
 
 function LessonActivityCRUDSelectForEachBlankComplex({
-  activity: { blocks, choices }
+  activity: { contentBlocks: blocks, choices }
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({ message: '', isShowing: false })
 
-  const choiceEntries = Object.entries(choices)
+  const choiceToAnswerEntries: [string, ChoiceAnswerState[]][] = choices.map(choice => {
+    const mappedAnswers: ChoiceAnswerState[] = choice.answers.map(answer => ({
+      ...answer,
+      isLocked: false,
+      isSelected: false,
+      textMatch: choice.textMatch
+    }))
 
-  const shuffledChoices = Object.fromEntries(choiceEntries.map(([match, answers]) => [match, shuffle(answers.map(answer => ({
-    ...answer, isLocked: false, match, isSelected: false
-  })))]))
+    const shuffledAnswers = shuffle(mappedAnswers)
+
+    return [choice.textMatch, shuffledAnswers]
+  })
+
+  const shuffledChoices = Object.fromEntries(choiceToAnswerEntries)
 
   const initialState = {
     choices: shuffledChoices,
-    selectedInput: choiceEntries[0][0]
+    selectedInput: choiceToAnswerEntries[0][0]
   }
   
   const [reducer, actions] = riduce(initialState)
@@ -63,7 +79,7 @@ function LessonActivityCRUDSelectForEachBlankComplex({
 
     if (answer.isCorrect) {
       const matchers = Object.keys(choices)
-      const currIdx = matchers.findIndex(key => key === answer.match)
+      const currIdx = matchers.findIndex(key => key === answer.textMatch)
       dispatch(actions.choices[activityState.selectedInput][idx].create.assign({ isLocked: true }))
 
       if (currIdx < matchers.length - 1) {
@@ -100,19 +116,15 @@ function LessonActivityCRUDSelectForEachBlankComplex({
       />
       <LessonContent>
         {blocks.map(block => {
-          if (typeof block !== 'string') {
-            // TODO handle non-string block
-            return null
-          }
+          const { markdown } = block
 
-
-          const blockBlanks = hasBlanks(block)
+          const blockBlanks = hasBlanks(markdown)
           if (blockBlanks) {
             const { remaining, nodes } = blockBlanks.reduce(
               (acc, match) => {
                 const [before, remaining] = acc.remaining.split(match)
 
-                const matchingAnswer: SelectForEachBlankAnswerComplex | undefined = activityState.choices[match].find(
+                const matchingAnswer: ChoiceAnswerState | undefined = activityState.choices[match].find(
                   answer => answer.isCorrect
                 )
 
@@ -130,7 +142,7 @@ function LessonActivityCRUDSelectForEachBlankComplex({
                 ]
                 return { remaining, nodes }
               },
-              { remaining: block, nodes: [] as React.ReactNode[] }
+              { remaining: markdown, nodes: [] as React.ReactNode[] }
             )
 
             return (
@@ -150,7 +162,7 @@ function LessonActivityCRUDSelectForEachBlankComplex({
         })}
         {!allChoicesLocked && activeChoices && activeChoices.map((answer, idx) => (
             <MultipleAnswerCard
-              key={`${answer.match}-${answer.text}`}
+              key={`${answer.textMatch}-${answer.text}`}
               answer={answer}
               disabled={notification.isShowing}
               onClick={makeClickHandler(answer, idx)}

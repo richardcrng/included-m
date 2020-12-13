@@ -9,9 +9,9 @@ import {
   IoClose,
   // IoInformationCircleOutline
 } from 'react-icons/io5'
-import ProgressBoxes from '../../ui/atoms/ProgressBoxes';
-import { LessonContext } from './LessonDetails';
+import { LessonContext } from '../LessonPageView';
 import { useHistory } from 'react-router';
+import ProgressBoxes from '../../../ui/atoms/ProgressBoxes';
 
 const Buttons = styled(IonButtons)`
   margin: 1rem;

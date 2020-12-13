@@ -1,17 +1,20 @@
 import React from 'react';
 import Markdown from 'markdown-to-jsx';
-import { ContentBlockCRUD } from '../../content/types';
+import { ContentBlockRaw } from '../../../models/ContentBlock';
 
 interface Props {
-  block: ContentBlockCRUD
+  block: ContentBlockRaw
 }
 
-function LessonCRUD({
+function LessonContentBlock({
   block
 }: Props) {
   if (typeof block !== 'string') {
-    // TODO handle non-string block
-    return null
+    return (
+      <Markdown options={{ forceBlock: true }}>
+        {block.markdown}
+      </Markdown>
+    )
   } else {
     return (
       <Markdown options={{ forceBlock: true }}>
@@ -22,4 +25,4 @@ function LessonCRUD({
   
 }
 
-export default LessonCRUD
+export default LessonContentBlock

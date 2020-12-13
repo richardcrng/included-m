@@ -55,7 +55,7 @@ function TopicPageRouteRedux({ history }: RouteComponentProps) {
 }
 
 const TopicPageRoute = {
-Firebase: TopicPageRouteFirebase,
+  Firebase: TopicPageRouteFirebase,
   Redux: TopicPageRouteRedux
 }
 

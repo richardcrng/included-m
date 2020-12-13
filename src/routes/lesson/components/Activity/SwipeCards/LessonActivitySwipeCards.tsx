@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonFooter, IonIcon } from '@ionic/react';
 import { arrowBack, arrowForward } from 'ionicons/icons';
 import { shuffle } from 'lodash';
-import Swing, { Core } from '../../../../lib/swing-react';
-import { SwipeCard, SwipeCardsActivityCRUD } from '../../../../content/types';
+import Swing, { Core } from '../../../../../lib/swing-react';
 import LessonContent from '../../LessonContent';
 import LessonContentBlock from '../../LessonContentBlock';
-import Notification, { NotificationProps } from '../../../../ui/atoms/Notification';
+import Notification, { NotificationProps } from '../../../../../ui/atoms/Notification';
 import LessonContinueButton from '../../LessonContinueButton';
+import { ActivityRawDeep } from '../../../../../models/Activity';
+import { CardRaw } from '../../../../../models/Card';
 
 interface Props {
-  activity: SwipeCardsActivityCRUD
+  activity: ActivityRawDeep
 }
 
 function LessonActivitySwipeCards({
@@ -81,12 +82,12 @@ function LessonActivitySwipeCards({
           }))
         }}
       />
-      <Swing.Stack<SwipeCard>>
+      <Swing.Stack<CardRaw>>
         {(cardNodes, swingData) => {
           return (
             <>
               <LessonContent>
-                {activity.blocks.map(block => (
+                {activity.contentBlocks.map(block => (
                   <LessonContentBlock
                     key={JSON.stringify(block)}
                     block={block}

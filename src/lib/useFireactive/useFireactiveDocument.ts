@@ -2,7 +2,14 @@ import { ActiveDocument } from 'fireactive/dist/types/class.types';
 import { isEqual } from 'lodash'
 import { useState, useEffect } from 'react';
 import Course from '../../models/Course';
+import Lesson from '../../models/Lesson';
 import Topic from '../../models/Topic';
+
+export const useFireactiveCourse = makeUseFireactiveDocument(Course, (doc, updateFn) => doc.on('value', updateFn))
+
+export const useFireactiveTopic = makeUseFireactiveDocument(Topic, (doc, updateFn) => doc.on('value', updateFn))
+
+export const useFireactiveLesson = makeUseFireactiveDocument(Lesson, (doc, updateFn) => doc.on('value', updateFn))
 
 type Opts<C extends new (...args: any) => any, S = unknown> = {
   getDocument(activeClass: C): Promise<InstanceType<C> | null>,
@@ -11,7 +18,12 @@ type Opts<C extends new (...args: any) => any, S = unknown> = {
 
 type Listener = Parameters<ActiveDocument['on']>[1]
 
-export const makeUseFireactiveDocument = <C extends new (...args: any) => any>(activeClass: C, callback?: (doc: InstanceType<C>, updateFn: Listener) => void) => {
+type UpdateCallback<C extends new (...args: any) => any> = (doc: InstanceType<C>, updateFn: Listener) => void
+
+export function makeUseFireactiveDocument<C extends new (...args: any) => any>(
+  activeClass: C,
+  callback?: UpdateCallback<C>
+) {
 
   return function useFireactiveDocument <S = unknown>(
     { getDocument, documentToState } : Opts<C, S>
@@ -44,37 +56,3 @@ export const makeUseFireactiveDocument = <C extends new (...args: any) => any>(a
     return [document, state]
   }
 }
-
-// export default function useFireactiveDocument<D, S = unknown>(
-//   { getDocument, documentToState, }: Opts<D, S>,
-//   callback?: (doc: D, updateFn: Listener) => void
-// ): [D | null, S | null] {
-  
-//   const [state, setState] = useState<S | null>(null)
-//   const [document, setDocument] = useState<D | null>(null)
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const foundDocument = document || await getDocument()
-
-//       if (foundDocument) {
-//         const updateIfNew = () => {
-//           const asState = documentToState(foundDocument)
-//           if (!isEqual(state, asState)) {
-//             !document && setDocument(foundDocument)
-//             setState(asState)
-//           }
-//         }
-//         callback && callback(foundDocument, updateIfNew)
-//       }
-//     }
-
-//     fetchData()
-//   })
-
-//   return [document, state]
-// }
-
-export const useFireactiveCourse = makeUseFireactiveDocument(Course, (course, updateFn) => course.on('value', updateFn))
-
-export const useFireactiveTopic = makeUseFireactiveDocument(Topic, (topic, updateFn) => topic.on('value', updateFn))
