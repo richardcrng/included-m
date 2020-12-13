@@ -1,3 +1,4 @@
+import { initialize } from 'fireactive';
 import { isEqual } from 'lodash'
 import { useState, useEffect } from 'react';
 import Course from '../../models/Course';
@@ -23,10 +24,13 @@ export function makeUseFireactiveDocument<C extends new (...args: any) => any>(
   activeClass: C,
   callback?: UpdateCallback<C>
 ) {
-
   return function useFireactiveDocument <S = unknown>(
     { getDocument, documentToState } : Opts<C, S>
   ): [InstanceType<C> | null, S | null] {
+    initialize({
+      databaseURL: 'https://included-m-default-rtdb.europe-west1.firebasedatabase.app/'
+    })
+
     const [state, setState] = useState<S | null>(null)
     const [document, setDocument] = useState<InstanceType<C> | null>(null)
 
