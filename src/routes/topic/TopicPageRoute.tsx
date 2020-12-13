@@ -16,7 +16,7 @@ interface TopicPageRouteFirebaseProps extends RouteComponentProps<{
 function TopicPageRouteFirebase({ 
   history, match
 }: TopicPageRouteFirebaseProps) {
-  const [doc, state] = useFireactiveTopic({
+  const [state] = useFireactiveTopic({
     getDocument: (docClass) => docClass.findById(match.params.id),
     documentToState: doc => doc.toRawDeep(true)
   })

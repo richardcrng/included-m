@@ -4,12 +4,14 @@ import StackedCards from './components/StackedCards';
 import * as Core from './core'
 import useSwingData from "./hooks/useSwingData";
 
-export default {
+const SwingReact = {
   Provider: Swing,
   Stack,
   Cards: StackedCards,
   Core
 }
+
+export default SwingReact
 
 export {
   Stack,

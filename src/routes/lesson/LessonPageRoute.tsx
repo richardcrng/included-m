@@ -11,7 +11,7 @@ interface LessonPageRouteFirebaseProps extends RouteComponentProps<{
 function LessonPageRouteFirebase({ 
   history, match
 }: LessonPageRouteFirebaseProps) {
-  const [doc, state] = useFireactiveLesson({
+  const [state] = useFireactiveLesson({
     getDocument: (docClass) => docClass.findById(match.params.id),
     documentToState: doc => doc.toRawDeep(true)
   })
