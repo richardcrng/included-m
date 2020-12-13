@@ -27,7 +27,7 @@ function LessonActivity({
           <p>Why don't you try another?</p>
           <IonButton
             onClick={() => {
-              history.push('/topic')
+              history.goBack()
             }}
             expand='full'
           >

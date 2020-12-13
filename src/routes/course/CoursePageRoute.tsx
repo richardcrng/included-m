@@ -20,7 +20,6 @@ interface CoursePageRouteFirebaseProps extends RouteComponentProps<{
 function CoursePageRouteFirebase({ 
   history, match
 }: CoursePageRouteFirebaseProps) {
-  console.log('running course page')
 
   const [count, setCount] = React.useState(0)
 

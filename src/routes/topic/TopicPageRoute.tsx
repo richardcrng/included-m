@@ -65,7 +65,7 @@ function TopicPageRouteQuery({
 }: TopicPageRouteIdProps) {
   const { id } = match.params
 
-  const { isLoading, error, data } = useQuery(`lesson-${id}`, async () => {
+  const { isLoading, error, data } = useQuery(`topic-${id}`, async () => {
     const res = await fetch(`${SERVER_URL}/topics/${id}`)
     const body = await res.json() as GetTopicIdSuccess
     return body.data.topic
@@ -76,6 +76,9 @@ function TopicPageRouteQuery({
     return (
       <TopicPageView
         topic={data}
+        onLessonSelect={lesson => {
+          history.push(`/lesson/${lesson._id}`)
+        }}
       />
     )
   } else {

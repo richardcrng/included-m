@@ -36,8 +36,6 @@ export type GetLessonIdSuccess = JSendBase<{ lesson: LessonRawDeep }, 'success'>
 function LessonPageRouteQuery({ 
   history, match
 }: LessonPageRouteIdProps) {
-  console.log('running course page')
-
   const { id } = match.params
 
   const { isLoading, error, data } = useQuery(`lesson-${id}`, async () => {

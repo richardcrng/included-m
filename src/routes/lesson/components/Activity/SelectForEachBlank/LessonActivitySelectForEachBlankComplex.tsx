@@ -21,7 +21,7 @@ export interface ChoiceAnswerState extends AnswerRaw {
   textMatch: string
 }
 
-function LessonActivityCRUDSelectForEachBlankComplex({
+function LessonActivitySelectForEachBlankComplex({
   activity: { contentBlocks: blocks, choices }
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({ message: '', isShowing: false })
@@ -78,12 +78,11 @@ function LessonActivityCRUDSelectForEachBlankComplex({
       })
 
     if (answer.isCorrect) {
-      const matchers = Object.keys(choices)
-      const currIdx = matchers.findIndex(key => key === answer.textMatch)
+      const currIdx = choices.findIndex(choice => choice.textMatch === answer.textMatch)
       dispatch(actions.choices[activityState.selectedInput][idx].create.assign({ isLocked: true }))
 
-      if (currIdx < matchers.length - 1) {
-        dispatch(actions.selectedInput.create.update(matchers[currIdx + 1]))
+      if (currIdx < choices.length - 1) {
+        dispatch(actions.selectedInput.create.update(choices[currIdx + 1].textMatch))
       }
     }
   }
@@ -177,4 +176,4 @@ function LessonActivityCRUDSelectForEachBlankComplex({
   )
 }
 
-export default LessonActivityCRUDSelectForEachBlankComplex;
+export default LessonActivitySelectForEachBlankComplex;
