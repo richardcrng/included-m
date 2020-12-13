@@ -76,6 +76,7 @@
     "@types/styled-components": "^5.1.4",
     "@types/supertest": "^2.0.10",
     "firebase": "7.24.0",
+    "firebase-server": "https://github.com/richardcrng/firebase-server/tarball/df54d1bc09d081acac827de160bceefd0b08820e",
     "supertest": "^6.0.1",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
