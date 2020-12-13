@@ -1,6 +1,6 @@
 import { ActiveClass, Schema, relations } from 'fireactive'
 import { TopicCRUD } from '../content/types'
-import Chapter from './Chapter'
+import Chapter, { ChapterRaw, ChapterRawDeep } from './Chapter'
 import { numericKeys } from './utils'
 
 const topicSchema = {
@@ -15,6 +15,14 @@ export interface TopicRaw {
   topicTitle: string,
   description: string,
   chapterIds: string[]
+}
+
+export type TopicRawDeep<R extends boolean = true> = TopicRaw & {
+  chapters: R extends true
+    ? ChapterRawDeep[]
+    : R extends false
+      ? ChapterRaw[]
+      : (ChapterRaw | ChapterRawDeep)[]
 }
 
 export default class Topic extends ActiveClass(topicSchema) {
@@ -56,6 +64,32 @@ export default class Topic extends ActiveClass(topicSchema) {
       topicTitle,
       description,
       chapterIds
+    }
+  }
+
+  async toRawDeep(recursive: true): Promise<TopicRawDeep<true>>
+  async toRawDeep(): Promise<TopicRawDeep<true>>
+  async toRawDeep(recursive: false): Promise<TopicRawDeep<false>>
+
+  async toRawDeep(recursive = true): Promise<TopicRawDeep<boolean>> {
+    if (recursive) {
+      const chapters = await this.chapters()
+      const rawChapters = await Promise.all(chapters.map(
+        chapter => chapter.toRawDeep()
+      ))
+      return {
+        ...this.toRaw(),
+        chapters: rawChapters
+      }
+    } else {
+      const chapters = await this.chapters()
+      const rawChapters = chapters.map(
+        chapter => chapter.toRaw()
+      )
+      return {
+        ...this.toRaw(),
+        chapters: rawChapters
+      }
     }
   }
 }
