@@ -45,8 +45,6 @@ const App: React.FC = () => {
     getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
     documentToState: course => course.toRaw()
   })
-
-  console.log(state, doc)
   
   React.useEffect(() => {
     const getData = async () => {
