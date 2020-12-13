@@ -27,7 +27,7 @@ import { useDispatch } from 'react-redux';
 import HomePage from './routes/HomePage';
 
 import actions from './redux/reducer';
-import { Route } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router';
 import TopicPage from './routes/TopicPage';
 import CoursePageRoute from './routes/course/CoursePageRoute';
 import { useFireactiveCourse } from './lib/useFireactive/useFireactiveDocument';
@@ -61,12 +61,14 @@ const App: React.FC = () => {
   return (
   <IonApp>
     <IonReactRouter>
-      <Route exact path='/course/:id' component={CoursePageRoute.Firebase} />
-      <Route exact path='/course' component={CoursePageRoute.Redux} />
-      <Route exact path='/topic/:id' component={TopicPageRoute.Firebase} />
-      <Route exact path='/lesson/:id' component={LessonPageRoute.Firebase} />
-      <Route exact path='/topic' component={TopicPage} />
-      <Route exact path='/' component={HomePage} />
+      <Switch>
+        <Route exact path='/course/:id' component={CoursePageRoute.Firebase} />
+        <Route exact path='/course' component={CoursePageRoute.Redux} />
+        <Route exact path='/topic/:id' component={TopicPageRoute.Firebase} />
+        <Route exact path='/lesson/:id' component={LessonPageRoute.Firebase} />
+        <Route exact path='/' component={HomePage} />
+        <Redirect to='/' />
+      </Switch>
     </IonReactRouter>
   </IonApp>
 )

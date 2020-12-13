@@ -21,7 +21,7 @@ function HomePage() {
           <p>Welcome to this proof of concept for Included M.</p>
           <p>It's under construction - so expect bugs and incomplete content!</p>
           <IonButton
-            routerLink='/course'
+            routerLink='/course/-MONxQjuDiExMGzxF7Jy'
             expand='full'
           >
             Start
