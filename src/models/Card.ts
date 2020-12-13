@@ -30,4 +30,8 @@ export default class Card extends ActiveClass(cardSchema) {
       feedbackOnNotCorrect: this.feedbackOnNotCorrect ? this.feedbackOnNotCorrect : undefined
     }
   }
+
+  async toRawDeep(): Promise<CardRaw> {
+    return await Promise.resolve(this.toRaw())
+  }
 }

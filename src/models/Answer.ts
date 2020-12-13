@@ -21,4 +21,8 @@ export default class Answer extends ActiveClass(answerSchema) {
       feedback: this.feedback ? this.feedback : undefined
     }
   }
+
+  async toRawDeep(): Promise<AnswerRaw> {
+    return await Promise.resolve(this.toRaw())
+  }
 }
