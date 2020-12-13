@@ -26,15 +26,13 @@ import { IonReactRouter } from '@ionic/react-router';
 import { useDispatch } from 'react-redux';
 import HomePage from './routes/HomePage';
 
-import { CourseCRUD } from './content/types';
 import actions from './redux/reducer';
 import { Route } from 'react-router';
 import TopicPage from './routes/TopicPage';
-import LessonPage from './routes/LessonPage';
-import Course from './models/Course';
 import CoursePageRoute from './routes/course/CoursePageRoute';
 import { useFireactiveCourse } from './lib/useFireactive/useFireactiveDocument';
 import TopicPageRoute from './routes/topic/TopicPageRoute';
+import LessonPageRoute from './routes/lesson/LessonPageRoute';
 
 
 
@@ -66,6 +64,7 @@ const App: React.FC = () => {
       <Route exact path='/course/:id' component={CoursePageRoute.Firebase} />
       <Route exact path='/course' component={CoursePageRoute.Redux} />
       <Route exact path='/topic/:id' component={TopicPageRoute.Firebase} />
+      <Route exact path='/lesson/:id' component={LessonPageRoute.Firebase} />
       <Route exact path='/topic' component={TopicPage} />
       <Route exact path='/' component={HomePage} />
     </IonReactRouter>
