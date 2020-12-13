@@ -24,7 +24,6 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useDispatch } from 'react-redux';
-import { isEqual } from 'lodash';
 import HomePage from './routes/HomePage';
 
 import { CourseCRUD } from './content/types';
@@ -33,17 +32,19 @@ import { Route } from 'react-router';
 import CoursePage from './routes/CoursePage';
 import TopicPage from './routes/TopicPage';
 import LessonPage from './routes/LessonPage';
-import Course, { CourseRaw } from './models/Course';
-import useFireactiveDocument from './lib/useFireactive/useFireactiveDocument';
+import Course from './models/Course';
+import { makeUseFireactiveDocument } from './lib/useFireactive/useFireactiveDocument';
 
+
+const useFireactiveCourse = makeUseFireactiveDocument(Course, (course, updateFn) => course.on('value', updateFn))
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
 
-  const [doc, state] = useFireactiveDocument<Course, CourseRaw>({
+  const [doc, state] = useFireactiveCourse({
     getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
     documentToState: course => course.toRaw()
-  }, (course, updateFn) => course.on('value', updateFn))
+  })
 
   console.log(state, doc)
   
