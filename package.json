@@ -48,6 +48,7 @@
     "server": "ts-node server/index.ts",
     "build": "react-scripts build",
     "build:server": "tsc --project tsconfig.server.json",
+    "heroku-postbuild": "yarn run build:server",
     "test": "yarn run test:client; yarn run test:server",
     "test:client": "yarn run test:client:nowatch",
     "test:client:watch": "react-scripts test",
