@@ -34,33 +34,19 @@ import CoursePage from './routes/CoursePage';
 import TopicPage from './routes/TopicPage';
 import LessonPage from './routes/LessonPage';
 import Course, { CourseRaw } from './models/Course';
+import useFireactiveDocument from './lib/useFireactive/useFireactiveDocument';
 
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
 
-  const [course, setCourse] = React.useState<CourseRaw | undefined>(undefined)
+  const doc = useFireactiveDocument<CourseRaw, Course>({
+    getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
+    documentToState: (c: Course) => c.toRaw()
+  }, (course, updateFn) => course.on('value', updateFn))
 
-  React.useEffect(() => {
-    const getCourse = async () => {
-      const foundCourse = await Course.findOne({ courseTitle: 'Included M' })
-
-      if (foundCourse) {
-        const updateIfNew = () => {
-          console.log('running effect')
-          const asRaw = foundCourse.toRaw()
-          if (isEqual(course, asRaw)) return
-          console.log('replacing', course, asRaw)
-          setCourse(asRaw)
-          
-        }
-        foundCourse.on('value', updateIfNew)
-      }
-    }
-
-    getCourse()
-  })
-
+  console.log(doc)
+  
   React.useEffect(() => {
     const getData = async () => {
       const res = await fetch('https://api.jsonbin.io/b/5fd513e9fbb23c2e36a5e8ca')

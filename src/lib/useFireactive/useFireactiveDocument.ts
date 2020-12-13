@@ -2,16 +2,18 @@ import { ActiveDocument } from 'fireactive/dist/types/class.types';
 import { isEqual } from 'lodash'
 import { useState, useEffect } from 'react';
 
-type Args<D extends ActiveDocument = ActiveDocument, S = ReturnType<ActiveDocument['toObject']>> = {
-  getDocument(): Promise<D>,
+type Opts<S, D> = {
+  getDocument(): Promise<D | null>,
   documentToState(document: D): S
 }
 
-export default function useFireactiveDocument<D extends ActiveDocument = ActiveDocument, S = ReturnType<ActiveDocument['toObject']>>({
-  getDocument,
-  documentToState
-}: Args<D, S>) {
-  const [state, setState] = useState<S | undefined>(undefined)
+type Listener = Parameters<ActiveDocument['on']>[1]
+
+export default function useFireactiveDocument<S, D>(
+  { getDocument, documentToState, }: Opts<S, D>,
+  callback: (doc: D, updateFn: Listener) => void
+) {
+  const [state, setState] = useState<S | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,17 +21,17 @@ export default function useFireactiveDocument<D extends ActiveDocument = ActiveD
 
       if (foundDocument) {
         const updateIfNew = () => {
-          console.log('running effect')
           const asState = documentToState(foundDocument)
           if (!isEqual(state, asState)) {
             setState(asState)
           }
-          
         }
-        foundDocument.on('value', updateIfNew)
+        callback(foundDocument, updateIfNew)
       }
     }
 
     fetchData()
   })
+
+  return state
 }
