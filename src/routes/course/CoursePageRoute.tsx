@@ -24,7 +24,7 @@ function CoursePageRouteFirebase({
       <CoursePageView
         course={state}
         onTopicStart={(topic) => {
-          history.push(`/topics/${topic._id}`)
+          history.push(`/topic/${topic._id}`)
         }}
       />
     )
