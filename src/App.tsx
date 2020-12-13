@@ -62,6 +62,7 @@ const App: React.FC = () => {
   return (
   <IonApp>
     <IonReactRouter>
+      <Route exact path='/courses/:id' component={CoursePageRoute.Firebase} />
       <Route exact path='/course' component={CoursePageRoute.Redux} />
       <Route exact path='/topic' component={TopicPage} />
       <Route exact path='/lesson' component={LessonPage} />

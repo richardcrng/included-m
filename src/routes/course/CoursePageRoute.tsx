@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import selectors from '../../redux/selectors';
 import { RouteComponentProps } from 'react-router';
-import actions from '../../redux/reducer';
 import { LOADING_STRING } from '../../redux/state';
 import CoursePageView from './CoursePageView';
 import { useFireactiveCourse } from '../../lib/useFireactive/useFireactiveDocument';
+import LoadingPage from '../../pages/LoadingPage';
 
 interface CoursePageRouteFirebaseProps extends RouteComponentProps<{
   id: string;
@@ -19,19 +19,18 @@ function CoursePageRouteFirebase({
     documentToState: course => course.toRawDeep(false)
   })
 
-
   if (state) {
     return (
       <CoursePageView
         course={state}
         onTopicStart={(topic) => {
-          history.push('/topic')
+          history.push(`/topics/${topic._id}`)
         }}
       />
     )
+  } else {
+    return <LoadingPage />
   }
-
-
 }
 
 function CoursePageRouteRedux({ history } : RouteComponentProps) {
