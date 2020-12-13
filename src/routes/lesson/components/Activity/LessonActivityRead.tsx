@@ -1,11 +1,11 @@
 import React from 'react';
+import { ContentBlockRaw } from '../../../../models/ContentBlock';
 import LessonContent from '../LessonContent';
-import { ContentBlockCRUD } from '../../../content/types';
 import LessonContentBlock from '../LessonContentBlock';
 import LessonContinueButton from '../LessonContinueButton';
 
 interface Props {
-  blocks: ContentBlockCRUD[]
+  blocks: ContentBlockRaw[]
 }
 
 function LessonActivityRead({

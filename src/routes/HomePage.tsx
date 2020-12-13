@@ -1,6 +1,7 @@
 import { IonButton, IonContent, IonTitle, IonToolbar } from '@ionic/react';
 import React from 'react';
 import styled from 'styled-components'
+import { DEFAULT_COURSE_ID } from '../constants';
 
 const Container = styled.div`
   margin: 1rem;
@@ -21,7 +22,7 @@ function HomePage() {
           <p>Welcome to this proof of concept for Included M.</p>
           <p>It's under construction - so expect bugs and incomplete content!</p>
           <IonButton
-            routerLink='/course'
+            routerLink={`/course/${DEFAULT_COURSE_ID}`}
             expand='full'
           >
             Start

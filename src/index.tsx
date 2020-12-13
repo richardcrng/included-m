@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import { initialize } from 'fireactive'
+import { QueryCache, ReactQueryCacheProvider } from 'react-query'
 import store from './redux';
 
-initialize({
-  databaseURL: 'https://included-m-default-rtdb.europe-west1.firebasedatabase.app/'
-})
+const queryCache = new QueryCache()
 
 const app = (
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <ReactQueryCacheProvider queryCache={queryCache}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ReactQueryCacheProvider>
 )
 
 ReactDOM.render(app, document.getElementById('root'));

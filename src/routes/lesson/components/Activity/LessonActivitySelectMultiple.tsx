@@ -2,23 +2,26 @@ import React, { useMemo, useReducer, useState } from 'react';
 import { shuffle } from 'lodash';
 import riduce from 'riduce';
 import LessonContent from '../LessonContent';
-import { SelectAnAnswerActivityCRUD, SelectMultipleActivityCRUD } from '../../../content/types';
 import LessonContentBlock from '../LessonContentBlock';
-import MultipleAnswerCard from '../../../components/atoms/MultipleAnswerCard';
+import MultipleAnswerCard from '../../../../ui/atoms/MultipleAnswerCard';
 import LessonContinueButton from '../LessonContinueButton';
-import Notification, { NotificationProps } from '../../../components/atoms/Notification';
+import Notification, { NotificationProps } from '../../../../ui/atoms/Notification';
+import { ActivityRawDeep } from '../../../../models/Activity';
 
 interface Props {
-  activity: SelectMultipleActivityCRUD | SelectAnAnswerActivityCRUD
+  activity: ActivityRawDeep
 }
 
 function LessonActivitySelectMultiple({
-  activity: { blocks, answers }
+  activity: { contentBlocks, answers }
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({ message: '', isShowing: false })
 
   const shuffledAnswers = useMemo(
-    () => shuffle(answers),
+    () => shuffle(answers.map(answer => ({
+      ...answer,
+      isSelected: false
+    }))),
     [answers]
   )
 
@@ -32,7 +35,7 @@ function LessonActivitySelectMultiple({
   const allCorrectAnswersSelected = answersState.every(answer => !answer.isCorrect || answer.isSelected)
 
   const makeClickHandler = (
-    answer: typeof answers[0],
+    answer: typeof answersState[0],
     idx: number
   ) => () => {
     if (answer.isSelected) return
@@ -44,21 +47,11 @@ function LessonActivitySelectMultiple({
     const color = answer.isCorrect ? 'success' : 'warning'
 
     if (answer.feedback) {
-      if (typeof answer.feedback === 'string') {
-        setNotification({
-          message: answer.feedback,
-          isShowing: true,
-          color
-        })
-      } else {
-        // setNotification({
-        //   header: answer.feedback.header,
-        //   message: answer.feedback.message,
-        //   buttonText: answer.feedback.buttonText,
-        //   isShowing: true,
-        //   color
-        // })
-      }
+      setNotification({
+        message: answer.feedback,
+        isShowing: true,
+        color
+      })
     } else if (answer.isCorrect) {
       setNotification({
         message: 'Amazing!',
@@ -100,7 +93,7 @@ function LessonActivitySelectMultiple({
         }}
       />
       <LessonContent>
-        {blocks.map(block => (
+        {contentBlocks.map(block => (
           <LessonContentBlock
             key={JSON.stringify(block)}
             block={block}

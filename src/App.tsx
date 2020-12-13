@@ -23,39 +23,45 @@ import {
   IonApp,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import HomePage from './routes/HomePage';
 
-import { CourseCRUD } from './content/types';
-import actions from './redux/reducer';
-import { Route } from 'react-router';
-import CoursePage from './routes/CoursePage';
-import TopicPage from './routes/TopicPage';
-import LessonPage from './routes/LessonPage';
-
+import { Redirect, Route, Switch } from 'react-router';
+import CoursePageRoute from './routes/course/CoursePageRoute';
+import TopicPageRoute from './routes/topic/TopicPageRoute';
+import LessonPageRoute from './routes/lesson/LessonPageRoute';
 
 const App: React.FC = () => {
-  const dispatch = useDispatch()
 
-  React.useEffect(() => {
-    const getData = async () => {
-      const res = await fetch('https://api.jsonbin.io/b/5fd513e9fbb23c2e36a5e8ca')
-      const json: CourseCRUD = await res.json()
+  // const [doc, state] = useFireactiveCourse({
+  //   getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
+  //   documentToState: course => course.toRawDeep(false)
+  // })
 
-      dispatch(actions.loaded.course.create.update(json))
-    }
+  // console.log(doc, state)
+  
+  // React.useEffect(() => {
+  //   const getData = async () => {
+  //     const res = await fetch('https://api.jsonbin.io/b/5fd513e9fbb23c2e36a5e8ca')
+  //     const json: CourseCRUD = await res.json()
 
-    getData()
+  //     dispatch(actions.loaded.course.create.update(json))
+  //   }
 
-  }, [dispatch])
+  //   getData()
+
+  // }, [dispatch])
 
   return (
   <IonApp>
     <IonReactRouter>
-      <Route exact path='/course' component={CoursePage} />
-      <Route exact path='/topic' component={TopicPage} />
-      <Route exact path='/lesson' component={LessonPage} />
-      <Route exact path='/' component={HomePage} />
+      <Switch>
+        <Route exact path='/course/:id' component={CoursePageRoute.Query} />
+        <Route exact path='/topic/:id' component={TopicPageRoute.Query} />
+        <Route exact path='/lesson/:id' component={LessonPageRoute.Query} />
+        <Route exact path='/' component={HomePage} />
+        <Redirect to='/' />
+      </Switch>
     </IonReactRouter>
   </IonApp>
 )

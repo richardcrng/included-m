@@ -1,9 +1,9 @@
 import { ActiveClass, Schema, relations } from 'fireactive'
-import { ActivityCRUDBase } from '../content/types'
-import Answer from './Answer'
-import Card from './Card'
-import Choice from './Choice'
-import ContentBlock from './ContentBlock'
+import { ActivityCRUDBase, ActivityType } from '../content/types'
+import Answer, { AnswerRaw } from './Answer'
+import Card, { CardRaw } from './Card'
+import Choice, { ChoiceRawDeep } from './Choice'
+import ContentBlock, { ContentBlockRaw } from './ContentBlock'
 import { numericKeys } from './utils';
 
 const activitySchema = {
@@ -21,6 +21,23 @@ const activitySchema = {
   cardIdsOrdered: Schema.indexed.string
 }
 
+export interface ActivityRaw {
+  _id: string,
+  lessonId?: string,
+  activityType: ActivityType,
+  contentBlockIds: string[],
+  choiceIds: string[],
+  answerIds: string[],
+  cardIds: string[]
+}
+
+export interface ActivityRawDeep extends ActivityRaw {
+  choices: ChoiceRawDeep[],
+  answers: AnswerRaw[],
+  cards: CardRaw[],
+  contentBlocks: ContentBlockRaw[]
+}
+
 export default class Activity extends ActiveClass(activitySchema) {
 
   // relations
@@ -28,6 +45,7 @@ export default class Activity extends ActiveClass(activitySchema) {
   choices = relations.findByIds<Activity, Choice>(Choice, () => Object.values(this.choiceIdsOrdered))
   answers = relations.findByIds<Activity, Answer>(Answer, () => Object.values(this.answerIdsOrdered))
   cards = relations.findByIds<Activity, Card>(Card, () => Object.values(this.cardIdsOrdered))
+  contentBlocks = relations.findByIds<Activity, ContentBlock>(ContentBlock, () => this.contentBlockIds)
 
   static async createFromRaw(data: ActivityCRUDBase) {
 
@@ -84,6 +102,42 @@ export default class Activity extends ActiveClass(activitySchema) {
 
   get cardIds(): string[] {
     return Object.values(this.cardIdsOrdered)
+  }
+
+  toRaw(): ActivityRaw {
+    return {
+      _id: this.getId(),
+      lessonId: this.lessonId ? this.lessonId : undefined,
+      activityType: this.activityType,
+      contentBlockIds: this.contentBlockIds,
+      cardIds: this.cardIds,
+      answerIds: this.answerIds,
+      choiceIds: this.choiceIds
+    }
+  }
+
+  async toRawDeep(): Promise<ActivityRawDeep> {
+    const [answers, choices, cards, contentBlocks] = await Promise.all([
+      this.answers(),
+      this.choices(),
+      this.cards(),
+      this.contentBlocks()
+    ])
+
+    const [rawAnswers, rawChoices, rawCards, rawContentBlocks] = await Promise.all([
+      Promise.all(answers.map(answer => answer.toRawDeep())),
+      Promise.all(choices.map(choice => choice.toRawDeep())),
+      Promise.all(cards.map(card => card.toRawDeep())),
+      Promise.all(contentBlocks.map(block => block.toRawDeep()))
+    ])
+
+    return {
+      ...this.toRaw(),
+      answers: rawAnswers,
+      choices: rawChoices,
+      cards: rawCards,
+      contentBlocks: rawContentBlocks
+    }
   }
 }
 

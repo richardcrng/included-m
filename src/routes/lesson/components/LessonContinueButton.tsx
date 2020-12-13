@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { IonButton } from '@ionic/react'
-import { LessonContext } from './LessonDetails'
+import { LessonContext } from '../LessonPageView'
 
 interface Props {
   disabled?: boolean

@@ -1,14 +1,15 @@
 import React, { useReducer } from 'react';
 import riduce, { Action, ActionsProxy } from 'riduce'
-import { ActivityCRUD, LessonCRUD } from '../../content/types';
-import LessonActivity from './Activity/LessonActivity';
-import LessonToolbar from './LessonToolbar';
+import { ActivityRawDeep } from '../../models/Activity';
+import { LessonRawDeep } from '../../models/Lesson';
+import LessonActivity from './components/Activity/LessonActivity';
+import LessonToolbar from './components/LessonToolbar';
 
 type LessonCtx = {
   dispatch: React.Dispatch<Action>,
   actions: ActionsProxy<LessonCtx['state'], LessonCtx['state'], {}>,
   state: {
-    activities: ActivityCRUD[],
+    activities: ActivityRawDeep[],
     currentIdx: number,
   }
 }
@@ -17,12 +18,13 @@ type LessonCtx = {
 export const LessonContext = React.createContext<LessonCtx>({})
 
 interface Props {
-  lesson: LessonCRUD
+  lesson: LessonRawDeep
 }
 
-function LessonDetails({
+function LessonPageView({
   lesson,
 } : Props) {
+
   const initialLessonState = {
     activities: lesson.activities,
     currentIdx: 0
@@ -48,4 +50,4 @@ function LessonDetails({
   )
 }
 
-export default LessonDetails
+export default LessonPageView

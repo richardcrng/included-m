@@ -3,25 +3,24 @@ import { shuffle } from 'lodash';
 import riduce, { bundle } from 'riduce';
 import { answersFromBlocks, BlankOrText, hasBlanks } from './utils'
 import LessonContent from '../../LessonContent';
-import { SelectForEachBlankSimpleActivityCRUD } from '../../../../content/types';
 import LessonContentBlock from '../../LessonContentBlock';
 import LessonContinueButton from '../../LessonContinueButton';
-import MultipleAnswerCard from '../../../../components/atoms/MultipleAnswerCard';
-import Notification, { NotificationProps } from '../../../../components/atoms/Notification';
+import MultipleAnswerCard from '../../../../../ui/atoms/MultipleAnswerCard';
+import Notification, { NotificationProps } from '../../../../../ui/atoms/Notification';
+import { ActivityRawDeep } from '../../../../../models/Activity';
+import { ChoiceAnswerState } from './LessonActivitySelectForEachBlankComplex';
 
 interface Props {
-  activity: SelectForEachBlankSimpleActivityCRUD
+  activity: ActivityRawDeep
 }
 
 
 function LessonActivitySelectForEachBlank({
-  activity: { blocks, }
+  activity: { contentBlocks }
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({ message: '', isShowing: false })
 
-  const answers = answersFromBlocks(blocks)
-
-  type Answer = typeof answers['any']
+  const answers = answersFromBlocks(contentBlocks)
 
   const initialState = {
     answers: shuffle(answers),
@@ -32,8 +31,8 @@ function LessonActivitySelectForEachBlank({
   
   const [activityState, dispatch] = useReducer(reducer, initialState)
 
-  const answerMatchesInput = (answer: Answer) => {
-    return activityState.selectedInput === answer.match
+  const answerMatchesInput = (answer: ChoiceAnswerState) => {
+    return activityState.selectedInput === answer.textMatch
   }
 
   const allAnswersLocked = activityState.answers.every(answer => answer.isLocked)
@@ -58,8 +57,8 @@ function LessonActivitySelectForEachBlank({
           const answersArr = Object.values(activityState.answers)
           const currIndex = answersArr.findIndex(answerMatchesInput)
           return currIndex < answersArr.length - 1
-            ? answersArr[currIndex + 1].match
-            : answersArr[0].match
+            ? answersArr[currIndex + 1].textMatch
+            : answersArr[0].textMatch
         })
       ]))
 
@@ -96,20 +95,16 @@ function LessonActivitySelectForEachBlank({
         buttons={[notification.buttonText || 'Close']}
       />
       <LessonContent>
-        {blocks.map(block => {
-          if (typeof block !== 'string') {
-            // TODO handle non-string block later
-            return null
-          }
-
-          const blockBlanks = hasBlanks(block)
+        {contentBlocks.map((block) => {
+          const { markdown } = block
+          const blockBlanks = hasBlanks(markdown)
           if (blockBlanks) {
             const { remaining, nodes } = blockBlanks.reduce(
               (acc, match) => {
                 const [before, remaining] = acc.remaining.split(match)
 
                 const matchingAnswer = activityState.answers.find(
-                  answer => answer.match === match
+                  answer => answer.textMatch === match
                 )
 
                 const nodes = [
@@ -121,7 +116,7 @@ function LessonActivitySelectForEachBlank({
                     onInputClick={() => {
                       if (matchingAnswer) {
                         dispatch(actions.selectedInput.create.update(
-                        matchingAnswer.match
+                        matchingAnswer.textMatch
                       ))
                       }
                     }}
@@ -131,11 +126,11 @@ function LessonActivitySelectForEachBlank({
 
                 return { remaining, nodes }
               },
-              { remaining: block, nodes: [] as React.ReactNode[] }
+              { remaining: markdown, nodes: [] as React.ReactNode[] }
             )
 
             return (
-              <p key={JSON.stringify(block)}>
+              <p key={markdown}>
                 {nodes}
                 <span>{remaining}</span>
               </p>

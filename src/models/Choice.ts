@@ -1,11 +1,21 @@
 import { ActiveClass, Schema, relations } from 'fireactive'
 import { ChoicesCRUD } from '../content/types'
-import Answer from './Answer'
+import Answer, { AnswerRaw } from './Answer'
 import { numericKeys } from './utils';
 
 const choiceSchema = {
   textMatch: Schema.string,
   answerIdsOrdered: Schema.indexed.string
+}
+
+export interface ChoiceRaw {
+  _id: string,
+  textMatch: string,
+  answerIds: string[]
+}
+
+export interface ChoiceRawDeep extends ChoiceRaw {
+  answers: AnswerRaw[]
 }
 
 export default class Choice extends ActiveClass(choiceSchema) {
@@ -26,5 +36,22 @@ export default class Choice extends ActiveClass(choiceSchema) {
 
   get answerIds(): string[] {
     return Object.values(this.answerIdsOrdered)
+  }
+
+  toRaw(): ChoiceRaw {
+    return {
+      _id: this.getId(),
+      textMatch: this.textMatch,
+      answerIds: this.answerIds
+    }
+  }
+
+  async toRawDeep(): Promise<ChoiceRawDeep> {
+    const answers = await this.answers()
+    const rawAnswers = answers.map(answer => answer.toRaw())
+    return {
+      ...this.toRaw(),
+      answers: rawAnswers
+    }
   }
 }

@@ -21,7 +21,7 @@ export interface LessonCRUD {
   isCompleted?: boolean
 }
 
-type ActivityType = 'read' | 'select-an-answer' | 'select-for-each-blank' | 'select-multiple' | 'swipe-cards'
+export type ActivityType = 'read' | 'select-an-answer' | 'select-for-each-blank' | 'select-multiple' | 'swipe-cards'
 
 export type ActivityCRUDBase = {
   activityType: ActivityType,

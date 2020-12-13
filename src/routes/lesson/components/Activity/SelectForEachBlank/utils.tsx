@@ -1,18 +1,8 @@
 import React from 'react';
 import styled from 'styled-components'
-import { AnswerFeedback, ContentBlockCRUD } from '../../../../content/types';
+import { ContentBlockRaw } from '../../../../../models/ContentBlock';
+import { ChoiceAnswerState } from './LessonActivitySelectForEachBlankComplex';
 
-export interface SelectForEachBlankAnswer {
-  match: string,
-  text: string,
-  isSelected: boolean,
-  isLocked: boolean,
-}
-
-export interface SelectForEachBlankAnswerComplex extends SelectForEachBlankAnswer {
-  isCorrect: boolean,
-  feedback?: AnswerFeedback
-}
 
 interface InputProps {
   showFocus?: boolean
@@ -40,39 +30,36 @@ const LockedAnswer = styled.span`
 
 export const hasBlanks = (str: string) => str.match(/{{(.+?)}}/g)
 
-export const answersFromBlocks = (blocks: ContentBlockCRUD[]): Record<string, SelectForEachBlankAnswer> => {
+export const answersFromBlocks = (blocks: ContentBlockRaw[]): Record<string, ChoiceAnswerState> => {
   return blocks.reduce(
     (
-      acc: Record<string, SelectForEachBlankAnswer>,
+      acc: Record<string, ChoiceAnswerState>,
       block
     ) => {
-      // TODO: handle non-string blocks
-      if (typeof block !== 'string') {
-        return acc
-      }
+      const { markdown } = block
 
-      const matches = hasBlanks(block)
+      const matches = hasBlanks(markdown)
       return matches
         ? {
             ...acc,
             ...Object.fromEntries(matches.map(str => [
               str,
               {
-                match: str,
+                textMatch: str,
                 text: str.substring(2, str.length - 2),
                 isSelected: false,
                 isLocked: false
-              }
+              } as ChoiceAnswerState
             ]))
           }
         : acc
     },
-    {} as Record<string, SelectForEachBlankAnswer>
+    {} as Record<string, ChoiceAnswerState>
   )
 }
 
 interface BlankOrTextProps {
-  matchingAnswer?: SelectForEachBlankAnswer,
+  matchingAnswer?: ChoiceAnswerState,
   onInputClick(): void,
   showFocus: boolean
 }
