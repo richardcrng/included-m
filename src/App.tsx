@@ -32,18 +32,17 @@ import { Route } from 'react-router';
 import TopicPage from './routes/TopicPage';
 import LessonPage from './routes/LessonPage';
 import Course from './models/Course';
-import { makeUseFireactiveDocument } from './lib/useFireactive/useFireactiveDocument';
 import CoursePageRoute from './routes/course/CoursePageRoute';
+import { useFireactiveCourse } from './lib/useFireactive/useFireactiveDocument';
 
 
-const useCourse = makeUseFireactiveDocument(Course, (course, updateFn) => course.on('value', updateFn))
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
 
-  // const [doc, state] = useCourse({
+  // const [doc, state] = useFireactiveCourse({
   //   getDocument: () => Course.findOne({ courseTitle: 'Included M' }),
-  //   documentToState: course => course.toRaw()
+  //   documentToState: course => course.toRawDeep(false)
   // })
 
   // console.log(doc, state)

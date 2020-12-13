@@ -9,6 +9,7 @@ const choiceSchema = {
 }
 
 export interface ChoiceRaw {
+  _id: string,
   textMatch: string,
   answerIds: string[]
 }
@@ -39,6 +40,7 @@ export default class Choice extends ActiveClass(choiceSchema) {
 
   toRaw(): ChoiceRaw {
     return {
+      _id: this.getId(),
       textMatch: this.textMatch,
       answerIds: this.answerIds
     }

@@ -11,6 +11,7 @@ const topicSchema = {
 }
 
 export interface TopicRaw {
+  _id: string,
   courseId?: string,
   topicTitle: string,
   description: string,
@@ -60,6 +61,7 @@ export default class Topic extends ActiveClass(topicSchema) {
     } = this
 
     return {
+      _id: this.getId(),
       courseId: courseId ? courseId : undefined,
       topicTitle,
       description,

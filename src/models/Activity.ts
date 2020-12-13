@@ -22,6 +22,7 @@ const activitySchema = {
 }
 
 export interface ActivityRaw {
+  _id: string,
   lessonId?: string,
   activityType: ActivityType,
   contentBlockIds: string[],
@@ -105,6 +106,7 @@ export default class Activity extends ActiveClass(activitySchema) {
 
   toRaw(): ActivityRaw {
     return {
+      _id: this.getId(),
       lessonId: this.lessonId ? this.lessonId : undefined,
       activityType: this.activityType,
       contentBlockIds: this.contentBlockIds,

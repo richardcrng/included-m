@@ -1,10 +1,11 @@
 import { ActiveDocument } from 'fireactive/dist/types/class.types';
 import { isEqual } from 'lodash'
 import { useState, useEffect } from 'react';
+import Course from '../../models/Course';
 
 type Opts<C extends new (...args: any) => any, S = unknown> = {
   getDocument(activeClass: C): Promise<InstanceType<C> | null>,
-  documentToState?(document: InstanceType<C>): S
+  documentToState?(document: InstanceType<C>): S | Promise<S>
 }
 
 type Listener = Parameters<ActiveDocument['on']>[1]
@@ -22,11 +23,11 @@ export const makeUseFireactiveDocument = <C extends new (...args: any) => any>(a
         const foundDocument = document || await getDocument(activeClass)
 
         if (foundDocument) {
-          const updateIfNew = () => {
+          const updateIfNew = async () => {
             !document && setDocument(foundDocument)
 
             if (documentToState) {
-              const asState = documentToState && documentToState(foundDocument)
+              const asState = documentToState && await documentToState(foundDocument)
               if (!isEqual(state, asState)) {
                 setState(asState)
               }
@@ -42,6 +43,8 @@ export const makeUseFireactiveDocument = <C extends new (...args: any) => any>(a
     return [document, state]
   }
 }
+
+export const useFireactiveCourse = makeUseFireactiveDocument(Course, (course, updateFn) => course.on('value', updateFn))
 
 // export default function useFireactiveDocument<D, S = unknown>(
 //   { getDocument, documentToState, }: Opts<D, S>,

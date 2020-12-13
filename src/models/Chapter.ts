@@ -10,6 +10,7 @@ const lessonSchema = {
 }
 
 export interface ChapterRaw {
+  _id: string,
   topicId?: string,
   chapterTitle: string,
   lessonIds: string[]
@@ -53,6 +54,7 @@ export default class Chapter extends ActiveClass(lessonSchema) {
 
   toRaw(): ChapterRaw {
     return {
+      _id: this.getId(),
       topicId: this.topicId? this.topicId : undefined,
       chapterTitle: this.chapterTitle,
       lessonIds: this.lessonIds

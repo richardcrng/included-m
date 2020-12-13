@@ -6,6 +6,7 @@ const contentBlockSchema = {
 }
 
 export interface ContentBlockRaw {
+  _id: string,
   markdown: string
 }
 
@@ -29,6 +30,7 @@ export default class ContentBlock extends ActiveClass(contentBlockSchema) {
 
   toRaw(): ContentBlockRaw {
     return {
+      _id: this.getId(),
       markdown: this.markdown
     }
   }

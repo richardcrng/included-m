@@ -10,6 +10,7 @@ const cardSchema = {
 }
 
 export interface CardRaw {
+  _id: string,
   text: string,
   isRight: boolean,
   choiceRight: string,
@@ -22,6 +23,7 @@ export default class Card extends ActiveClass(cardSchema) {
 
   toRaw(): CardRaw {
     return {
+      _id: this.getId(),
       text: this.text,
       isRight: this.isRight,
       choiceRight: this.choiceRight,

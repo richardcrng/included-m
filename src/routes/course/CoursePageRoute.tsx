@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router';
 import actions from '../../redux/reducer';
 import { LOADING_STRING } from '../../redux/state';
 import CoursePageView from './CoursePageView';
+import { useFireactiveCourse } from '../../lib/useFireactive/useFireactiveDocument';
 
 interface CoursePageRouteFirebaseProps extends RouteComponentProps<{
   id: string;
@@ -13,7 +14,22 @@ interface CoursePageRouteFirebaseProps extends RouteComponentProps<{
 function CoursePageRouteFirebase({ 
   history, match
 }: CoursePageRouteFirebaseProps) {
-  return null
+  const [doc, state] = useFireactiveCourse({
+    getDocument: (CourseClass) => CourseClass.findById(match.params.id),
+    documentToState: course => course.toRawDeep(false)
+  })
+
+
+  if (state) {
+    return (
+      <CoursePageView
+        course={state}
+        onTopicStart={(topic) => {
+          history.push('/topic')
+        }}
+      />
+    )
+  }
 
 
 }

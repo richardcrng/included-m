@@ -10,6 +10,7 @@ const courseSchema = {
 }
 
 export interface CourseRaw {
+  _id: string,
   courseTitle: string,
   description: string,
   topicIds: string[]
@@ -43,13 +44,13 @@ export default class Course extends ActiveClass(courseSchema) {
   }
 
   toRaw(): CourseRaw {
-    const {
-      courseTitle, description, topicIds
-    } = this
 
-    return JSON.parse(JSON.stringify({
-      courseTitle, description, topicIds
-    }))
+    return {
+      _id: this.getId(),
+      courseTitle: this.courseTitle,
+      description: this.description,
+      topicIds: this.topicIds
+    }
   }
 
   get topicIds(): string[] {
