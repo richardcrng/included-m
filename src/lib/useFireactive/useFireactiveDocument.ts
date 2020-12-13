@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react';
 
 type Opts<C extends new (...args: any) => any, S = unknown> = {
   getDocument(activeClass: C): Promise<InstanceType<C> | null>,
-  documentToState(document: InstanceType<C>): S
+  documentToState?(document: InstanceType<C>): S
 }
 
 type Listener = Parameters<ActiveDocument['on']>[1]
 
 export const makeUseFireactiveDocument = <C extends new (...args: any) => any>(activeClass: C, callback?: (doc: InstanceType<C>, updateFn: Listener) => void) => {
 
-  return function<S = unknown>(
+  return function useFireactiveDocument <S = unknown>(
     { getDocument, documentToState } : Opts<C, S>
   ): [InstanceType<C> | null, S | null] {
     const [state, setState] = useState<S | null>(null)
@@ -23,10 +23,13 @@ export const makeUseFireactiveDocument = <C extends new (...args: any) => any>(a
 
         if (foundDocument) {
           const updateIfNew = () => {
-            const asState = documentToState(foundDocument)
-            if (!isEqual(state, asState)) {
-              !document && setDocument(foundDocument)
-              setState(asState)
+            !document && setDocument(foundDocument)
+
+            if (documentToState) {
+              const asState = documentToState && documentToState(foundDocument)
+              if (!isEqual(state, asState)) {
+                setState(asState)
+              }
             }
           }
           callback && callback(foundDocument, updateIfNew)

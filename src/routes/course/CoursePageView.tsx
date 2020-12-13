@@ -12,8 +12,9 @@ import {
   IoArrowBack,
   IoInformationCircleOutline
 } from 'react-icons/io5'
-import { CourseCRUD, TopicCRUD } from '../../content/types';
 import { useHistory } from 'react-router';
+import { CourseRawDeep } from '../../models/Course';
+import { TopicRaw, TopicRawDeep } from '../../models/Topic';
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -41,8 +42,8 @@ const PickCourseButton = styled(IonButton)`
   height: 100%
 `
 interface Props {
-  course: CourseCRUD,
-  onTopicStart?(topic: TopicCRUD): void
+  course: CourseRawDeep<false>,
+  onTopicStart?(topic: TopicRaw | TopicRawDeep): void
 }
 
 function CoursePageView({

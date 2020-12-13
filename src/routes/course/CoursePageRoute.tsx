@@ -6,6 +6,18 @@ import actions from '../../redux/reducer';
 import { LOADING_STRING } from '../../redux/state';
 import CoursePageView from './CoursePageView';
 
+interface CoursePageRouteFirebaseProps extends RouteComponentProps<{
+  id: string;
+}> {}
+
+function CoursePageRouteFirebase({ 
+  history, match
+}: CoursePageRouteFirebaseProps) {
+  return null
+
+
+}
+
 function CoursePageRouteRedux({ history } : RouteComponentProps) {
   const dispatch = useDispatch()
   const course = useSelector(selectors.getLoadedCourse)
@@ -15,17 +27,19 @@ function CoursePageRouteRedux({ history } : RouteComponentProps) {
   }
 
   return (
-    <CoursePageView
-      course={course}
-      onTopicStart={(topic) => {
-        dispatch(actions.loaded.topic.create.update(topic))
-        history.push('/topic')
-      }}
-    />
+    null
+    // <CoursePageView
+    //   course={course}
+    //   onTopicStart={(topic) => {
+    //     dispatch(actions.loaded.topic.create.update(topic))
+    //     history.push('/topic')
+    //   }}
+    // />
   )
 }
 
 const CoursePageRoute = {
+  Firebase: CoursePageRouteFirebase,
   Redux: CoursePageRouteRedux
 }
 
