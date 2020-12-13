@@ -57,8 +57,8 @@ const App: React.FC = () => {
     <IonReactRouter>
       <Switch>
         <Route exact path='/course/:id' component={CoursePageRoute.Query} />
-        <Route exact path='/topic/:id' component={TopicPageRoute.Firebase} />
-        <Route exact path='/lesson/:id' component={LessonPageRoute.Firebase} />
+        <Route exact path='/topic/:id' component={TopicPageRoute.Query} />
+        <Route exact path='/lesson/:id' component={LessonPageRoute.Query} />
         <Route exact path='/' component={HomePage} />
         <Redirect to='/' />
       </Switch>

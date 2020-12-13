@@ -6,6 +6,8 @@ import { JSendBase, jsend } from '../src/lib/jsend';
 import Lesson from '../src/models/Lesson';
 import { GetCourseIdSuccess } from '../src/routes/course/CoursePageRoute';
 import { GetLessonIdSuccess } from '../src/routes/lesson/LessonPageRoute';
+import Topic from '../src/models/Topic';
+import { GetTopicIdSuccess } from '../src/routes/topic/TopicPageRoute';
 
 const app = express()
 
@@ -70,7 +72,6 @@ app.get('/courses/:id', async (req, res) => {
   try {
     const course = await Course.findByIdOrFail(req.params.id)
     const courseRaw = await course.toRawDeep(false)
-    console.log(courseRaw)
     jsend<GetCourseIdSuccess>(res, {
       status: 'success',
       data: {
@@ -88,14 +89,14 @@ app.get('/courses/:id', async (req, res) => {
   }
 })
 
-app.get('/lessons/:id', async (req, res) => {
+app.get('/topics/:id', async (req, res) => {
 try {
-    const lesson = await Lesson.findByIdOrFail(req.params.id)
-    const lessonRaw = await lesson.toRawDeep()
-    jsend<GetLessonIdSuccess>(res, {
+    const topic = await Topic.findByIdOrFail(req.params.id)
+    const topicRaw = await topic.toRawDeep()
+    jsend<GetTopicIdSuccess>(res, {
       status: 'success',
       data: {
-        lesson: lessonRaw
+        topic: topicRaw
       }
     })
   } catch (err) {

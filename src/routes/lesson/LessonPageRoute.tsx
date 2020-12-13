@@ -5,14 +5,15 @@ import { useFireactiveLesson } from '../../lib/useFireactive/useFireactiveDocume
 import LoadingPage from '../../pages/LoadingPage';
 import { JSendBase } from '../../lib/jsend';
 import { LessonRawDeep } from '../../models/Lesson';
+import { useQuery } from 'react-query';
 
-interface LessonPageRouteFirebaseProps extends RouteComponentProps<{
+interface LessonPageRouteIdProps extends RouteComponentProps<{
   id: string;
 }> {}
 
 function LessonPageRouteFirebase({ 
   history, match
-}: LessonPageRouteFirebaseProps) {
+}: LessonPageRouteIdProps) {
   const [state] = useFireactiveLesson({
     getDocument: (docClass) => docClass.findById(match.params.id),
     documentToState: doc => doc.toRawDeep(true)
@@ -31,8 +32,34 @@ function LessonPageRouteFirebase({
 
 export type GetLessonIdSuccess = JSendBase<{ lesson: LessonRawDeep }, 'success'>
 
+function LessonPageRouteQuery({ 
+  history, match
+}: LessonPageRouteIdProps) {
+  console.log('running course page')
+
+  const { id } = match.params
+
+  const { isLoading, error, data } = useQuery(`lesson-${id}`, async () => {
+    const res = await fetch(`http://localhost:4000/lessons/${id}`)
+    const body = await res.json() as GetLessonIdSuccess
+    return body.data.lesson
+  }
+  )
+
+  if (data) {
+    return (
+      <LessonPageView
+        lesson={data}
+      />
+    )
+  } else {
+    return <LoadingPage />
+  }
+}
+
 const LessonPageRoute = {
   Firebase: LessonPageRouteFirebase,
+  Query: LessonPageRouteQuery
 }
 
 export default LessonPageRoute;

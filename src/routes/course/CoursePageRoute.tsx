@@ -79,17 +79,15 @@ function CoursePageRouteQuery({
 
   const { isLoading, error, data } = useQuery(`course-${id}`, async () => {
     const res = await fetch(`http://localhost:4000/courses/${id}`)
-    return await res.json() as GetCourseIdSuccess
+    const body = await res.json() as GetCourseIdSuccess
+    return body.data.course
   }
   )
 
-  console.log(isLoading, error, data)
-
   if (data) {
-    console.log(data)
     return (
       <CoursePageView
-        course={data.data.course}
+        course={data}
         onTopicStart={(topic) => {
           history.push(`/topic/${topic._id}`)
         }}

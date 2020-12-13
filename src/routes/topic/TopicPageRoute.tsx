@@ -8,14 +8,17 @@ import { LOADING_STRING } from '../../redux/state';
 import TopicPageView from './TopicPageView';
 import { useFireactiveTopic } from '../../lib/useFireactive/useFireactiveDocument';
 import LoadingPage from '../../pages/LoadingPage';
+import { JSendBase } from '../../lib/jsend';
+import { TopicRawDeep } from '../../models/Topic';
+import { useQuery } from 'react-query';
 
-interface TopicPageRouteFirebaseProps extends RouteComponentProps<{
+interface TopicPageRouteIdProps extends RouteComponentProps<{
   id: string;
 }> {}
 
 function TopicPageRouteFirebase({ 
   history, match
-}: TopicPageRouteFirebaseProps) {
+}: TopicPageRouteIdProps) {
   const [state] = useFireactiveTopic({
     getDocument: (docClass) => docClass.findById(match.params.id),
     documentToState: doc => doc.toRawDeep(true)
@@ -54,9 +57,35 @@ function TopicPageRouteRedux({ history }: RouteComponentProps) {
   )
 }
 
+export type GetTopicIdSuccess = JSendBase<{ topic: TopicRawDeep }, 'success'>
+
+function TopicPageRouteQuery({ 
+  history, match
+}: TopicPageRouteIdProps) {
+  const { id } = match.params
+
+  const { isLoading, error, data } = useQuery(`lesson-${id}`, async () => {
+    const res = await fetch(`http://localhost:4000/topics/${id}`)
+    const body = await res.json() as GetTopicIdSuccess
+    return body.data.topic
+  }
+  )
+
+  if (data) {
+    return (
+      <TopicPageView
+        topic={data}
+      />
+    )
+  } else {
+    return <LoadingPage />
+  }
+}
+
 const TopicPageRoute = {
   Firebase: TopicPageRouteFirebase,
-  Redux: TopicPageRouteRedux
+  Redux: TopicPageRouteRedux,
+  Query: TopicPageRouteQuery
 }
 
 export default TopicPageRoute;
