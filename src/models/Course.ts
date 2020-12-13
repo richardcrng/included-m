@@ -1,6 +1,6 @@
 import { ActiveClass, Schema, relations } from 'fireactive'
 import { CourseCRUD } from '../content/types'
-import Topic from './Topic'
+import Topic, { TopicRaw, TopicRawDeep } from './Topic'
 import { numericKeys } from './utils'
 
 const courseSchema = {
@@ -15,6 +15,14 @@ export interface CourseRaw {
   topicIds: string[]
 }
 
+export type CourseRawDeep<R extends boolean = true> = CourseRaw & {
+  topics: R extends true
+    ? TopicRawDeep[]
+    : R extends false
+      ? TopicRaw[]
+      : (TopicRaw | TopicRawDeep)[]
+}
+
 export default class Course extends ActiveClass(courseSchema) {
 
   course = relations.findById('Course', 'courseId')
@@ -24,14 +32,14 @@ export default class Course extends ActiveClass(courseSchema) {
   static async createFromRaw(data: CourseCRUD): Promise<Course> {
     const topics = await Topic.createManyFromRaw(...data.topics)
     const topicIdsOrdered = numericKeys(
-      topics.map((chapter: Topic) => chapter.getId())
+      topics.map((topic: Topic) => topic.getId())
     )
-    const chapter = await this.create({
+    const course = await this.create({
       courseTitle: data.courseTitle,
       description: data.description,
       topicIdsOrdered
     })
-    return chapter
+    return course
   }
 
   toRaw(): CourseRaw {
@@ -46,6 +54,32 @@ export default class Course extends ActiveClass(courseSchema) {
 
   get topicIds(): string[] {
     return Object.values(this.topicIdsOrdered)
+  }
+
+  async toRawDeep(recursive: true): Promise<CourseRawDeep<true>>
+  async toRawDeep(): Promise<CourseRawDeep<true>>
+  async toRawDeep(recursive: false): Promise<CourseRawDeep<false>>
+
+  async toRawDeep(recursive = true): Promise<CourseRawDeep<boolean>> {
+    if (recursive) {
+      const topics = await this.topics()
+      const rawChapters = await Promise.all(topics.map(
+        topic => topic.toRawDeep()
+      ))
+      return {
+        ...this.toRaw(),
+        topics: rawChapters
+      }
+    } else {
+      const topics = await this.topics()
+      const rawChapters = topics.map(
+        topic => topic.toRaw()
+      )
+      return {
+        ...this.toRaw(),
+        topics: rawChapters
+      }
+    }
   }
 }
 
