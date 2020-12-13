@@ -11,6 +11,7 @@ import CourseDetails from '../../pages/Course/CourseDetails';
 import actions from '../../redux/reducer';
 import { JSendBase } from '../../lib/jsend';
 import { CourseRawDeep } from '../../models/Course';
+import { SERVER_URL } from '../../constants';
 
 interface CoursePageRouteFirebaseProps extends RouteComponentProps<{
   id: string;
@@ -78,7 +79,7 @@ function CoursePageRouteQuery({
   const { id } = match.params
 
   const { isLoading, error, data } = useQuery(`course-${id}`, async () => {
-    const res = await fetch(`http://localhost:4000/courses/${id}`)
+    const res = await fetch(`${SERVER_URL}/courses/${id}`)
     const body = await res.json() as GetCourseIdSuccess
     return body.data.course
   }

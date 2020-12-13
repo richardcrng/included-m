@@ -11,6 +11,7 @@ import LoadingPage from '../../pages/LoadingPage';
 import { JSendBase } from '../../lib/jsend';
 import { TopicRawDeep } from '../../models/Topic';
 import { useQuery } from 'react-query';
+import { SERVER_URL } from '../../constants';
 
 interface TopicPageRouteIdProps extends RouteComponentProps<{
   id: string;
@@ -65,7 +66,7 @@ function TopicPageRouteQuery({
   const { id } = match.params
 
   const { isLoading, error, data } = useQuery(`lesson-${id}`, async () => {
-    const res = await fetch(`http://localhost:4000/topics/${id}`)
+    const res = await fetch(`${SERVER_URL}/topics/${id}`)
     const body = await res.json() as GetTopicIdSuccess
     return body.data.topic
   }

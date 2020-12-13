@@ -3,15 +3,10 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
- import { QueryCache, ReactQueryCacheProvider } from 'react-query'
-import { initialize } from 'fireactive'
+import { QueryCache, ReactQueryCacheProvider } from 'react-query'
 import store from './redux';
 
 const queryCache = new QueryCache()
-
-initialize({
-  databaseURL: process.env.DATABASE_URL
-})
 
 const app = (
   <ReactQueryCacheProvider queryCache={queryCache}>

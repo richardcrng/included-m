@@ -6,6 +6,7 @@ import LoadingPage from '../../pages/LoadingPage';
 import { JSendBase } from '../../lib/jsend';
 import { LessonRawDeep } from '../../models/Lesson';
 import { useQuery } from 'react-query';
+import { SERVER_URL } from '../../constants';
 
 interface LessonPageRouteIdProps extends RouteComponentProps<{
   id: string;
@@ -40,7 +41,7 @@ function LessonPageRouteQuery({
   const { id } = match.params
 
   const { isLoading, error, data } = useQuery(`lesson-${id}`, async () => {
-    const res = await fetch(`http://localhost:4000/lessons/${id}`)
+    const res = await fetch(`${SERVER_URL}/lessons/${id}`)
     const body = await res.json() as GetLessonIdSuccess
     return body.data.lesson
   }
