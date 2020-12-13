@@ -1156,6 +1156,11 @@
   dependencies:
     tslib "^1.9.0"
 
+"@capacitor/ios@2.4.4":
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-2.4.4.tgz#d1acfd1d6a240f4bc573bd4e7dcffc3090fc79a2"
+  integrity sha512-dQQeJ5xD4sGzakCg9wtFdzRNkwkDuUBl1EK8ilg8DAvh6iYzwWZ6Z0lYLJoA4Nq5Y1WmXDwYoVaTAZ19Lwqm2A==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz"
