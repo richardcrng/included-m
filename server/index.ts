@@ -2,7 +2,7 @@ import { initialize } from "fireactive";
 import app from "./app";
 
 initialize({
-  databaseURL: 'https://included-m-default-rtdb.europe-west1.firebasedatabase.app/'
+  databaseURL: process.env.DATABASE_URL
 })
 
 const server = app.listen(app.get("port"), () => {
