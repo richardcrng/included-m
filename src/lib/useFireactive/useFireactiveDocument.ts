@@ -1,4 +1,3 @@
-import { ActiveDocument } from 'fireactive/dist/types/class.types';
 import { isEqual } from 'lodash'
 import { useState, useEffect } from 'react';
 import Course from '../../models/Course';
@@ -16,7 +15,7 @@ type Opts<C extends new (...args: any) => any, S = unknown> = {
   documentToState?(document: InstanceType<C>): S | Promise<S>
 }
 
-type Listener = Parameters<ActiveDocument['on']>[1]
+type Listener = Parameters<firebase.database.Reference['on']>[1]
 
 type UpdateCallback<C extends new (...args: any) => any> = (doc: InstanceType<C>, updateFn: Listener) => void
 
