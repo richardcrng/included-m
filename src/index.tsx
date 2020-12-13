@@ -3,8 +3,11 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
+ import { QueryCache, ReactQueryCacheProvider } from 'react-query'
 import { initialize } from 'fireactive'
 import store from './redux';
+
+const queryCache = new QueryCache()
 
 initialize({
   apiKey: "AIzaSyBPAfs2hzOGiIBmDm_iZG4hQsZfNdZaRz0",
@@ -19,9 +22,11 @@ initialize({
 })
 
 const app = (
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <ReactQueryCacheProvider queryCache={queryCache}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ReactQueryCacheProvider>
 )
 
 ReactDOM.render(app, document.getElementById('root'));

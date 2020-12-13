@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
+import { useQuery } from 'react-query';
 import selectors from '../../redux/selectors';
 import { RouteComponentProps } from 'react-router';
 import { LOADING_STRING } from '../../redux/state';
@@ -8,6 +9,8 @@ import { useFireactiveCourse } from '../../lib/useFireactive/useFireactiveDocume
 import LoadingPage from '../../pages/LoadingPage';
 import CourseDetails from '../../pages/Course/CourseDetails';
 import actions from '../../redux/reducer';
+import { JSendBase } from '../../lib/jsend';
+import { CourseRawDeep } from '../../models/Course';
 
 interface CoursePageRouteFirebaseProps extends RouteComponentProps<{
   id: string;
@@ -65,9 +68,42 @@ function CoursePageRouteRedux({ history } : RouteComponentProps) {
   )
 }
 
+export type GetCourseIdSuccess = JSendBase<{ course: CourseRawDeep<false> }, 'success'>
+
+function CoursePageRouteQuery({ 
+  history, match
+}: CoursePageRouteFirebaseProps) {
+  console.log('running course page')
+
+  const { id } = match.params
+
+  const { isLoading, error, data } = useQuery(`course-${id}`, async () => {
+    const res = await fetch(`http://localhost:4000/courses/${id}`)
+    return await res.json() as GetCourseIdSuccess
+  }
+  )
+
+  console.log(isLoading, error, data)
+
+  if (data) {
+    console.log(data)
+    return (
+      <CoursePageView
+        course={data.data.course}
+        onTopicStart={(topic) => {
+          history.push(`/topic/${topic._id}`)
+        }}
+      />
+    )
+  } else {
+    return <LoadingPage />
+  }
+}
+
 const CoursePageRoute = {
   Firebase: CoursePageRouteFirebase,
-  Redux: CoursePageRouteRedux
+  Redux: CoursePageRouteRedux,
+  Query: CoursePageRouteQuery
 }
 
 export default CoursePageRoute;

@@ -3,6 +3,8 @@ import { RouteComponentProps } from 'react-router';
 import LessonPageView from './LessonPageView';
 import { useFireactiveLesson } from '../../lib/useFireactive/useFireactiveDocument';
 import LoadingPage from '../../pages/LoadingPage';
+import { JSendBase } from '../../lib/jsend';
+import { LessonRawDeep } from '../../models/Lesson';
 
 interface LessonPageRouteFirebaseProps extends RouteComponentProps<{
   id: string;
@@ -26,6 +28,8 @@ function LessonPageRouteFirebase({
     return <LoadingPage />
   }
 }
+
+export type GetLessonIdSuccess = JSendBase<{ lesson: LessonRawDeep }, 'success'>
 
 const LessonPageRoute = {
   Firebase: LessonPageRouteFirebase,
