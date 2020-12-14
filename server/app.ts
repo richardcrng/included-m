@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors';
 import { Optional } from 'utility-types';
+import { version } from '../package.json';
 import Course, { CourseRaw } from '../src/models/Course';
 import { JSendBase, jsend } from '../src/lib/jsend';
 import Lesson from '../src/models/Lesson';
@@ -8,6 +9,7 @@ import { GetCourseIdSuccess } from '../src/routes/course/CoursePageRoute';
 import { GetLessonIdSuccess } from '../src/routes/lesson/LessonPageRoute';
 import Topic from '../src/models/Topic';
 import { GetTopicIdSuccess } from '../src/routes/topic/TopicPageRoute';
+import { PingSuccessVersionNumber } from '../src/App';
 
 const app = express()
 
@@ -32,6 +34,17 @@ export type ResGenericError = Optional<JSendBase<{}, 'error'>, 'data'>
  * satisfied
  */
 export type ResGenericFail = Optional<JSendBase<{}, 'fail'>, 'data'>
+
+
+app.get('/ping', async (req, res) => {
+  jsend<PingSuccessVersionNumber>(res, {
+    status: 'success',
+    data: {
+      deployedVersion: version
+    }
+  })
+})
+
 
 export type PostCoursesSuccess = JSendBase<{ course: Course }, 'success'>
 

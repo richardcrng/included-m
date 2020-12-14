@@ -77,7 +77,7 @@ function CoursePageRouteQuery({
 
   const { id } = match.params
 
-  const { isLoading, error, data } = useQuery(`course-${id}`, async () => {
+  const { data } = useQuery(`course-${id}`, async () => {
     const res = await fetch(`${SERVER_URL}/courses/${id}`)
     const body = await res.json() as GetCourseIdSuccess
     return body.data.course
