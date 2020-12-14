@@ -38,7 +38,7 @@ function LessonPageRouteQuery({
 }: LessonPageRouteIdProps) {
   const { id } = match.params
 
-  const { isLoading, error, data } = useQuery(`lesson-${id}`, async () => {
+  const { data } = useQuery(`lesson-${id}`, async () => {
     const res = await fetch(`${SERVER_URL}/lessons/${id}`)
     const body = await res.json() as GetLessonIdSuccess
     return body.data.lesson

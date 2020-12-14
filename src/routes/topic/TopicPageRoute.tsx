@@ -65,7 +65,7 @@ function TopicPageRouteQuery({
 }: TopicPageRouteIdProps) {
   const { id } = match.params
 
-  const { isLoading, error, data } = useQuery(`topic-${id}`, async () => {
+  const { data } = useQuery(`topic-${id}`, async () => {
     const res = await fetch(`${SERVER_URL}/topics/${id}`)
     const body = await res.json() as GetTopicIdSuccess
     return body.data.topic
