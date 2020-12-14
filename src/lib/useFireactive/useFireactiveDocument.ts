@@ -29,6 +29,9 @@ export function makeUseFireactiveDocument<C extends new (...args: any) => any>(
     const [state, setState] = useState<S | null>(null)
     const [document, setDocument] = useState<InstanceType<C> | null>(null)
 
+    // @ts-ignore
+    console.log('class', activeClass, activeClass.ref && activeClass.ref())
+
     useEffect(() => {
       const fetchData = async () => {
         const foundDocument = document || await getDocument(activeClass)
