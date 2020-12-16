@@ -43,7 +43,7 @@ export type PingSuccessVersionNumber = JSendBase<{
 
 const App: React.FC = () => {
 
-  const [firebaseApp] = React.useState(initialize({
+  const firebaseApp = React.useMemo(() => initialize({
   apiKey: "AIzaSyBPAfs2hzOGiIBmDm_iZG4hQsZfNdZaRz0",
     authDomain: "included-m.firebaseapp.com",
     databaseURL: "https://included-m-default-rtdb.europe-west1.firebasedatabase.app",
@@ -53,7 +53,7 @@ const App: React.FC = () => {
     // @ts-ignore
     appId: "1:120205799819:web:7b8b7a05d2abf5b4e87f8e",
     measurementId: "G-E602LNZPCN"
-  }))
+  }), [])
 
   const [hideModal, setHideModal] = React.useState(false)
 
