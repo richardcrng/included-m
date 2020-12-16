@@ -35,12 +35,17 @@ import LessonPageRoute from './routes/lesson/LessonPageRoute';
 import { JSendBase } from './lib/jsend';
 import { useQuery } from 'react-query';
 import { SERVER_URL } from './constants';
+import { initialize } from 'fireactive';
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string
 }>
 
 const App: React.FC = () => {
+
+  const [firebaseApp] = React.useState(initialize({
+    databaseURL: process.env.DATABASE_URL
+  }))
 
   const [hideModal, setHideModal] = React.useState(false)
 
