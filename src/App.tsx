@@ -46,7 +46,7 @@ const App: React.FC = () => {
   const [firebaseApp] = React.useState(initialize({
   apiKey: "AIzaSyBPAfs2hzOGiIBmDm_iZG4hQsZfNdZaRz0",
     authDomain: "included-m.firebaseapp.com",
-    databaseURL: process.env.DATABASE_URL,
+    databaseURL: "https://included-m-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "included-m",
     storageBucket: "included-m.appspot.com",
     messagingSenderId: "120205799819",
