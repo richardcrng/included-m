@@ -28,9 +28,12 @@ export function makeUseFireactiveDocument<C extends new (...args: any) => any>(
   ): [S | null, InstanceType<C> | null] {
     const [state, setState] = useState<S | null>(null)
     const [document, setDocument] = useState<InstanceType<C> | null>(null)
-
+    
+    console.log('class', activeClass)
     // @ts-ignore
-    console.log('class', activeClass, activeClass.ref && activeClass.ref())
+    console.log('ref', activeClass.ref)
+    // @ts-ignore
+    console.log('ref()', activeClass.ref && activeClass.ref())
 
     useEffect(() => {
       const fetchData = async () => {
