@@ -53,7 +53,7 @@ const App: React.FC = () => {
     // @ts-ignore
     appId: "1:120205799819:web:7b8b7a05d2abf5b4e87f8e",
     measurementId: "G-E602LNZPCN"
-  }), [])
+  }), [initialize])
 
   const [hideModal, setHideModal] = React.useState(false)
 
