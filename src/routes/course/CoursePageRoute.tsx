@@ -28,6 +28,8 @@ function CoursePageRouteFirebase({
     documentToState: doc => doc.toRawDeep(false)
   })
 
+  console.log(state)
+
   if (state) {
     return (
       <CoursePageView
