@@ -19,16 +19,8 @@ function Test() {
     const lesson = await Lesson.findById("qljKWIEvkLEw0JS1Xjjp");
     if (!state) {
       if (lesson) {
-        console.log("found lesson", lesson.toObject());
-        if (lesson.toObjectDeep) {
-          console.log(
-            "inspecting",
-            typeof lesson.toObjectDeep,
-            lesson.toObjectDeep
-          );
-          const obj = await lesson.toObjectDeep();
-          setState(obj);
-        }
+        const obj = await lesson.toObjectDeep();
+        setState(obj);
       }
     }
   };
