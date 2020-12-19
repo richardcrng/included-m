@@ -48,7 +48,11 @@ const App: React.FC = () => {
 
   const newVersionAvailable = !!(data && data !== version);
 
-  return <Test />;
+  return (
+    <IonApp>
+      <Test />
+    </IonApp>
+  );
 
   // return (
   //   <IonApp>

@@ -1,4 +1,10 @@
-import { IonContent, IonHeader, IonText, IonToolbar } from "@ionic/react";
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonText,
+  IonToolbar,
+} from "@ionic/react";
 import React from "react";
 import { isEqual } from "lodash";
 import Activity from "./models/Activity";
@@ -7,7 +13,7 @@ function Test() {
   const [state, setState] = React.useState<Activity>();
 
   const fetchActivity = async () => {
-    const activity = await Activity.findById("FKBJJDcuVMyyLKCyhxao");
+    const activity = await Activity.findById("uOlrg9t7zwjNOCupDFHx");
     if (!state || !isEqual(state.toObject(), activity.toObject())) {
       console.log("updating", state?.toObject(), activity.toObject());
       setState(activity);
@@ -27,18 +33,18 @@ function Test() {
           <IonHeader>Data found</IonHeader>
         </IonToolbar>
         <IonContent>
-          <IonText color="white">
-            {JSON.stringify(state.toObject(), null, 2)}
-          </IonText>
           <div style={{ margin: "1rem" }}>
-            <h1>Show stuff</h1>
-            <div>
-              <p>Message</p>
-              <p>{JSON.stringify(state.toObject(), null, 2)}</p>
-              <div style={{ color: "white" }}>
-                {JSON.stringify(state.toObject(), null, 2)}
-              </div>
-            </div>
+            <pre>{JSON.stringify(state.toObject(), null, 2)}</pre>
+            <IonButton
+              onClick={async () => {
+                await Activity.create({
+                  activityType: "read",
+                  blocks: ["hello", "again"],
+                });
+              }}
+            >
+              Save
+            </IonButton>
           </div>
         </IonContent>
       </>
