@@ -15,15 +15,22 @@ export interface LessonBase {
 
 export interface LessonWithActivities
   extends Omit<LessonBase, "activityIdsOrdered"> {
-  activities: ReturnType<Activity["toObject"]>;
-}
-
-interface LessonCreateData extends LessonBase {
-  id?: string;
+  activities: ReturnType<Activity["toObject"]>[];
 }
 
 // interface LessonForFirestore extends LessonCreateData {}
 
-export default class Lesson extends FirestoreModel<LessonBase>("activity") {
-  static createWithActivities(data: LessonWithActivities) {}
+export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
+  static async createWithActivities({
+    activities,
+    ...rest
+  }: LessonWithActivities) {
+    const createdActivities = await Promise.all(
+      activities.map((activity) => Activity.create(activity))
+    );
+    const activityIdsOrdered = createdActivities.map((createdActivities) =>
+      createdActivities.getId()
+    );
+    return this.create({ ...rest, activityIdsOrdered });
+  }
 }

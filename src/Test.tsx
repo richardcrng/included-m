@@ -8,6 +8,7 @@ import {
 import React from "react";
 import { isEqual } from "lodash";
 import Activity from "./models/Activity";
+import Lesson from "./models/Lesson";
 
 function Test() {
   const [state, setState] = React.useState<Activity>();
@@ -37,13 +38,19 @@ function Test() {
             <pre>{JSON.stringify(state.toObject(), null, 2)}</pre>
             <IonButton
               onClick={async () => {
-                await Activity.create({
-                  activityType: "read",
-                  blocks: ["hello", "again"],
+                const lesson = await Lesson.createWithActivities({
+                  lessonTitle: "A new lesson",
+                  activities: [
+                    {
+                      activityType: "read",
+                      blocks: ["hi there", "my activity"],
+                    },
+                  ],
                 });
+                console.log("Created new lesson", lesson.toObject());
               }}
             >
-              Save
+              Create Lesson
             </IonButton>
           </div>
         </IonContent>

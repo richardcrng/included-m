@@ -66,6 +66,7 @@ function FirestoreModel<T>(modelName: string) {
     static async create(this: ModelConstructor<T>, docData: T) {
       const doc = new this(docData);
       await doc.save();
+      return doc;
     }
 
     static async findById(id: string): Promise<Model> {
