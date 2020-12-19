@@ -1,22 +1,4 @@
-import db from "./db";
-import firebase from "firebase";
-
-export const activityConverter = {
-  toFirestore(activity: Activity | ActivityPOJO): ActivityPOJO {
-    return {
-      id: activity.id,
-      activityType: activity.activityType,
-      blocks: activity.blocks,
-    };
-  },
-  fromFirestore(
-    snapshot: firebase.firestore.QueryDocumentSnapshot,
-    options?: firebase.firestore.SnapshotOptions
-  ): Activity {
-    const data = snapshot.data(options)!;
-    return new Activity({ ...data, id: snapshot.id } as ActivityPOJO);
-  },
-};
+import FirestoreModel from "./FirestoreModel";
 
 export type ActivityType =
   | "read"
@@ -40,29 +22,20 @@ interface ActivityCreateData extends ActivityBase {
 
 // interface ActivityForFirestore extends ActivityCreateData {}
 
-export default class Activity implements ActivityBase {
-  public activityType: ActivityType;
-  public blocks: string[];
-  public id?: string;
-
+export default class Activity extends FirestoreModel<ActivityBase>(
+  "activities"
+) {
   static collectionPath = "activities";
 
-  constructor({ activityType, blocks, id }: ActivityCreateData) {
-    this.activityType = activityType;
-    this.blocks = blocks;
-    this.id = id;
+  constructor(data: ActivityCreateData) {
+    super(data);
   }
 
-  static get collection() {
-    return db.collection(this.collectionPath).withConverter(activityConverter);
-  }
-
-  static async findById(id: string): Promise<Activity> {
-    const snapshot = await this.collection.doc(id).get();
-    return snapshot.data()!;
-  }
-
-  public toObject(): ActivityPOJO {
-    return activityConverter.toFirestore(this);
+  static toFirestore(activity: Activity | ActivityPOJO): ActivityPOJO {
+    return {
+      id: activity.id,
+      activityType: activity.activityType,
+      blocks: activity.blocks,
+    };
   }
 }
