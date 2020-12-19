@@ -12,10 +12,6 @@ export interface ActivityBase {
   blocks: string[];
 }
 
-export interface ActivityPOJO extends ActivityBase {
-  id?: string;
-}
-
 interface ActivityCreateData extends ActivityBase {
   id?: string;
 }
@@ -23,5 +19,5 @@ interface ActivityCreateData extends ActivityBase {
 // interface ActivityForFirestore extends ActivityCreateData {}
 
 export default class Activity extends FirestoreModel<ActivityBase>(
-  "activities"
+  "activity"
 ) {}

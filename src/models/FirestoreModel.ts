@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
+import pluralize from "pluralize";
 
 let app: firebase.app.App;
 
@@ -16,23 +17,37 @@ function getApp(): firebase.app.App {
   return app;
 }
 
-if (!firebase.apps.length) {
-  // Initialize Cloud Firestore through Firebase
-  app = firebase.initializeApp({
-    apiKey: "AIzaSyBPAfs2hzOGiIBmDm_iZG4hQsZfNdZaRz0",
-    authDomain: "included-m.firebaseapp.com",
-    projectId: "included-m",
-  });
-}
+type ModelDoc<T> = MaybeWithId<T> & {
+  toObject(): MaybeWithId<T>;
+};
 
-function FirestoreModel<T extends {}>(collectionPath: string) {
-  const Model = class Model {
-    static collectionPath = collectionPath;
+type ModelConstructor<T> = {
+  new (attributes: T, implement?: boolean): ModelDoc<T>;
 
-    constructor(attributes: T) {
-      for (let key in attributes) {
-        // @ts-ignore
-        this[key] = attributes[key];
+  // properties
+  collection: firebase.firestore.CollectionReference<ModelConstructor<T>>;
+  db: firebase.firestore.Firestore;
+  name: string;
+
+  findById(id: string): Promise<ModelDoc<T>>;
+  fromFirestore(
+    snapshot: firebase.firestore.QueryDocumentSnapshot,
+    options?: firebase.firestore.SnapshotOptions
+  ): ModelDoc<T>;
+  toFirestore(model: ModelDoc<T> | MaybeWithId<T>): MaybeWithId<T>;
+};
+
+function FirestoreModel<T extends {}>(modelName: string) {
+  // @ts-ignore
+  const Model: ModelConstructor<T> = class Model {
+    static collectionPath = pluralize(modelName);
+
+    constructor(attributes?: T, implement: boolean = true) {
+      if (attributes && implement) {
+        for (let key in attributes) {
+          // @ts-ignore
+          this[key] = attributes[key];
+        }
       }
     }
 
@@ -76,6 +91,8 @@ function FirestoreModel<T extends {}>(collectionPath: string) {
       return Model.toFirestore(this);
     }
   };
+
+  Object.defineProperty(Model, "name", { value: modelName });
 
   return Model;
 }
