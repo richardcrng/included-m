@@ -24,19 +24,4 @@ interface ActivityCreateData extends ActivityBase {
 
 export default class Activity extends FirestoreModel<ActivityBase>(
   "activities"
-) {
-  class = Activity;
-
-  constructor(data: ActivityCreateData) {
-    super(data);
-    console.log("creating", data);
-  }
-
-  static toFirestore(activity: Activity | ActivityPOJO): ActivityPOJO {
-    return {
-      id: activity.id,
-      activityType: activity.activityType,
-      blocks: activity.blocks,
-    };
-  }
-}
+) {}
