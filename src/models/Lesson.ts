@@ -1,91 +1,49 @@
-import { ActiveClass, Schema, relations } from 'fireactive'
-import { LessonCRUD } from '../content/types'
-import Activity, { ActivityRaw, ActivityRawDeep } from './Activity'
-import { numericKeys } from './utils'
+// import db from "./db";
+// import firebase from "firebase";
 
-const lessonSchema = {
-  chapterId: Schema.string({ optional: true }),
-  lessonTitle: Schema.string,
-  activityIdsOrdered: Schema.indexed.string,
-}
+// export interface LessonBase {
+//   lessonTitle: string;
+// }
 
-export interface LessonRaw {
-  _id: string,
-  chapterId?: string,
-  lessonTitle: string,
-  activityIds: string[]
-}
+// interface LessonCRUD extends LessonBase {
+//   id?: string;
+// }
 
-export type LessonRawDeep<R extends boolean = true> = LessonRaw & {
-  activities: R extends true
-    ? ActivityRawDeep[]
-    : R extends false
-      ? ActivityRaw[]
-      : (ActivityRaw | ActivityRawDeep)[]
-}
+// interface LessonWithActivities extends LessonBase {
+//   activities:
+// }
 
-export default class Lesson extends ActiveClass(lessonSchema) {
+// export default class Lesson {
+//   public id?: string;
+//   public lessonTitle: string;
+//   public activityIdsOrdered: string[];
 
-  chapter = relations.findById('Chapter', 'chapterId')
+//   constructor({ id, lessonTitle, activities }: LessonCRUD) {
+//     this.id = id;
+//     this.lessonTitle = lessonTitle;
+//     this.activityIdsOrdered = activityIdsOrdered;
+//   }
+// }
 
-  activities = relations.findByIds<Lesson, Activity>(Activity, () => Object.values(this.activityIdsOrdered))
+// export const activityConverter = {
+//   toFirestore(activity: Lesson): firebase.firestore.DocumentData {
+//     return {
+//       id: activity.id,
+//       activityType: activity.activityType,
+//       blocks: activity.blocks,
+//     };
+//   },
+//   fromFirestore(
+//     snapshot: firebase.firestore.QueryDocumentSnapshot,
+//     options?: firebase.firestore.SnapshotOptions
+//   ): Lesson {
+//     const data = snapshot.data(options)!;
+//     return new Lesson({ ...data, id: snapshot.id } as LessonCRUD);
+//   },
+// };
 
-  static async createFromRaw(data: LessonCRUD): Promise<Lesson> {
-    const activities = await Activity.createManyFromRaw(...data.activities)
-    const activityIdsOrdered = numericKeys(
-      activities.map((activity: Activity) => activity.getId())
-    )
-    const lesson = await this.create({
-      lessonTitle: data.lessonTitle,
-      activityIdsOrdered
-    })
-    return lesson
-  }
+// export const activityCollection = db
+//   .collection("activities")
+//   .withConverter(activityConverter);
 
-  static async createManyFromRaw(...docs: LessonCRUD[]): Promise<Lesson[]> {
-    return await Promise.all(docs.map(doc => (
-      this.createFromRaw(doc)
-    )))
-  }
-
-  get activityIds(): string[] {
-    return Object.values(this.activityIdsOrdered)
-  }
-
-  toRaw(): LessonRaw {
-    return {
-      _id: this.getId(),
-      chapterId: this.chapterId ? this.chapterId : undefined,
-      lessonTitle: this.lessonTitle,
-      activityIds: this.activityIds
-    }
-  }
-
-  async toRawDeep(recursive: true): Promise<LessonRawDeep<true>>
-  async toRawDeep(): Promise<LessonRawDeep<true>>
-  async toRawDeep(recursive: false): Promise<LessonRawDeep<false>>
-
-  async toRawDeep(recursive = true): Promise<LessonRawDeep<boolean>> {
-    if (recursive) {
-      const activities = await this.activities()
-      const rawActivities = await Promise.all(activities.map(
-        activity => activity.toRawDeep()
-      ))
-      return {
-        ...this.toRaw(),
-        activities: rawActivities
-      }
-    } else {
-      const activities = await this.activities()
-      const rawActivities = activities.map(
-        activity => activity.toRaw()
-      )
-      return {
-        ...this.toRaw(),
-        activities: rawActivities
-      }
-    }
-  }
-}
-
-relations.store(Lesson)
+export {};

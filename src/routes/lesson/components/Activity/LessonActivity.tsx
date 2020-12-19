@@ -1,22 +1,20 @@
-import { IonButton } from '@ionic/react';
-import React from 'react';
-import { useHistory } from 'react-router';
-import { ActivityRawDeep } from '../../../../models/Activity';
-import LessonContent from '../LessonContent';
-import LessonActivityRead from './LessonActivityRead';
-import LessonActivitySelectMultiple from './LessonActivitySelectMultiple';
-import LessonActivitySelectForEachBlank from './SelectForEachBlank';
-import LessonActivitySelectForEachBlankComplex from './SelectForEachBlank/LessonActivitySelectForEachBlankComplex';
-import LessonActivitySwipeCards from './SwipeCards';
+import { IonButton } from "@ionic/react";
+import React from "react";
+import { useHistory } from "react-router";
+import { ActivityRawDeep } from "../../../../models/Activity.old";
+import LessonContent from "../LessonContent";
+import LessonActivityRead from "./LessonActivityRead";
+import LessonActivitySelectMultiple from "./LessonActivitySelectMultiple";
+import LessonActivitySelectForEachBlank from "./SelectForEachBlank";
+import LessonActivitySelectForEachBlankComplex from "./SelectForEachBlank/LessonActivitySelectForEachBlankComplex";
+import LessonActivitySwipeCards from "./SwipeCards";
 
 interface Props {
-  activity: ActivityRawDeep,
+  activity: ActivityRawDeep;
 }
 
-function LessonActivity({
-  activity
-}: Props) {
-  const history = useHistory()
+function LessonActivity({ activity }: Props) {
+  const history = useHistory();
 
   if (!activity) {
     return (
@@ -27,56 +25,30 @@ function LessonActivity({
           <p>Why don't you try another?</p>
           <IonButton
             onClick={() => {
-              history.goBack()
+              history.goBack();
             }}
-            expand='full'
+            expand="full"
           >
-              Go back
+            Go back
           </IonButton>
         </LessonContent>
       </>
-    )
-    
-  } else if (activity.activityType === 'select-an-answer') {
-    return (
-      <LessonActivitySelectMultiple
-        activity={activity}
-      />
-    )
-
-  } else if (activity.activityType === 'select-multiple') {
-    return (
-      <LessonActivitySelectMultiple
-        activity={activity}
-      />
-    )
-  } else if (activity.activityType === 'select-for-each-blank') {
+    );
+  } else if (activity.activityType === "select-an-answer") {
+    return <LessonActivitySelectMultiple activity={activity} />;
+  } else if (activity.activityType === "select-multiple") {
+    return <LessonActivitySelectMultiple activity={activity} />;
+  } else if (activity.activityType === "select-for-each-blank") {
     if (activity.choices.length > 0) {
-      return (
-        <LessonActivitySelectForEachBlankComplex
-          activity={activity}
-        />
-      )
+      return <LessonActivitySelectForEachBlankComplex activity={activity} />;
     } else {
-      return (
-        <LessonActivitySelectForEachBlank
-          activity={activity}
-        />
-      )
+      return <LessonActivitySelectForEachBlank activity={activity} />;
     }
-  } else if (activity.activityType === 'swipe-cards') {
-    return (
-      <LessonActivitySwipeCards
-        activity={activity}
-      />
-    )
+  } else if (activity.activityType === "swipe-cards") {
+    return <LessonActivitySwipeCards activity={activity} />;
   } else {
-    return (
-      <LessonActivityRead
-        blocks={activity.contentBlocks}
-      />
-    )
+    return <LessonActivityRead blocks={activity.contentBlocks} />;
   }
 }
 
-export default LessonActivity
+export default LessonActivity;
