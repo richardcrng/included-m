@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import pluralize from "pluralize";
+import WhyWhatError from "../../lib/why-what-error";
 
 let app: firebase.app.App;
 
@@ -22,7 +23,9 @@ export type ModelConstructor<T = {}> = {
   name: string;
 
   create(docData: T): Promise<ModelDoc<T>>;
-  findById(id: string): Promise<ModelDoc<T>>;
+  findById(id: string): Promise<ModelDoc<T> | undefined>;
+  findByIds(...ids: string[]): Promise<ModelDoc<T>[]>;
+  findByIdOrFail(id: string): Promise<ModelDoc<T>>;
   fromFirestore(
     snapshot: firebase.firestore.QueryDocumentSnapshot,
     options?: firebase.firestore.SnapshotOptions
@@ -69,9 +72,24 @@ function FirestoreModel<T>(modelName: string) {
       return doc;
     }
 
-    static async findById(id: string): Promise<Model> {
+    static async findById(id: string): Promise<Model | undefined> {
       const snapshot = await this.collection.doc(id).get();
-      return snapshot.data()!;
+      return snapshot.data();
+    }
+
+    static async findByIds(...ids: string[]): Promise<Model[]> {
+      const foundDocs = await Promise.all(ids.map((id) => this.findById(id)));
+      return foundDocs.filter((doc) => !!doc) as Model[];
+    }
+
+    static async findByIdOrFail(id: string): Promise<Model> {
+      const model = await this.findById(id);
+      if (!model)
+        throw new WhyWhatError({
+          what: `Failed to find ${modelName}`,
+          why: `No document with id ${id} exists in the collection ${this.collectionPath}`,
+        });
+      return model;
     }
 
     static fromFirestore(

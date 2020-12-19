@@ -23,8 +23,7 @@ export function findByIds<RelatingInstance, RelatedInstance = unknown>(
   return async function (this: RelatingInstance) {
     const ids = cb();
     const RelatedClass = retrieve(related) as ModelConstructor<RelatedInstance>;
-    const promises = ids.map((id) => RelatedClass.findById(id));
-    const results = await Promise.all(promises);
+    const results = await RelatedClass.findByIds(...ids);
     return results.filter((result: any) => result) as RelatedInstance[];
   };
 }
