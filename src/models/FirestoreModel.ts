@@ -1,11 +1,36 @@
 import firebase from "firebase/app";
+import "firebase/firestore";
 import { ModelConstructor } from "./FirestoreModel.types";
-import db from "./db";
+
+let app: firebase.app.App;
+
+function getApp(): firebase.app.App {
+  if (!firebase.apps.length) {
+    // Initialize Cloud Firestore through Firebase
+    app = firebase.initializeApp({
+      apiKey: "AIzaSyBPAfs2hzOGiIBmDm_iZG4hQsZfNdZaRz0",
+      authDomain: "included-m.firebaseapp.com",
+      projectId: "included-m",
+    });
+  }
+
+  return app;
+}
+
+if (!firebase.apps.length) {
+  // Initialize Cloud Firestore through Firebase
+  app = firebase.initializeApp({
+    apiKey: "AIzaSyBPAfs2hzOGiIBmDm_iZG4hQsZfNdZaRz0",
+    authDomain: "included-m.firebaseapp.com",
+    projectId: "included-m",
+  });
+}
 
 function FirestoreModel<T extends {}>(collectionPath: string) {
   // @ts-ignore
   const Model: ModelConstructor<T> = class Model {
     static collectionPath = collectionPath;
+    public class = Model;
 
     constructor(attributes: T) {
       for (let key in attributes) {
@@ -15,7 +40,9 @@ function FirestoreModel<T extends {}>(collectionPath: string) {
     }
 
     static get collection() {
-      return db.collection(this.collectionPath).withConverter(this.converter);
+      return this.db
+        .collection(this.collectionPath)
+        .withConverter(this.converter);
     }
 
     static get converter() {
@@ -23,6 +50,10 @@ function FirestoreModel<T extends {}>(collectionPath: string) {
         fromFirestore: this.fromFirestore,
         toFirestore: this.toFirestore,
       };
+    }
+
+    static get db() {
+      return firebase.firestore(getApp());
     }
 
     static async findById(id: string): Promise<Model> {
@@ -39,11 +70,11 @@ function FirestoreModel<T extends {}>(collectionPath: string) {
     }
 
     static toFirestore(model: Model | T): T {
-      return {} as T;
+      return JSON.parse(JSON.stringify(model)) as T;
     }
 
     public toObject() {
-      return Model.toFirestore(this);
+      return this.class.toFirestore(this);
     }
   };
 

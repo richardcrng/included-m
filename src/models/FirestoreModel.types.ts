@@ -7,6 +7,7 @@ import firebase from "firebase/app";
 export type Model<T> = {
   [K in keyof T]: T[K];
 } & {
+  class: ModelConstructor<T>;
   constructor: ModelConstructor<T>;
 
   id?: string;
@@ -27,8 +28,9 @@ export type ModelConstructor<T> = {
    */
   new (documentData: T): Model<T>;
 
-  prototype: Model<T>;
   collectionPath: string;
+
+  db: firebase.firestore.Firestore;
 
   collection: firebase.firestore.CollectionReference<Model<T>>;
 

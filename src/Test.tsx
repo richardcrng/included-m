@@ -1,25 +1,26 @@
 import { IonContent, IonHeader, IonText, IonToolbar } from "@ionic/react";
 import React from "react";
+import { isEqual } from "lodash";
 import Activity from "./models/Activity";
-import db from "./models/db";
 
 function Test() {
   const [state, setState] = React.useState<Activity>();
 
-  React.useEffect(() => {
-    const fetchActivity = async () => {
-      const activity = await Activity.findById("FKBJJDcuVMyyLKCyhxao");
-      console.log("found activity", activity, activity && activity.toObject());
+  const fetchActivity = async () => {
+    const activity = await Activity.findById("FKBJJDcuVMyyLKCyhxao");
+    if (!state || !isEqual(state.toObject(), activity.toObject())) {
+      console.log("updating", state?.toObject(), activity.toObject());
       setState(activity);
-    };
+    }
+  };
 
+  React.useEffect(() => {
     fetchActivity();
-  }, []);
+  }, [fetchActivity]);
 
   if (!state) {
     return <div>Looking for data...</div>;
   } else {
-    console.log("set data", state);
     return (
       <>
         <IonToolbar>
