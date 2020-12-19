@@ -1,6 +1,5 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { ModelConstructor } from "./FirestoreModel.types";
 
 let app: firebase.app.App;
 
@@ -27,10 +26,8 @@ if (!firebase.apps.length) {
 }
 
 function FirestoreModel<T extends {}>(collectionPath: string) {
-  // @ts-ignore
-  const Model: ModelConstructor<T> = class Model {
+  const Model = class Model {
     static collectionPath = collectionPath;
-    public class = Model;
 
     constructor(attributes: T) {
       for (let key in attributes) {
@@ -42,7 +39,9 @@ function FirestoreModel<T extends {}>(collectionPath: string) {
     static get collection() {
       return this.db
         .collection(this.collectionPath)
-        .withConverter(this.converter);
+        .withConverter(
+          this.converter as firebase.firestore.FirestoreDataConverter<Model>
+        );
     }
 
     static get converter() {
@@ -69,16 +68,19 @@ function FirestoreModel<T extends {}>(collectionPath: string) {
       return new Model(({ ...data, id: snapshot.id } as unknown) as T);
     }
 
-    static toFirestore(model: Model | T): T {
-      return JSON.parse(JSON.stringify(model)) as T;
+    static toFirestore(model: Model | MaybeWithId<T>): MaybeWithId<T> {
+      return JSON.parse(JSON.stringify(model)) as MaybeWithId<T>;
     }
 
-    public toObject() {
-      return this.class.toFirestore(this);
+    toObject() {
+      return Model.toFirestore(this);
     }
   };
 
   return Model;
 }
+
+export type MaybeWithId<T> = T & { _id?: string };
+export type WithId<T> = T & { id: string };
 
 export default FirestoreModel;
