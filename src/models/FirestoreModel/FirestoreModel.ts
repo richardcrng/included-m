@@ -4,7 +4,7 @@ import pluralize from "pluralize";
 
 let app: firebase.app.App;
 
-type ModelDoc<T> = MaybeWithId<T> & {
+export type ModelDoc<T> = MaybeWithId<T> & {
   constructor: ModelConstructor<T>;
 
   getId(): string;
@@ -13,7 +13,7 @@ type ModelDoc<T> = MaybeWithId<T> & {
   toObject(): MaybeWithId<T>;
 };
 
-type ModelConstructor<T> = {
+export type ModelConstructor<T = {}> = {
   new (docData?: T, implement?: boolean): ModelDoc<T>;
 
   // properties

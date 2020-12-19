@@ -1,6 +1,5 @@
 import { LessonCRUD } from "../content/types";
 import { ActivityRaw, ActivityRawDeep } from "./Activity.old";
-import { numericKeys } from "./utils";
 
 export interface LessonRaw {
   _id: string;

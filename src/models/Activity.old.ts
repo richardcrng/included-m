@@ -3,7 +3,6 @@ import { AnswerRaw } from "./Answer";
 import { CardRaw } from "./Card";
 import { ChoiceRawDeep } from "./Choice";
 import { ContentBlockRaw } from "./ContentBlock";
-import { numericKeys } from "./utils";
 
 export interface ActivityRaw {
   _id: string;

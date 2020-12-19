@@ -1,6 +1,5 @@
 import { ChapterCRUD } from "../content/types";
 import { LessonRaw, LessonRawDeep } from "./Lesson.old";
-import { numericKeys } from "./utils";
 
 export interface ChapterRaw {
   _id: string;

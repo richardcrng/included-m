@@ -1,6 +1,5 @@
 import { CourseCRUD } from "../content/types";
 import { TopicRaw, TopicRawDeep } from "./Topic";
-import { numericKeys } from "./utils";
 
 export interface CourseRaw {
   _id: string;

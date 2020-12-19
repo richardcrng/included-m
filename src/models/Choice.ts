@@ -1,6 +1,5 @@
 import { ChoicesCRUD } from "../content/types";
 import { AnswerRaw } from "./Answer";
-import { numericKeys } from "./utils";
 
 export interface ChoiceRaw {
   _id: string;

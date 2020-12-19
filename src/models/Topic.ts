@@ -1,6 +1,5 @@
 import { TopicCRUD } from "../content/types";
 import { ChapterRaw, ChapterRawDeep } from "./Chapter";
-import { numericKeys } from "./utils";
 
 export interface TopicRaw {
   _id: string;
