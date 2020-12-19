@@ -16,11 +16,14 @@ import { LazyHasMany, ClassDefinition } from "./relations.types";
  *
  * @returns a `LazyHasMany` relation
  */
-export function findByIds<RelatingInstance, RelatedInstance = unknown>(
+export function findByIds<
+  RelatedInstance = unknown,
+  RelatingInstance = unknown
+>(
   related: Relatable<ClassDefinition<RelatedInstance>>,
   cb: () => string[]
-): LazyHasMany<RelatingInstance, RelatedInstance> {
-  return async function (this: RelatingInstance) {
+): LazyHasMany<RelatedInstance> {
+  return async function () {
     const ids = cb();
     const RelatedClass = retrieve(related) as ModelConstructor<RelatedInstance>;
     const results = await RelatedClass.findByIds(...ids);

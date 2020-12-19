@@ -7,23 +7,35 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { isEqual } from "lodash";
-import Activity from "./models/Activity";
+import { AsyncReturnType } from "type-fest";
 import Lesson from "./models/Lesson";
 
 function Test() {
-  const [state, setState] = React.useState<Activity>();
+  const [state, setState] = React.useState<
+    AsyncReturnType<Lesson["toObjectDeep"]>
+  >();
 
-  const fetchActivity = async () => {
-    const activity = await Activity.findById("uOlrg9t7zwjNOCupDFHx");
-    if (!state || !isEqual(state.toObject(), activity.toObject())) {
-      console.log("updating", state?.toObject(), activity.toObject());
-      setState(activity);
+  const fetchLesson = async () => {
+    const lesson = await Lesson.findById("qljKWIEvkLEw0JS1Xjjp");
+    if (!state) {
+      if (lesson) {
+        console.log("found lesson", lesson.toObject());
+        if (lesson.toObjectDeep) {
+          console.log(
+            "inspecting",
+            typeof lesson.toObjectDeep,
+            lesson.toObjectDeep
+          );
+          const obj = await lesson.toObjectDeep();
+          setState(obj);
+        }
+      }
     }
   };
 
   React.useEffect(() => {
-    fetchActivity();
-  }, [fetchActivity]);
+    fetchLesson();
+  }, [fetchLesson]);
 
   if (!state) {
     return <div>Looking for data...</div>;
@@ -35,7 +47,7 @@ function Test() {
         </IonToolbar>
         <IonContent>
           <div style={{ margin: "1rem" }}>
-            <pre>{JSON.stringify(state.toObject(), null, 2)}</pre>
+            <pre>{JSON.stringify(state, null, 2)}</pre>
             <IonButton
               onClick={async () => {
                 const lesson = await Lesson.createWithActivities({
@@ -43,7 +55,7 @@ function Test() {
                   activities: [
                     {
                       activityType: "read",
-                      blocks: ["hi there", "my activity"],
+                      blocks: ["hi there", "my lesson"],
                     },
                   ],
                 });

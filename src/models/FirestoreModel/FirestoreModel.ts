@@ -5,6 +5,19 @@ import WhyWhatError from "../../lib/why-what-error";
 
 let app: firebase.app.App;
 
+function fromFirestore<T, M extends ModelConstructor<T> = ModelConstructor<T>>(
+  this: M,
+  snapshot: firebase.firestore.QueryDocumentSnapshot,
+  options?: firebase.firestore.SnapshotOptions
+): ModelDoc<T> {
+  const data = snapshot.data(options)!;
+  return this.create(data as T);
+}
+
+function toFirestore<M, T>(model: M | MaybeWithId<T>): MaybeWithId<T> {
+  return JSON.parse(JSON.stringify(model)) as MaybeWithId<T>;
+}
+
 export type ModelDoc<T> = MaybeWithId<T> & {
   constructor: ModelConstructor<T>;
 
@@ -19,10 +32,12 @@ export type ModelConstructor<T = {}> = {
 
   // properties
   collection: firebase.firestore.CollectionReference<ModelDoc<T>>;
+  converter: firebase.firestore.FirestoreDataConverter<ModelDoc<T>>;
   db: firebase.firestore.Firestore;
   name: string;
 
-  create(docData: T): Promise<ModelDoc<T>>;
+  create(docData: T): ModelDoc<T>;
+  createAndSave(docData: T): Promise<ModelDoc<T>>;
   findById(id: string): Promise<ModelDoc<T> | undefined>;
   findByIds(...ids: string[]): Promise<ModelDoc<T>[]>;
   findByIdOrFail(id: string): Promise<ModelDoc<T>>;
@@ -55,10 +70,13 @@ function FirestoreModel<T>(modelName: string) {
         );
     }
 
-    static get converter() {
+    static get converter(): firebase.firestore.FirestoreDataConverter<
+      ModelDoc<T>
+    > {
       return {
-        fromFirestore: this.fromFirestore,
-        toFirestore: this.toFirestore,
+        // @ts-ignore
+        fromFirestore: fromFirestore.bind(this),
+        toFirestore: toFirestore,
       };
     }
 
@@ -66,7 +84,11 @@ function FirestoreModel<T>(modelName: string) {
       return firebase.firestore(getApp());
     }
 
-    static async create(this: ModelConstructor<T>, docData: T) {
+    static create(this: ModelConstructor<T>, docData: T) {
+      return new this(docData);
+    }
+
+    static async createAndSave(this: ModelConstructor<T>, docData: T) {
       const doc = new this(docData);
       await doc.save();
       return doc;
@@ -93,11 +115,12 @@ function FirestoreModel<T>(modelName: string) {
     }
 
     static fromFirestore(
+      this: ModelConstructor<T>,
       snapshot: firebase.firestore.QueryDocumentSnapshot,
       options?: firebase.firestore.SnapshotOptions
     ): Model {
       const data = snapshot.data(options)!;
-      return new Model(data as T);
+      return this.create(data as T);
     }
 
     static toFirestore(model: Model | MaybeWithId<T>): MaybeWithId<T> {
@@ -119,8 +142,8 @@ function FirestoreModel<T>(modelName: string) {
       this.ref().set(this);
     }
 
-    toObject() {
-      return Model.toFirestore(this);
+    toObject(this: ModelDoc<T>) {
+      return this.constructor.toFirestore(this);
     }
   };
 

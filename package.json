@@ -90,6 +90,7 @@
     "supertest": "^6.0.1",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
+    "type-fest": "^0.20.2",
     "utility-types": "^3.10.0"
   }
 }

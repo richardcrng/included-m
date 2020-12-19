@@ -1,15 +1,15 @@
 export type ClassDefinition<T = unknown> = { new (...args: any[]): T };
 
-export interface LazyHasOne<RelatingInstance, RelatedInstance> {
-  (this: RelatingInstance): Promise<RelatedInstance | null>;
+export interface LazyHasOne<RelatedInstance> {
+  (): Promise<RelatedInstance | undefined>;
 }
 
-export interface LazyHasOneOrFail<RelatingInstance, RelatedInstance> {
-  (this: RelatingInstance): Promise<RelatedInstance>;
+export interface LazyHasOneOrFail<RelatedInstance> {
+  (): Promise<RelatedInstance>;
 }
 
-export interface LazyHasMany<RelatingInstance, RelatedInstance> {
-  (this: RelatingInstance): Promise<RelatedInstance[]>;
+export interface LazyHasMany<RelatedInstance> {
+  (): Promise<RelatedInstance[]>;
 }
 
 export type Relatable<ThisClass extends ClassDefinition = ClassDefinition> =
