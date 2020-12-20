@@ -4,6 +4,7 @@ import { AsyncReturnType } from "type-fest";
 import Lesson from "./models/Lesson";
 import Chapter from "./models/Chapter";
 import Topic from "./models/Topic";
+import Course from "./models/Course";
 
 function Test() {
   const [state, setState] = React.useState<
@@ -37,27 +38,32 @@ function Test() {
             <pre>{JSON.stringify(state, null, 2)}</pre>
             <IonButton
               onClick={async () => {
-                const topic = await Topic.createWithChapters({
-                  topicTitle: "A big topic",
-                  chapters: [
+                const course = await Course.createWithTopics({
+                  courseTitle: "Banana",
+                  topics: [
                     {
-                      chapterTitle: "A chapter",
-                      lessons: [
+                      topicTitle: "A big topic",
+                      chapters: [
                         {
-                          lessonTitle: "Lesson 0 from a chapter",
-                          activities: [
+                          chapterTitle: "A chapter",
+                          lessons: [
                             {
-                              activityType: "read",
-                              blocks: ["Hello world"],
+                              lessonTitle: "Lesson 0 from a chapter",
+                              activities: [
+                                {
+                                  activityType: "read",
+                                  blocks: ["Hello world"],
+                                },
+                              ],
                             },
-                          ],
-                        },
-                        {
-                          lessonTitle: "Lesson 1 from a chapter",
-                          activities: [
                             {
-                              activityType: "read",
-                              blocks: ["Me again"],
+                              lessonTitle: "Lesson 1 from a chapter",
+                              activities: [
+                                {
+                                  activityType: "read",
+                                  blocks: ["Me again"],
+                                },
+                              ],
                             },
                           ],
                         },
@@ -65,11 +71,11 @@ function Test() {
                     },
                   ],
                 });
-                const obj = await topic.toObjectDeep();
-                console.log("Created topic", obj);
+                const obj = await course.toObjectDeep();
+                console.log("Created course", obj);
               }}
             >
-              Create Topic
+              Create Course
             </IonButton>
           </div>
         </IonContent>
