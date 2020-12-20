@@ -2,7 +2,7 @@ import { setupTestServer } from "fireactive";
 import supertest from "supertest";
 import { CourseCRUD } from "../src/content/types";
 import Activity from "../src/models/Activity.old";
-import Course from "../src/models/Course";
+import Course from "../src/models/Course.old";
 import Lesson from "../src/models/Lesson.old";
 import Topic from "../src/models/Topic.old";
 import app from "./app";

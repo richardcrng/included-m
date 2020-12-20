@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { Optional } from "utility-types";
 import { version } from "../package.json";
-import Course, { CourseRaw } from "../src/models/Course";
+import Course, { CourseRaw } from "../src/models/Course.old";
 import { JSendBase, jsend } from "../src/lib/jsend";
 import Lesson from "../src/models/Lesson.old";
 import { GetCourseIdSuccess } from "../src/routes/course/CoursePageRoute";

@@ -1,17 +1,52 @@
-import { CourseCRUD } from "../content/types";
-import { TopicRaw, TopicRawDeep } from "./Topic.old";
+import FirestoreModel from "./FirestoreModel";
+import relations from "./relations";
+import { AsyncReturnType } from "type-fest";
+import Topic from "./Topic";
 
-export interface CourseRaw {
-  _id: string;
+export interface CourseBase {
   courseTitle: string;
-  description: string;
-  topicIds: string[];
+  topicIdsOrdered: string[];
 }
 
-export type CourseRawDeep<R extends boolean = true> = CourseRaw & {
-  topics: R extends true
-    ? TopicRawDeep[]
-    : R extends false
-    ? TopicRaw[]
-    : (TopicRaw | TopicRawDeep)[];
-};
+export interface CourseWithTopics extends Omit<CourseBase, "topicIdsOrdered"> {
+  topics: AsyncReturnType<Topic["toObjectDeep"]>[];
+}
+
+export default class Course extends FirestoreModel<CourseBase>("course") {
+  topics = relations.findByIds(Topic, () => this.topicIdsOrdered);
+
+  static async createWithTopics({ topics, ...rest }: CourseWithTopics) {
+    const thisId = this.generateId();
+    const createdTopics = await Promise.all(
+      topics.map((topic) =>
+        Topic.createWithChapters({
+          ...topic,
+          courseId: thisId,
+        })
+      )
+    );
+    const topicIdsOrdered = createdTopics.map((createdTopics) =>
+      createdTopics.getId()
+    );
+    const course = await this.createAndSave({
+      topicIdsOrdered,
+      ...rest,
+    });
+    return course;
+  }
+
+  async toObjectDeep(): Promise<
+    Omit<ReturnType<Course["toObject"]>, "topicIdsOrdered"> & {
+      topics: AsyncReturnType<Topic["toObjectDeep"]>[];
+    }
+  > {
+    const topics = await this.topics();
+    const topicsWithLessons = await Promise.all(
+      topics.map((topic) => topic.toObjectDeep())
+    );
+    return {
+      ...this.toObject(),
+      topics: topicsWithLessons,
+    };
+  }
+}

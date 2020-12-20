@@ -1,5 +1,5 @@
 import { setupTestServer } from "fireactive";
-import Course from "../Course";
+import Course from "../Course.old";
 import Topic from "../Topic.old";
 import { sampleContent } from "./sample-content";
 

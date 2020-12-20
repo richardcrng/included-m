@@ -10,7 +10,7 @@ import LoadingPage from "../../pages/LoadingPage";
 import CourseDetails from "../../pages/Course/CourseDetails";
 import actions from "../../redux/reducer";
 import { JSendBase } from "../../lib/jsend";
-import { CourseRawDeep } from "../../models/Course";
+import { CourseRawDeep } from "../../models/Course.old";
 import { SERVER_URL } from "../../constants";
 
 interface CoursePageRouteFirebaseProps

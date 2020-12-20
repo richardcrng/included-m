@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
 import { useHistory } from "react-router";
-import { CourseRawDeep } from "../../models/Course";
+import { CourseRawDeep } from "../../models/Course.old";
 import { TopicRaw, TopicRawDeep } from "../../models/Topic.old";
 
 const Buttons = styled(IonButtons)`
