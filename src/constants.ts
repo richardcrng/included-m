@@ -1,4 +1,5 @@
-import logo from "./assets/included-logo.png";
+import includedVcLogo from "./assets/included-vc-logo.png";
+import includedMLogo from "./assets/included-m-logo.png";
 
 export const DEFAULT_COURSE_ID = "9vKyx1VhF5gX2vnWzXrM";
 
@@ -9,4 +10,5 @@ export const SERVER_URL =
     ? "http://localhost:4000"
     : "https://ivc-prod.herokuapp.com";
 
-export const LOGO_SRC = logo;
+export const INCLUDED_VC_LOGO = includedVcLogo;
+export const INCLUDED_M_LOGO = includedMLogo;
