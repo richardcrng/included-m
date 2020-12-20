@@ -1,6 +1,7 @@
 import { isEqual } from "lodash";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { Class } from "utility-types";
+import riduce, { bundle } from "riduce";
 import Course from "../Course";
 import Lesson from "../Lesson";
 import Topic from "../Topic";
@@ -19,35 +20,56 @@ type UseDocumentArgs<C extends Class<any>, S> = {
 export function makeUseFirestoreDocument<C extends Class<any>>(
   ModelConstructor: C
 ) {
-  return function useFirestoreDocument<S>({
-    getDocument,
-    documentToState,
-  }: UseDocumentArgs<C, S>): [S | undefined, InstanceType<C> | undefined] {
-    const [state, setState] = useState<S>();
-    const [doc, setDoc] = useState<InstanceType<C>>();
+  const stateCache: Record<string, any> = {};
+  const documentCache: Record<string, any> = {};
+
+  return function useFirestoreDocument<S>(
+    { getDocument, documentToState }: UseDocumentArgs<C, S>,
+    key = "lastUsed"
+  ): [S | undefined, InstanceType<C> | undefined] {
+    interface State {
+      value?: S;
+      document?: InstanceType<C>;
+      hasRefreshedCache: boolean;
+    }
+
+    const initialState: State = {
+      value: stateCache[key],
+      document: documentCache[key],
+      hasRefreshedCache: false,
+    };
+
+    const [riducer, actions] = riduce(initialState);
+
+    const [state, dispatch] = useReducer(riducer, initialState);
 
     const fetchFromFirestore = async () => {
       const document = await getDocument(ModelConstructor);
-      if (!doc && document) {
-        if (!isEqual(JSON.stringify(document), JSON.stringify(doc))) {
-          setDoc(document);
+      let actionsToDispatch: Parameters<typeof bundle>[0] = [];
+
+      if (!state.document && document) {
+        if (
+          !isEqual(JSON.stringify(document), JSON.stringify(state.document))
+        ) {
+          actionsToDispatch.push(actions.document!.create.update(document));
         }
 
-        if (!state) {
+        if (!state.value) {
           const docState = await documentToState(document);
-          if (!isEqual(state, docState)) {
-            setState(docState);
+          if (!isEqual(state.value, docState)) {
+            actionsToDispatch.push(actions.value!.create.update(docState));
           }
         }
       }
+      dispatch(bundle(actionsToDispatch));
     };
 
     useEffect(() => {
-      if (!state || !doc) {
+      if (!state.value || !state.document) {
         fetchFromFirestore();
       }
     }, [fetchFromFirestore]);
 
-    return [state, doc];
+    return [state.value, state.document];
   };
 }
