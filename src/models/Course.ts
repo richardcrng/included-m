@@ -10,11 +10,12 @@ export interface CourseBase {
 }
 
 export interface CourseWithTopics extends Omit<CourseBase, "topicIdsOrdered"> {
-  topics: AsyncReturnType<Topic["toObjectDeep"]>[];
+  topics: AsyncReturnType<Topic["toObjectDeepRecursive"]>[];
 }
 
 export type CoursePOJO = ReturnType<Course["toObject"]>;
 export type CoursePOJODeep = AsyncReturnType<Course["toObjectDeep"]>;
+export type CoursePOJODeepR = AsyncReturnType<Course["toObjectDeepRecursive"]>;
 
 export default class Course extends FirestoreModel<CourseBase>("course") {
   topics = relations.findByIds(Topic, () => this.topicIdsOrdered);
@@ -47,6 +48,21 @@ export default class Course extends FirestoreModel<CourseBase>("course") {
     const topics = await this.topics();
     const topicsWithLessons = await Promise.all(
       topics.map((topic) => topic.toObjectDeep())
+    );
+    return {
+      ...this.toObject(),
+      topics: topicsWithLessons,
+    };
+  }
+
+  async toObjectDeepRecursive(): Promise<
+    Omit<ReturnType<Course["toObject"]>, "topicIdsOrdered"> & {
+      topics: AsyncReturnType<Topic["toObjectDeepRecursive"]>[];
+    }
+  > {
+    const topics = await this.topics();
+    const topicsWithLessons = await Promise.all(
+      topics.map((topic) => topic.toObjectDeepRecursive())
     );
     return {
       ...this.toObject(),

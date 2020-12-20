@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "react-query";
 import selectors from "../../redux/selectors";
 import { RouteComponentProps } from "react-router";
 import { LOADING_STRING } from "../../redux/state";
@@ -10,9 +9,7 @@ import CourseDetails from "../../pages/Course/CourseDetails";
 import actions from "../../redux/reducer";
 import { JSendBase } from "../../lib/jsend";
 import { CourseRawDeep } from "../../models/Course.old";
-import { SERVER_URL } from "../../constants";
 import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreModel";
-import { CoursePOJODeep } from "../../models/Course";
 
 interface CoursePageRouteFirebaseProps
   extends RouteComponentProps<{

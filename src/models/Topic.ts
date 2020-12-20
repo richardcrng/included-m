@@ -12,11 +12,12 @@ export interface TopicBase {
 
 export interface TopicWithChapters
   extends Omit<TopicBase, "chapterIdsOrdered"> {
-  chapters: AsyncReturnType<Chapter["toObjectDeep"]>[];
+  chapters: AsyncReturnType<Chapter["toObjectDeepRecursive"]>[];
 }
 
 export type TopicPOJO = ReturnType<Topic["toObject"]>;
 export type TopicPOJODeep = AsyncReturnType<Topic["toObjectDeep"]>;
+export type TopicPOJODeepR = AsyncReturnType<Topic["toObjectDeepRecursive"]>;
 
 export default class Topic extends FirestoreModel<TopicBase>("topic") {
   chapters = relations.findByIds(Chapter, () => this.chapterIdsOrdered);
@@ -49,6 +50,21 @@ export default class Topic extends FirestoreModel<TopicBase>("topic") {
     const chapters = await this.chapters();
     const chaptersWithLessons = await Promise.all(
       chapters.map((chapter) => chapter.toObjectDeep())
+    );
+    return {
+      ...this.toObject(),
+      chapters: chaptersWithLessons,
+    };
+  }
+
+  async toObjectDeepRecursive(): Promise<
+    Omit<ReturnType<Topic["toObject"]>, "chapterIdsOrdered"> & {
+      chapters: AsyncReturnType<Chapter["toObjectDeepRecursive"]>[];
+    }
+  > {
+    const chapters = await this.chapters();
+    const chaptersWithLessons = await Promise.all(
+      chapters.map((chapter) => chapter.toObjectDeepRecursive())
     );
     return {
       ...this.toObject(),

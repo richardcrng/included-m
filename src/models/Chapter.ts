@@ -14,6 +14,12 @@ export interface ChapterWithLessons
   lessons: AsyncReturnType<Lesson["toObjectDeep"]>[];
 }
 
+export type ChapterPOJO = ReturnType<Chapter["toObject"]>;
+export type ChapterPOJODeep = AsyncReturnType<Chapter["toObjectDeep"]>;
+export type ChapterPOJODeepR = AsyncReturnType<
+  Chapter["toObjectDeepRecursive"]
+>;
+
 export default class Chapter extends FirestoreModel<ChapterBase>("chapter") {
   lessons = relations.findByIds(Lesson, () => this.lessonIdsOrdered);
 
@@ -39,6 +45,19 @@ export default class Chapter extends FirestoreModel<ChapterBase>("chapter") {
   }
 
   async toObjectDeep(): Promise<
+    Omit<ReturnType<Chapter["toObject"]>, "lessonIdsOrdered"> & {
+      lessons: ReturnType<Lesson["toObject"]>[];
+    }
+  > {
+    const lessons = await this.lessons();
+    const lessonObjects = lessons.map((lesson) => lesson.toObject());
+    return {
+      ...this.toObject(),
+      lessons: lessonObjects,
+    };
+  }
+
+  async toObjectDeepRecursive(): Promise<
     Omit<ReturnType<Chapter["toObject"]>, "lessonIdsOrdered"> & {
       lessons: AsyncReturnType<Lesson["toObjectDeep"]>[];
     }

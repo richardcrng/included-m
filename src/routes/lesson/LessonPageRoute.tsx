@@ -5,8 +5,6 @@ import LessonPageView from "./LessonPageView";
 import LoadingPage from "../../pages/LoadingPage";
 import { JSendBase } from "../../lib/jsend";
 import { LessonRawDeep } from "../../models/Lesson.old";
-import { useQuery } from "react-query";
-import { SERVER_URL } from "../../constants";
 import { useFirestoreLesson } from "../../models/FirestoreModel/useFirestoreModel";
 
 interface LessonPageRouteIdProps
