@@ -1,4 +1,6 @@
 import FirestoreModel from "./FirestoreModel";
+import Lesson from "./Lesson";
+import relations from "./relations";
 
 export type ActivityType =
   | "read"
@@ -10,6 +12,7 @@ export type ActivityType =
 export interface ActivityBase {
   activityType: ActivityType;
   blocks: string[];
+  lessonId?: string;
 }
 
 // interface ActivityForFirestore extends ActivityCreateData {}

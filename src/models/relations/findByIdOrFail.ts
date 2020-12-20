@@ -1,3 +1,4 @@
+import WhyWhatError from "../../lib/why-what-error";
 import { ModelConstructor } from "../FirestoreModel";
 import { Relatable, retrieve } from "./relations";
 import { ClassDefinition, LazyHasOneOrFail } from "./relations.types";
@@ -17,15 +18,24 @@ import { ClassDefinition, LazyHasOneOrFail } from "./relations.types";
  */
 export function findByIdOrFail<RelatedInstance = unknown>(
   related: Relatable<ClassDefinition<RelatedInstance>>,
-  cb: () => string
+  cb: () => string | undefined
 ): LazyHasOneOrFail<RelatedInstance> {
   return async function () {
-    const id: string = cb();
+    const id = cb();
 
-    const RelatedClass = retrieve(related) as ModelConstructor<RelatedInstance>;
+    if (id) {
+      const RelatedClass = retrieve(
+        related
+      ) as ModelConstructor<RelatedInstance>;
 
-    const res = await RelatedClass.findByIdOrFail(id);
+      const res = await RelatedClass.findByIdOrFail(id);
 
-    return res;
+      return res;
+    } else {
+      throw new WhyWhatError({
+        what: `Could not find related ${related}`,
+        why: "There is no provided id to search by",
+      });
+    }
   };
 }

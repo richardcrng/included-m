@@ -32,7 +32,14 @@ export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
     const activityIdsOrdered = createdActivities.map((createdActivities) =>
       createdActivities.getId()
     );
-    return this.create({ ...rest, activityIdsOrdered });
+    const lesson = await this.createAndSave({ ...rest, activityIdsOrdered });
+    await Promise.all(
+      createdActivities.map(async (activity) => {
+        activity.lessonId = lesson.id;
+        await activity.save();
+      })
+    );
+    return lesson;
   }
 
   async toObjectDeep(): Promise<

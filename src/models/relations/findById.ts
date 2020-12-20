@@ -17,15 +17,19 @@ import { ClassDefinition, LazyHasOne } from "./relations.types";
  */
 export function findById<RelatedInstance = unknown>(
   related: Relatable<ClassDefinition<RelatedInstance>>,
-  cb: () => string
+  cb: () => string | undefined
 ): LazyHasOne<RelatedInstance> {
   return async function () {
     const id = cb();
 
-    const RelatedClass = retrieve(related) as ModelConstructor<RelatedInstance>;
+    if (id) {
+      const RelatedClass = retrieve(
+        related
+      ) as ModelConstructor<RelatedInstance>;
 
-    const res = await RelatedClass.findById(id);
+      const res = await RelatedClass.findById(id);
 
-    return res;
+      return res;
+    }
   };
 }
