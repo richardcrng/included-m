@@ -12,6 +12,8 @@ import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
 import { useHistory } from "react-router";
 import { CourseRawDeep } from "../../models/Course.old";
 import { TopicRaw, TopicRawDeep } from "../../models/Topic.old";
+import Course from "../../models/Course";
+import { AsyncReturnType } from "type-fest";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -39,8 +41,8 @@ const PickCourseButton = styled(IonButton)`
   height: 100%;
 `;
 interface Props {
-  course: CourseRawDeep<false>;
-  onTopicStart?(topic: TopicRaw | TopicRawDeep): void;
+  course: AsyncReturnType<Course["toObjectDeep"]>;
+  onTopicStart?(topic: any): void;
 }
 
 function CoursePageView({ course, onTopicStart }: Props) {

@@ -13,6 +13,9 @@ export interface CourseWithTopics extends Omit<CourseBase, "topicIdsOrdered"> {
   topics: AsyncReturnType<Topic["toObjectDeep"]>[];
 }
 
+export type CoursePOJO = ReturnType<Course["toObject"]>;
+export type CoursePOJODeep = AsyncReturnType<Course["toObjectDeep"]>;
+
 export default class Course extends FirestoreModel<CourseBase>("course") {
   topics = relations.findByIds(Topic, () => this.topicIdsOrdered);
 

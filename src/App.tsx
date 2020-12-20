@@ -50,42 +50,40 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      <Test />
+      <IonAlert
+        isOpen={newVersionAvailable && !hideModal}
+        onDidDismiss={(e) => setHideModal(true)}
+        header="New version available!"
+        message="There is a new version of this web app available - would you like to access it?"
+        buttons={[
+          {
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "Update",
+            handler: () => {
+              window.location.reload();
+            },
+          },
+        ]}
+      />
+      <IonReactRouter>
+        <Switch>
+          <Route
+            exact
+            path="/course/:id"
+            component={CoursePageRoute.Firebase}
+          />
+          <Route exact path="/topic/:id" component={TopicPageRoute.Query} />
+          <Route exact path="/lesson/:id" component={LessonPageRoute.Query} />
+          <Route exact path="/" component={HomePage} />
+          <Redirect to="/" />
+        </Switch>
+      </IonReactRouter>
     </IonApp>
   );
-
-  // return (
-  //   <IonApp>
-  //     <IonAlert
-  //       isOpen={newVersionAvailable && !hideModal}
-  //       onDidDismiss={(e) => setHideModal(true)}
-  //       header="New version available!"
-  //       message="There is a new version of this web app available - would you like to access it?"
-  //       buttons={[
-  //         {
-  //           text: "Cancel",
-  //           role: "cancel",
-  //           cssClass: "secondary",
-  //         },
-  //         {
-  //           text: "Update",
-  //           handler: () => {
-  //             window.location.reload();
-  //           },
-  //         },
-  //       ]}
-  //     />
-  //     <IonReactRouter>
-  //       <Switch>
-  //         <Route exact path="/course/:id" component={CoursePageRoute.Query} />
-  //         <Route exact path="/topic/:id" component={TopicPageRoute.Query} />
-  //         <Route exact path="/lesson/:id" component={LessonPageRoute.Query} />
-  //         <Route exact path="/" component={HomePage} />
-  //         <Redirect to="/" />
-  //       </Switch>
-  //     </IonReactRouter>
-  //   </IonApp>
-  // );
 };
 
 export default App;

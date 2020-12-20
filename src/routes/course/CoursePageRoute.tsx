@@ -5,50 +5,49 @@ import selectors from "../../redux/selectors";
 import { RouteComponentProps } from "react-router";
 import { LOADING_STRING } from "../../redux/state";
 import CoursePageView from "./CoursePageView";
-// import { useFireactiveCourse } from '../../lib/useFireactive/useFireactiveDocument';
 import LoadingPage from "../../pages/LoadingPage";
 import CourseDetails from "../../pages/Course/CourseDetails";
 import actions from "../../redux/reducer";
 import { JSendBase } from "../../lib/jsend";
 import { CourseRawDeep } from "../../models/Course.old";
 import { SERVER_URL } from "../../constants";
+import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreModel";
+import { CoursePOJODeep } from "../../models/Course";
 
 interface CoursePageRouteFirebaseProps
   extends RouteComponentProps<{
     id: string;
   }> {}
 
-// function CoursePageRouteFirebase({
-//   history, match
-// }: CoursePageRouteFirebaseProps) {
+function CoursePageRouteFirebase({
+  history,
+  match,
+}: CoursePageRouteFirebaseProps) {
+  const [state] = useFirestoreCourse({
+    getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
+    documentToState: (doc) => doc.toObjectDeep(),
+  });
 
-//   const [count, setCount] = React.useState(0)
+  console.log("component running", state);
 
-//   React.useEffect(() => {
-//     setTimeout(() => {
-//       console.log('ran effect')
-//       setCount(c => c+1)
-//     }, 2000)
-//   })
+  // const [state] = useFireactiveCourse({
+  //   getDocument: (docClass) => docClass.findById(match.params.id),
+  //   documentToState: doc => doc.toRawDeep(false)
+  // })
 
-//   const [state] = useFireactiveCourse({
-//     getDocument: (docClass) => docClass.findById(match.params.id),
-//     documentToState: doc => doc.toRawDeep(false)
-//   })
-
-//   if (state) {
-//     return (
-//       <CoursePageView
-//         course={state}
-//         onTopicStart={(topic) => {
-//           history.push(`/topic/${topic._id}`)
-//         }}
-//       />
-//     )
-//   } else {
-//     return <LoadingPage />
-//   }
-// }
+  if (state) {
+    return (
+      <CoursePageView
+        course={state}
+        onTopicStart={(topic) => {
+          console.log("Would start topic,", topic.id);
+        }}
+      />
+    );
+  } else {
+    return <LoadingPage />;
+  }
+}
 
 function CoursePageRouteRedux({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
@@ -74,38 +73,38 @@ export type GetCourseIdSuccess = JSendBase<
   "success"
 >;
 
-function CoursePageRouteQuery({
-  history,
-  match,
-}: CoursePageRouteFirebaseProps) {
-  console.log("running course page");
+// function CoursePageRouteQuery({
+//   history,
+//   match,
+// }: CoursePageRouteFirebaseProps) {
+//   console.log("running course page");
 
-  const { id } = match.params;
+//   const { id } = match.params;
 
-  const { data } = useQuery(`course-${id}`, async () => {
-    const res = await fetch(`${SERVER_URL}/courses/${id}`);
-    const body = (await res.json()) as GetCourseIdSuccess;
-    return body.data.course;
-  });
+//   const { data } = useQuery(`course-${id}`, async () => {
+//     const res = await fetch(`${SERVER_URL}/courses/${id}`);
+//     const body = (await res.json()) as GetCourseIdSuccess;
+//     return body.data.course;
+//   });
 
-  if (data) {
-    return (
-      <CoursePageView
-        course={data}
-        onTopicStart={(topic) => {
-          history.push(`/topic/${topic._id}`);
-        }}
-      />
-    );
-  } else {
-    return <LoadingPage />;
-  }
-}
+//   if (data) {
+//     return (
+//       <CoursePageView
+//         course={data}
+//         onTopicStart={(topic) => {
+//           history.push(`/topic/${topic._id}`);
+//         }}
+//       />
+//     );
+//   } else {
+//     return <LoadingPage />;
+//   }
+// }
 
 const CoursePageRoute = {
-  // Firebase: CoursePageRouteFirebase,
+  Firebase: CoursePageRouteFirebase,
   Redux: CoursePageRouteRedux,
-  Query: CoursePageRouteQuery,
+  // Query: CoursePageRouteQuery,
 };
 
 export default CoursePageRoute;
