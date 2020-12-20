@@ -19,10 +19,13 @@ interface TopicPageRouteIdProps
   }> {}
 
 function TopicPageRouteFirebase({ history, match }: TopicPageRouteIdProps) {
-  const [state] = useFirestoreTopic({
-    getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
-    documentToState: (doc) => doc.toObjectDeep(),
-  });
+  const [state] = useFirestoreTopic(
+    {
+      getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
+      documentToState: (doc) => doc.toObjectDeep(),
+    },
+    `Topic-${match.params.id}`
+  );
 
   if (state) {
     return (

@@ -23,10 +23,13 @@ function CoursePageRouteFirebase({
   history,
   match,
 }: CoursePageRouteFirebaseProps) {
-  const [state] = useFirestoreCourse({
-    getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
-    documentToState: (doc) => doc.toObjectDeep(),
-  });
+  const [state] = useFirestoreCourse(
+    {
+      getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
+      documentToState: (doc) => doc.toObjectDeep(),
+    },
+    `Course-${match.params.id}`
+  );
 
   console.log("component running", state);
 

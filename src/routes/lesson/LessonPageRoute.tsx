@@ -15,10 +15,13 @@ interface LessonPageRouteIdProps
   }> {}
 
 function LessonPageRouteFirebase({ history, match }: LessonPageRouteIdProps) {
-  const [state] = useFirestoreLesson({
-    getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
-    documentToState: (doc) => doc.toObjectDeep(),
-  });
+  const [state] = useFirestoreLesson(
+    {
+      getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
+      documentToState: (doc) => doc.toObjectDeep(),
+    },
+    `Lesson-${match.params.id}`
+  );
 
   if (state) {
     return <LessonPageView lesson={state} />;

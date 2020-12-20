@@ -20,7 +20,7 @@ type UseDocumentArgs<C extends Class<any>, S> = {
 export function makeUseFirestoreDocument<C extends Class<any>>(
   ModelConstructor: C
 ) {
-  const stateCache: Record<string, any> = {};
+  const valueCache: Record<string, any> = {};
   const documentCache: Record<string, any> = {};
 
   return function useFirestoreDocument<S>(
@@ -28,36 +28,45 @@ export function makeUseFirestoreDocument<C extends Class<any>>(
     key = "lastUsed"
   ): [S | undefined, InstanceType<C> | undefined] {
     interface State {
-      value?: S;
-      document?: InstanceType<C>;
+      value: S;
+      document: InstanceType<C>;
       hasRefreshedCache: boolean;
     }
 
     const initialState: State = {
-      value: stateCache[key],
+      value: valueCache[key],
       document: documentCache[key],
       hasRefreshedCache: false,
     };
 
     const [riducer, actions] = riduce(initialState);
 
-    const [state, dispatch] = useReducer(riducer, initialState);
+    const [{ value, document, hasRefreshedCache }, dispatch] = useReducer(
+      riducer,
+      initialState
+    );
 
     const fetchFromFirestore = async () => {
-      const document = await getDocument(ModelConstructor);
-      let actionsToDispatch: Parameters<typeof bundle>[0] = [];
+      const newDocument = await getDocument(ModelConstructor);
+      const actionsToDispatch: Parameters<typeof bundle>[0] = [];
 
-      if (!state.document && document) {
-        if (
-          !isEqual(JSON.stringify(document), JSON.stringify(state.document))
-        ) {
-          actionsToDispatch.push(actions.document!.create.update(document));
+      if (!hasRefreshedCache || (!document && newDocument)) {
+        if (!isEqual(JSON.stringify(document), JSON.stringify(newDocument))) {
+          documentCache[key] = newDocument;
+          actionsToDispatch.push(
+            actions.document.create.update(newDocument),
+            actions.hasRefreshedCache.create.on()
+          );
         }
 
-        if (!state.value) {
-          const docState = await documentToState(document);
-          if (!isEqual(state.value, docState)) {
-            actionsToDispatch.push(actions.value!.create.update(docState));
+        if (!value) {
+          const newValue = await documentToState(newDocument);
+          if (!isEqual(value, newValue)) {
+            valueCache[key] = newValue;
+            actionsToDispatch.push(
+              actions.value.create.update(newValue),
+              actions.hasRefreshedCache.create.on()
+            );
           }
         }
       }
@@ -65,11 +74,11 @@ export function makeUseFirestoreDocument<C extends Class<any>>(
     };
 
     useEffect(() => {
-      if (!state.value || !state.document) {
+      if (!hasRefreshedCache || !value || !document) {
         fetchFromFirestore();
       }
     }, [fetchFromFirestore]);
 
-    return [state.value, state.document];
+    return [value, document];
   };
 }
