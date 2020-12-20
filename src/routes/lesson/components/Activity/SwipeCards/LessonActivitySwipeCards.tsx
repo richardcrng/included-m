@@ -15,11 +15,11 @@ import Notification, {
   NotificationProps,
 } from "../../../../../ui/atoms/Notification";
 import LessonContinueButton from "../../LessonContinueButton";
-import { ActivityRawDeep } from "../../../../../models/Activity.old";
 import { CardRaw } from "../../../../../models/Card";
+import { ActivityPOJO } from "../../../../../models/Activity";
 
 interface Props {
-  activity: ActivityRawDeep;
+  activity: ActivityPOJO;
 }
 
 function LessonActivitySwipeCards({ activity }: Props) {
@@ -105,7 +105,7 @@ function LessonActivitySwipeCards({ activity }: Props) {
           return (
             <>
               <LessonContent>
-                {activity.contentBlocks.map((block) => (
+                {activity.blocks.map((block) => (
                   <LessonContentBlock
                     key={JSON.stringify(block)}
                     block={block}

@@ -9,13 +9,14 @@ import Notification, {
   NotificationProps,
 } from "../../../../ui/atoms/Notification";
 import { ActivityRawDeep } from "../../../../models/Activity.old";
+import { ActivityPOJO } from "../../../../models/Activity";
 
 interface Props {
-  activity: ActivityRawDeep;
+  activity: ActivityPOJO;
 }
 
 function LessonActivitySelectMultiple({
-  activity: { contentBlocks, answers },
+  activity: { blocks, answers = [] },
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({
     message: "",
@@ -106,7 +107,7 @@ function LessonActivitySelectMultiple({
         }}
       />
       <LessonContent>
-        {contentBlocks.map((block) => (
+        {blocks.map((block) => (
           <LessonContentBlock key={JSON.stringify(block)} block={block} />
         ))}
         {answersState.map((answer, idx) => (

@@ -41,6 +41,7 @@ function CoursePageRouteFirebase({
         course={state}
         onTopicStart={(topic) => {
           console.log("Would start topic,", topic.id);
+          history.push(`/topic/${topic.id}`);
         }}
       />
     );

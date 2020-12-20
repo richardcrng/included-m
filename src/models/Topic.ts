@@ -15,6 +15,9 @@ export interface TopicWithChapters
   chapters: AsyncReturnType<Chapter["toObjectDeep"]>[];
 }
 
+export type TopicPOJO = ReturnType<Topic["toObject"]>;
+export type TopicPOJODeep = AsyncReturnType<Topic["toObjectDeep"]>;
+
 export default class Topic extends FirestoreModel<TopicBase>("topic") {
   chapters = relations.findByIds(Chapter, () => this.chapterIdsOrdered);
 

@@ -10,43 +10,46 @@ import MultipleAnswerCard from "../../../../../ui/atoms/MultipleAnswerCard";
 import Notification, {
   NotificationProps,
 } from "../../../../../ui/atoms/Notification";
-import { ActivityRawDeep } from "../../../../../models/Activity.old";
-import { AnswerRaw } from "../../../../../models/Answer";
+import {
+  ActivityPOJO,
+  AnswerBase,
+  ChoicesBase,
+} from "../../../../../models/Activity";
 
 interface Props {
-  activity: ActivityRawDeep;
+  activity: ActivityPOJO;
 }
 
-export interface ChoiceAnswerState extends AnswerRaw {
+export interface ChoiceAnswerState extends AnswerBase {
   isLocked: boolean;
   isSelected: boolean;
   textMatch: string;
 }
 
 function LessonActivitySelectForEachBlankComplex({
-  activity: { contentBlocks: blocks, choices },
+  activity: { blocks, choices = {} },
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({
     message: "",
     isShowing: false,
   });
 
-  const choiceToAnswerEntries: [string, ChoiceAnswerState[]][] = choices.map(
-    (choice) => {
-      const mappedAnswers: ChoiceAnswerState[] = choice.answers.map(
-        (answer) => ({
-          ...answer,
-          isLocked: false,
-          isSelected: false,
-          textMatch: choice.textMatch,
-        })
-      );
+  const choicesArr = Object.entries(choices);
 
-      const shuffledAnswers = shuffle(mappedAnswers);
+  const choiceToAnswerEntries: [string, ChoiceAnswerState[]][] = Object.entries(
+    choices
+  ).map(([match, answers]) => {
+    const mappedAnswers: ChoiceAnswerState[] = answers.map((answer) => ({
+      ...answer,
+      isLocked: false,
+      isSelected: false,
+      textMatch: match,
+    }));
 
-      return [choice.textMatch, shuffledAnswers];
-    }
-  );
+    const shuffledAnswers = shuffle(mappedAnswers);
+
+    return [match, shuffledAnswers];
+  });
 
   const shuffledChoices = Object.fromEntries(choiceToAnswerEntries);
 
@@ -91,8 +94,8 @@ function LessonActivitySelectForEachBlankComplex({
     });
 
     if (answer.isCorrect) {
-      const currIdx = choices.findIndex(
-        (choice) => choice.textMatch === answer.textMatch
+      const currIdx = choicesArr.findIndex(
+        (choice) => choice[0] === answer.textMatch
       );
       dispatch(
         actions.choices[activityState.selectedInput][idx].create.assign({
@@ -100,9 +103,9 @@ function LessonActivitySelectForEachBlankComplex({
         })
       );
 
-      if (currIdx < choices.length - 1) {
+      if (currIdx < choicesArr.length - 1) {
         dispatch(
-          actions.selectedInput.create.update(choices[currIdx + 1].textMatch)
+          actions.selectedInput.create.update(choicesArr[currIdx + 1][0])
         );
       }
     }

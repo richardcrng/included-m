@@ -1,6 +1,7 @@
 import Activity from "./Activity";
 import FirestoreModel from "./FirestoreModel";
 import relations from "./relations";
+import { AsyncReturnType } from "type-fest";
 
 export type LessonType =
   | "read"
@@ -19,6 +20,9 @@ export interface LessonWithActivities
   extends Omit<LessonBase, "activityIdsOrdered"> {
   activities: ReturnType<Activity["toObject"]>[];
 }
+
+export type LessonPOJO = ReturnType<Lesson["toObject"]>;
+export type LessonPOJODeep = AsyncReturnType<Lesson["toObjectDeep"]>;
 
 export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
   activities = relations.findByIds(Activity, () => this.activityIdsOrdered);

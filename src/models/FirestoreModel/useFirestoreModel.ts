@@ -1,9 +1,13 @@
 import { isEqual } from "lodash";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Class } from "utility-types";
 import Course from "../Course";
+import Lesson from "../Lesson";
+import Topic from "../Topic";
 
 export const useFirestoreCourse = makeUseFirestoreDocument(Course);
+export const useFirestoreTopic = makeUseFirestoreDocument(Topic);
+export const useFirestoreLesson = makeUseFirestoreDocument(Lesson);
 
 type UseDocumentArgs<C extends Class<any>, S> = {
   getDocument: (

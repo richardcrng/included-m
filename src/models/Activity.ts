@@ -9,11 +9,15 @@ export type ActivityType =
 
 export interface ActivityBase {
   activityType: ActivityType;
-  blocks: string[];
+  blocks: (string | BlockBase)[];
   lessonId?: string;
   answers?: AnswerBase[];
   choices?: ChoicesBase;
   cards?: CardBase[];
+}
+
+export interface BlockBase {
+  markdown: string;
 }
 
 export interface ChoicesBase {
@@ -36,8 +40,32 @@ export type AnswerBase = {
   isSelected?: boolean;
 };
 
+export type ActivityPOJO = ReturnType<Activity["toObject"]>;
+
 // interface ActivityForFirestore extends ActivityCreateData {}
 
-export default class Activity extends FirestoreModel<ActivityBase>(
-  "activity"
-) {}
+export default class Activity extends FirestoreModel<ActivityBase>("activity") {
+  constructor({ blocks, ...rest }: ActivityBase) {
+    super({ blocks: standardiseBlocks(blocks), ...rest });
+  }
+
+  toObject() {
+    const obj = super.toObject();
+    return {
+      ...obj,
+      blocks: standardiseBlocks(obj.blocks),
+    };
+  }
+}
+
+function standardiseBlocks(blocks: (string | BlockBase)[]): BlockBase[] {
+  return blocks.map((block) => {
+    if (typeof block === "string") {
+      return {
+        markdown: block,
+      };
+    } else {
+      return block;
+    }
+  });
+}

@@ -17,6 +17,7 @@ import { useHistory } from "react-router";
 import { TopicRawDeep } from "../../models/Topic.old";
 import { LessonRawDeep } from "../../models/Lesson.old";
 import { DEFAULT_COURSE_ID } from "../../constants";
+import { TopicPOJODeep } from "../../models/Topic";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -61,14 +62,14 @@ const LessonStartButton = styled(IonButton)`
 `;
 
 interface Props {
-  topic: TopicRawDeep<true>;
-  onLessonSelect?(lesson: LessonRawDeep): void;
+  topic: TopicPOJODeep;
+  onLessonSelect?(lesson: any): void;
 }
 
 function TopicPageView({ topic, onLessonSelect }: Props) {
   const history = useHistory();
 
-  const createLessonSelectHandler = (lesson: LessonRawDeep) => () =>
+  const createLessonSelectHandler = (lesson: any) => () =>
     onLessonSelect && onLessonSelect(lesson);
 
   return (

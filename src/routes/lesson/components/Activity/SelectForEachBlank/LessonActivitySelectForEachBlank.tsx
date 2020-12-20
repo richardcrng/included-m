@@ -9,22 +9,20 @@ import MultipleAnswerCard from "../../../../../ui/atoms/MultipleAnswerCard";
 import Notification, {
   NotificationProps,
 } from "../../../../../ui/atoms/Notification";
-import { ActivityRawDeep } from "../../../../../models/Activity.old";
 import { ChoiceAnswerState } from "./LessonActivitySelectForEachBlankComplex";
+import { ActivityPOJO } from "../../../../../models/Activity";
 
 interface Props {
-  activity: ActivityRawDeep;
+  activity: ActivityPOJO;
 }
 
-function LessonActivitySelectForEachBlank({
-  activity: { contentBlocks },
-}: Props) {
+function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({
     message: "",
     isShowing: false,
   });
 
-  const answers = answersFromBlocks(contentBlocks);
+  const answers = answersFromBlocks(blocks);
 
   const initialState = {
     answers: shuffle(answers),
@@ -101,7 +99,7 @@ function LessonActivitySelectForEachBlank({
         buttons={[notification.buttonText || "Close"]}
       />
       <LessonContent>
-        {contentBlocks.map((block) => {
+        {blocks.map((block) => {
           const { markdown } = block;
           const blockBlanks = hasBlanks(markdown);
           if (blockBlanks) {

@@ -1,6 +1,7 @@
 import { IonButton } from "@ionic/react";
 import React from "react";
 import { useHistory } from "react-router";
+import { ActivityPOJO } from "../../../../models/Activity";
 import { ActivityRawDeep } from "../../../../models/Activity.old";
 import LessonContent from "../LessonContent";
 import LessonActivityRead from "./LessonActivityRead";
@@ -10,7 +11,7 @@ import LessonActivitySelectForEachBlankComplex from "./SelectForEachBlank/Lesson
 import LessonActivitySwipeCards from "./SwipeCards";
 
 interface Props {
-  activity: ActivityRawDeep;
+  activity: ActivityPOJO;
 }
 
 function LessonActivity({ activity }: Props) {
@@ -39,7 +40,7 @@ function LessonActivity({ activity }: Props) {
   } else if (activity.activityType === "select-multiple") {
     return <LessonActivitySelectMultiple activity={activity} />;
   } else if (activity.activityType === "select-for-each-blank") {
-    if (activity.choices.length > 0) {
+    if (Object.keys(activity.choices || {}).length > 0) {
       return <LessonActivitySelectForEachBlankComplex activity={activity} />;
     } else {
       return <LessonActivitySelectForEachBlank activity={activity} />;
@@ -47,7 +48,7 @@ function LessonActivity({ activity }: Props) {
   } else if (activity.activityType === "swipe-cards") {
     return <LessonActivitySwipeCards activity={activity} />;
   } else {
-    return <LessonActivityRead blocks={activity.contentBlocks} />;
+    return <LessonActivityRead blocks={activity.blocks} />;
   }
 }
 
