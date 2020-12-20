@@ -2,7 +2,7 @@ import React, { useReducer, useState } from "react";
 import { shuffle } from "lodash";
 import riduce from "riduce";
 import Markdown from "markdown-to-jsx";
-import { BlankOrText, hasBlanks } from "./utils";
+import { allBlanks, BlankOrText, hasBlanks } from "./utils";
 import LessonContent from "../../LessonContent";
 import LessonContentBlock from "../../LessonContentBlock";
 import LessonContinueButton from "../../LessonContinueButton";
@@ -35,6 +35,7 @@ function LessonActivitySelectForEachBlankComplex({
   });
 
   const choicesArr = Object.entries(choices);
+  const shownBlanks = allBlanks(blocks);
 
   const choiceToAnswerEntries: [string, ChoiceAnswerState[]][] = Object.entries(
     choices
@@ -55,12 +56,13 @@ function LessonActivitySelectForEachBlankComplex({
 
   const initialState = {
     choices: shuffledChoices,
-    selectedInput: choiceToAnswerEntries[0][0],
+    selectedInput: shownBlanks[0],
   };
 
   const [reducer, actions] = riduce(initialState);
 
   const [activityState, dispatch] = useReducer(reducer, initialState);
+  console.log("selectedInput", activityState.selectedInput);
 
   const activeChoices = activityState.choices[activityState.selectedInput];
 
@@ -103,10 +105,8 @@ function LessonActivitySelectForEachBlankComplex({
         })
       );
 
-      if (currIdx < choicesArr.length - 1) {
-        dispatch(
-          actions.selectedInput.create.update(choicesArr[currIdx + 1][0])
-        );
+      if (currIdx < shownBlanks.length - 1) {
+        dispatch(actions.selectedInput.create.update(shownBlanks[currIdx + 1]));
       }
     }
   };

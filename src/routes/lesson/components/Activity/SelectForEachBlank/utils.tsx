@@ -33,6 +33,14 @@ const LockedAnswer = styled.span`
 
 export const hasBlanks = (str: string) => str.match(/{{(.+?)}}/g);
 
+export const allBlanks = (blocks: BlockBase[]): string[] => {
+  return blocks.reduce((acc, block) => {
+    const { markdown } = block;
+    const matches = hasBlanks(markdown);
+    return matches ? [...acc, ...matches] : acc;
+  }, [] as string[]);
+};
+
 export const answersFromBlocks = (
   blocks: BlockBase[]
 ): Record<string, ChoiceAnswerState> => {

@@ -1,5 +1,5 @@
 import { isEqual } from "lodash";
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { Class } from "utility-types";
 import riduce, { bundle } from "riduce";
 import Course from "../Course";
@@ -44,31 +44,36 @@ export function makeUseFirestoreDocument<C extends Class<any>>(
     const [riducer, actions] = riduce(initialState);
 
     const [state, dispatch] = useReducer(riducer, initialState);
-    const { value, document, hasRefreshedCache, error } = state;
+    const { value, document, hasRefreshedCache } = state;
 
     const fetchFromFirestore = async () => {
       const actionsToDispatch: Parameters<typeof bundle>[0] = [];
+
       const newDocument = await getDocument(ModelConstructor);
 
-      if (!hasRefreshedCache || (!document && newDocument)) {
-        if (!isEqual(JSON.stringify(document), JSON.stringify(newDocument))) {
-          documentCache[key] = newDocument;
-          actionsToDispatch.push(
-            actions.document.create.update(newDocument),
-            actions.hasRefreshedCache.create.on()
-          );
-        }
-
-        if (!value) {
-          const newValue = await documentToState(newDocument);
-          if (!isEqual(value, newValue)) {
-            valueCache[key] = newValue;
+      try {
+        if (!hasRefreshedCache || (!document && newDocument)) {
+          if (!isEqual(JSON.stringify(document), JSON.stringify(newDocument))) {
+            documentCache[key] = newDocument;
             actionsToDispatch.push(
-              actions.value.create.update(newValue),
+              actions.document.create.update(newDocument),
               actions.hasRefreshedCache.create.on()
             );
           }
+
+          if (!value) {
+            const newValue = await documentToState(newDocument);
+            if (!isEqual(value, newValue)) {
+              valueCache[key] = newValue;
+              actionsToDispatch.push(
+                actions.value.create.update(newValue),
+                actions.hasRefreshedCache.create.on()
+              );
+            }
+          }
         }
+      } catch (err) {
+        actionsToDispatch.push(actions.error.create.update(err));
       }
       dispatch(bundle(actionsToDispatch));
     };
