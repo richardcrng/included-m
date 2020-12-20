@@ -2,6 +2,7 @@ import { IonButton, IonContent, IonHeader, IonToolbar } from "@ionic/react";
 import React from "react";
 import { AsyncReturnType } from "type-fest";
 import Lesson from "./models/Lesson";
+import Chapter from "./models/Chapter";
 
 function Test() {
   const [state, setState] = React.useState<
@@ -35,16 +36,31 @@ function Test() {
             <pre>{JSON.stringify(state, null, 2)}</pre>
             <IonButton
               onClick={async () => {
-                const lesson = await Lesson.createWithActivities({
-                  lessonTitle: "A new lesson",
-                  activities: [
+                const chapter = await Chapter.createWithLessons({
+                  chapterTitle: "A chapter",
+                  lessons: [
                     {
-                      activityType: "read",
-                      blocks: ["hi there", "my lesson"],
+                      lessonTitle: "Lesson 0 from a chapter",
+                      activities: [
+                        {
+                          activityType: "read",
+                          blocks: ["Hello world"],
+                        },
+                      ],
+                    },
+                    {
+                      lessonTitle: "Lesson 1 from a chapter",
+                      activities: [
+                        {
+                          activityType: "read",
+                          blocks: ["Me again"],
+                        },
+                      ],
                     },
                   ],
                 });
-                console.log("Created new lesson", lesson.toObject());
+                const chapterObj = await chapter.toObjectDeep();
+                console.log("Created chapter", chapterObj);
               }}
             >
               Create Lesson

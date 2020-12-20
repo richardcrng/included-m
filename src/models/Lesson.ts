@@ -1,3 +1,4 @@
+import { SetOptional } from "type-fest";
 import Activity from "./Activity";
 import FirestoreModel from "./FirestoreModel";
 import relations from "./relations";
@@ -10,6 +11,7 @@ export type LessonType =
   | "swipe-cards";
 
 export interface LessonBase {
+  chapterId?: string;
   lessonTitle: string;
   activityIdsOrdered: string[];
 }
@@ -23,8 +25,8 @@ export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
   activities = relations.findByIds(Activity, () => this.activityIdsOrdered);
 
   static async createWithActivities({
+    lessonTitle,
     activities,
-    ...rest
   }: LessonWithActivities) {
     const createdActivities = await Promise.all(
       activities.map((activity) => Activity.createAndSave(activity))
@@ -32,7 +34,10 @@ export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
     const activityIdsOrdered = createdActivities.map((createdActivities) =>
       createdActivities.getId()
     );
-    const lesson = await this.createAndSave({ ...rest, activityIdsOrdered });
+    const lesson = await this.createAndSave({
+      lessonTitle,
+      activityIdsOrdered,
+    });
     await Promise.all(
       createdActivities.map(async (activity) => {
         activity.lessonId = lesson.id;
@@ -43,7 +48,7 @@ export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
   }
 
   async toObjectDeep(): Promise<
-    ReturnType<Lesson["toObject"]> & {
+    Omit<ReturnType<Lesson["toObject"]>, "activityIdsOrdered"> & {
       activities: ReturnType<Activity["toObject"]>[];
     }
   > {
