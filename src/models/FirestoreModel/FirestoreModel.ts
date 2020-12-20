@@ -29,7 +29,7 @@ export type ModelDoc<T> = MaybeWithId<T> & {
 };
 
 export type ModelConstructor<T = {}> = {
-  new (docData?: T, implement?: boolean): ModelDoc<T>;
+  new (docData?: MaybeWithId<T>, implement?: boolean): ModelDoc<T>;
 
   // properties
   collection: firebase.firestore.CollectionReference<ModelDoc<T>>;
@@ -39,7 +39,7 @@ export type ModelConstructor<T = {}> = {
 
   create<C extends Class<any> = ModelConstructor<T>, D = InstanceType<C>>(
     this: C,
-    docData: T
+    docData: MaybeWithId<T>
   ): D;
 
   createAndSave<
@@ -47,7 +47,7 @@ export type ModelConstructor<T = {}> = {
     D = InstanceType<C>
   >(
     this: C,
-    docData: T
+    docData: MaybeWithId<T>
   ): Promise<D>;
 
   findById<C extends Class<any> = ModelConstructor<T>, D = InstanceType<C>>(
@@ -73,6 +73,8 @@ export type ModelConstructor<T = {}> = {
     options?: firebase.firestore.SnapshotOptions
   ): ModelDoc<T>;
 
+  generateId(): string;
+
   toFirestore(model: ModelDoc<T> | MaybeWithId<T>): MaybeWithId<T>;
 };
 
@@ -81,7 +83,7 @@ function FirestoreModel<T>(modelName: string) {
   const Model: ModelConstructor<T> = class Model {
     static collectionPath = pluralize(modelName);
 
-    constructor(docData?: T, implement: boolean = true) {
+    constructor(docData?: MaybeWithId<T>, implement: boolean = true) {
       if (docData && implement) {
         for (let key in docData) {
           // @ts-ignore
@@ -112,11 +114,14 @@ function FirestoreModel<T>(modelName: string) {
       return firebase.firestore(getApp());
     }
 
-    static create(this: ModelConstructor<T>, docData: T) {
+    static create(this: ModelConstructor<T>, docData: MaybeWithId<T>) {
       return new this(docData);
     }
 
-    static async createAndSave(this: ModelConstructor<T>, docData: T) {
+    static async createAndSave(
+      this: ModelConstructor<T>,
+      docData: MaybeWithId<T>
+    ) {
       const doc = new this(docData);
       await doc.save();
       return doc;
@@ -149,6 +154,10 @@ function FirestoreModel<T>(modelName: string) {
     ): Model {
       const data = snapshot.data(options)!;
       return this.create(data as T);
+    }
+
+    static generateId(): string {
+      return this.collection.doc().id;
     }
 
     static toFirestore(model: Model | MaybeWithId<T>): MaybeWithId<T> {

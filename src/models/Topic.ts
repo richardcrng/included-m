@@ -1,51 +1,59 @@
 import FirestoreModel from "./FirestoreModel";
 import relations from "./relations";
 import { AsyncReturnType } from "type-fest";
-import Lesson from "./Lesson";
+import Chapter from "./Chapter";
 
-export interface ChapterBase {
-  topicId?: string;
-  chapterTitle: string;
-  lessonIdsOrdered: string[];
+export interface TopicBase {
+  courseId?: string;
+  topicTitle: string;
+  chapterIdsOrdered: string[];
 }
 
-export interface ChapterWithLessons
-  extends Omit<ChapterBase, "lessonIdsOrdered"> {
-  lessons: AsyncReturnType<Lesson["toObjectDeep"]>[];
+export interface TopicWithChapters
+  extends Omit<TopicBase, "chapterIdsOrdered"> {
+  chapters: AsyncReturnType<Chapter["toObjectDeep"]>[];
 }
 
-export default class Chapter extends FirestoreModel<ChapterBase>("lesson") {
-  lessons = relations.findByIds(Lesson, () => this.lessonIdsOrdered);
+export default class Topic extends FirestoreModel<TopicBase>("chapter") {
+  chapters = relations.findByIds(Chapter, () => this.chapterIdsOrdered);
 
-  static async createWithLessons({ lessons, ...rest }: ChapterWithLessons) {
-    const createdLessons = await Promise.all(
-      lessons.map((lesson) => Lesson.createWithActivities(lesson))
+  static async createWithChapters({
+    topicTitle,
+    chapters,
+    ...rest
+  }: TopicWithChapters) {
+    const createdChapters = await Promise.all(
+      chapters.map((chapter) => Chapter.createWithLessons(chapter))
     );
-    const lessonIdsOrdered = createdLessons.map((createdLessons) =>
-      createdLessons.getId()
+    const chapterIdsOrdered = createdChapters.map((createdChapters) =>
+      createdChapters.getId()
     );
-    const chapter = await this.createAndSave({ ...rest, lessonIdsOrdered });
+    const topic = await this.createAndSave({
+      topicTitle,
+      chapterIdsOrdered,
+      ...rest,
+    });
     await Promise.all(
-      createdLessons.map(async (lesson) => {
-        lesson.chapterId = chapter.id;
-        await lesson.save();
+      createdChapters.map(async (chapter) => {
+        chapter.topicId = topic.id;
+        await chapter.save();
       })
     );
-    return chapter;
+    return topic;
   }
 
   async toObjectDeep(): Promise<
-    ReturnType<Chapter["toObject"]> & {
-      lessons: AsyncReturnType<Lesson["toObjectDeep"]>[];
+    ReturnType<Topic["toObject"]> & {
+      chapters: AsyncReturnType<Chapter["toObjectDeep"]>[];
     }
   > {
-    const lessons = await this.lessons();
-    const lessonsWithActivities = await Promise.all(
-      lessons.map((lesson) => lesson.toObjectDeep())
+    const chapters = await this.chapters();
+    const chaptersWithLessons = await Promise.all(
+      chapters.map((chapter) => chapter.toObjectDeep())
     );
     return {
       ...this.toObject(),
-      lessons: lessonsWithActivities,
+      chapters: chaptersWithLessons,
     };
   }
 }

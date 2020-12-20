@@ -1,4 +1,3 @@
-import { SetOptional } from "type-fest";
 import Activity from "./Activity";
 import FirestoreModel from "./FirestoreModel";
 import relations from "./relations";
@@ -28,22 +27,23 @@ export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
     lessonTitle,
     activities,
   }: LessonWithActivities) {
+    const thisId = this.generateId();
     const createdActivities = await Promise.all(
-      activities.map((activity) => Activity.createAndSave(activity))
+      activities.map((activity) =>
+        Activity.createAndSave({
+          ...activity,
+          lessonId: thisId,
+        })
+      )
     );
     const activityIdsOrdered = createdActivities.map((createdActivities) =>
       createdActivities.getId()
     );
     const lesson = await this.createAndSave({
+      id: thisId,
       lessonTitle,
       activityIdsOrdered,
     });
-    await Promise.all(
-      createdActivities.map(async (activity) => {
-        activity.lessonId = lesson.id;
-        await activity.save();
-      })
-    );
     return lesson;
   }
 
