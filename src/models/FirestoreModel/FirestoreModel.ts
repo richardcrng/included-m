@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import pluralize from "pluralize";
+import { Class } from "utility-types";
 import WhyWhatError from "../../lib/why-what-error";
 
 let app: firebase.app.App;
@@ -36,15 +37,42 @@ export type ModelConstructor<T = {}> = {
   db: firebase.firestore.Firestore;
   name: string;
 
-  create(docData: T): ModelDoc<T>;
-  createAndSave(docData: T): Promise<ModelDoc<T>>;
-  findById(id: string): Promise<ModelDoc<T> | undefined>;
-  findByIds(...ids: string[]): Promise<ModelDoc<T>[]>;
-  findByIdOrFail(id: string): Promise<ModelDoc<T>>;
+  create<C extends Class<any> = ModelConstructor<T>, D = InstanceType<C>>(
+    this: C,
+    docData: T
+  ): D;
+
+  createAndSave<
+    C extends Class<any> = ModelConstructor<T>,
+    D = InstanceType<C>
+  >(
+    this: C,
+    docData: T
+  ): Promise<D>;
+
+  findById<C extends Class<any> = ModelConstructor<T>, D = InstanceType<C>>(
+    this: C,
+    id: string
+  ): Promise<D | undefined>;
+
+  findByIds<C extends Class<any> = ModelConstructor<T>, D = InstanceType<C>>(
+    this: C,
+    ...ids: string[]
+  ): Promise<D[]>;
+
+  findByIdOrFail<
+    C extends Class<any> = ModelConstructor<T>,
+    D = InstanceType<C>
+  >(
+    this: C,
+    id: string
+  ): Promise<D>;
+
   fromFirestore(
     snapshot: firebase.firestore.QueryDocumentSnapshot,
     options?: firebase.firestore.SnapshotOptions
   ): ModelDoc<T>;
+
   toFirestore(model: ModelDoc<T> | MaybeWithId<T>): MaybeWithId<T>;
 };
 

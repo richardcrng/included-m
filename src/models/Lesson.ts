@@ -25,11 +25,6 @@ export interface LessonWithActivities
 export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
   activities = relations.findByIds(Activity, () => this.activityIdsOrdered);
 
-  static async findById(id: string): Promise<Lesson | undefined> {
-    // @ts-ignore
-    return super.findById(id) as Lesson;
-  }
-
   static async createWithActivities({
     activities,
     ...rest

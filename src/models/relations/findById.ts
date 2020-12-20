@@ -1,3 +1,4 @@
+import { get } from "lodash";
 import { ModelConstructor } from "../FirestoreModel";
 import { Relatable, retrieve } from "./relations";
 import { ClassDefinition, LazyHasOne } from "./relations.types";

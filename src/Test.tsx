@@ -1,12 +1,5 @@
-import {
-  IonButton,
-  IonContent,
-  IonHeader,
-  IonText,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButton, IonContent, IonHeader, IonToolbar } from "@ionic/react";
 import React from "react";
-import { isEqual } from "lodash";
 import { AsyncReturnType } from "type-fest";
 import Lesson from "./models/Lesson";
 
