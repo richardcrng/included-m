@@ -1,5 +1,5 @@
 import { CourseCRUD } from "../content/types";
-import { TopicRaw, TopicRawDeep } from "./Topic";
+import { TopicRaw, TopicRawDeep } from "./Topic.old";
 
 export interface CourseRaw {
   _id: string;

@@ -7,7 +7,7 @@ import { JSendBase, jsend } from "../src/lib/jsend";
 import Lesson from "../src/models/Lesson.old";
 import { GetCourseIdSuccess } from "../src/routes/course/CoursePageRoute";
 import { GetLessonIdSuccess } from "../src/routes/lesson/LessonPageRoute";
-import Topic from "../src/models/Topic";
+import Topic from "../src/models/Topic.old";
 import { GetTopicIdSuccess } from "../src/routes/topic/TopicPageRoute";
 import { PingSuccessVersionNumber } from "../src/App";
 

@@ -14,7 +14,7 @@ import {
 } from "@ionic/react";
 import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
 import { useHistory } from "react-router";
-import { TopicRawDeep } from "../../models/Topic";
+import { TopicRawDeep } from "../../models/Topic.old";
 import { LessonRawDeep } from "../../models/Lesson.old";
 import { DEFAULT_COURSE_ID } from "../../constants";
 

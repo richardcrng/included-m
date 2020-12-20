@@ -8,7 +8,7 @@ import { LOADING_STRING } from "../../redux/state";
 import TopicPageView from "./TopicPageView";
 import LoadingPage from "../../pages/LoadingPage";
 import { JSendBase } from "../../lib/jsend";
-import { TopicRawDeep } from "../../models/Topic";
+import { TopicRawDeep } from "../../models/Topic.old";
 import { useQuery } from "react-query";
 import { SERVER_URL } from "../../constants";
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 import {
   IonButton,
   IonButtons,
@@ -7,74 +7,68 @@ import {
   IonItem,
   IonLabel,
   IonToolbar,
-} from '@ionic/react';
-import {
-  IoArrowBack,
-  IoInformationCircleOutline
-} from 'react-icons/io5'
-import { useHistory } from 'react-router';
-import { CourseRawDeep } from '../../models/Course';
-import { TopicRaw, TopicRawDeep } from '../../models/Topic';
+} from "@ionic/react";
+import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
+import { useHistory } from "react-router";
+import { CourseRawDeep } from "../../models/Course";
+import { TopicRaw, TopicRawDeep } from "../../models/Topic.old";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
-`
+`;
 
 const Title = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const Message = styled.p`
   margin: 0;
   text-align: center;
   font-size: 1rem;
   font-weight: bold;
-`
+`;
 
 const Container = styled.div`
   margin: 1rem;
-`
+`;
 
 const PickCourseButton = styled(IonButton)`
-  height: 100%
-`
+  height: 100%;
+`;
 interface Props {
-  course: CourseRawDeep<false>,
-  onTopicStart?(topic: TopicRaw | TopicRawDeep): void
+  course: CourseRawDeep<false>;
+  onTopicStart?(topic: TopicRaw | TopicRawDeep): void;
 }
 
-function CoursePageView({
-  course,
-  onTopicStart
-} : Props) {
-  const history = useHistory()
+function CoursePageView({ course, onTopicStart }: Props) {
+  const history = useHistory();
 
   return (
     <>
       <IonToolbar>
-        <Buttons slot='start'>
+        <Buttons slot="start">
           <IoArrowBack
             onClick={() => {
-              history.push('/')
+              history.push("/");
             }}
             size={24}
           />
         </Buttons>
-        <Buttons slot='end'>
+        <Buttons slot="end">
           <IoInformationCircleOutline
             size={24}
             onClick={() => {
-              window.alert("This is a proof-of-concept for Included M. It's a work in progress!")
+              window.alert(
+                "This is a proof-of-concept for Included M. It's a work in progress!"
+              );
             }}
           />
         </Buttons>
         <Title>
-          <Message>
-            Included M
-          </Message>
+          <Message>Included M</Message>
         </Title>
       </IonToolbar>
       <IonContent>
@@ -85,18 +79,18 @@ function CoursePageView({
             <React.Fragment key={topic.topicTitle}>
               <IonItem>
                 <IonLabel>
-                  <h2 className='ion-text-wrap'>
+                  <h2 className="ion-text-wrap">
                     <b>{topic.topicTitle}</b>
                   </h2>
-                  <p className='ion-text-wrap'>{topic.description}</p>
+                  <p className="ion-text-wrap">{topic.description}</p>
                 </IonLabel>
                 <PickCourseButton
-                  slot='end'
-                  expand='full'
-                  color='success'
+                  slot="end"
+                  expand="full"
+                  color="success"
                   onClick={() => onTopicStart && onTopicStart(topic)}
                 >
-                  {'>'}
+                  {">"}
                 </PickCourseButton>
               </IonItem>
               {idx < course.topics.length - 1 ? <br /> : null}
@@ -105,7 +99,7 @@ function CoursePageView({
         </Container>
       </IonContent>
     </>
-  )
+  );
 }
 
-export default CoursePageView
+export default CoursePageView;
