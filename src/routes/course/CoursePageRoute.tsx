@@ -23,7 +23,7 @@ function CoursePageRouteFirebase({
   history,
   match,
 }: CoursePageRouteFirebaseProps) {
-  const [state] = useFirestoreCourse(
+  const { value: state } = useFirestoreCourse(
     {
       getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
       documentToState: (doc) => doc.toObjectDeep(),

@@ -15,7 +15,7 @@ interface LessonPageRouteIdProps
   }> {}
 
 function LessonPageRouteFirebase({ history, match }: LessonPageRouteIdProps) {
-  const [state] = useFirestoreLesson(
+  const { value: state } = useFirestoreLesson(
     {
       getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
       documentToState: (doc) => doc.toObjectDeep(),

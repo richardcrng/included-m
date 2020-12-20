@@ -23,32 +23,32 @@ export function makeUseFirestoreDocument<C extends Class<any>>(
   const valueCache: Record<string, any> = {};
   const documentCache: Record<string, any> = {};
 
+  type UseFirestoreDocument<S> = {
+    value: S;
+    document: InstanceType<C>;
+    hasRefreshedCache: boolean;
+    error: any;
+  };
+
   return function useFirestoreDocument<S>(
     { getDocument, documentToState }: UseDocumentArgs<C, S>,
     key = "lastUsed"
-  ): [S | undefined, InstanceType<C> | undefined] {
-    interface State {
-      value: S;
-      document: InstanceType<C>;
-      hasRefreshedCache: boolean;
-    }
-
-    const initialState: State = {
+  ): UseFirestoreDocument<S> {
+    const initialState: UseFirestoreDocument<S> = {
       value: valueCache[key],
       document: documentCache[key],
       hasRefreshedCache: false,
+      error: null,
     };
 
     const [riducer, actions] = riduce(initialState);
 
-    const [{ value, document, hasRefreshedCache }, dispatch] = useReducer(
-      riducer,
-      initialState
-    );
+    const [state, dispatch] = useReducer(riducer, initialState);
+    const { value, document, hasRefreshedCache, error } = state;
 
     const fetchFromFirestore = async () => {
-      const newDocument = await getDocument(ModelConstructor);
       const actionsToDispatch: Parameters<typeof bundle>[0] = [];
+      const newDocument = await getDocument(ModelConstructor);
 
       if (!hasRefreshedCache || (!document && newDocument)) {
         if (!isEqual(JSON.stringify(document), JSON.stringify(newDocument))) {
@@ -79,6 +79,6 @@ export function makeUseFirestoreDocument<C extends Class<any>>(
       }
     }, [fetchFromFirestore]);
 
-    return [value, document];
+    return state;
   };
 }

@@ -19,7 +19,7 @@ interface TopicPageRouteIdProps
   }> {}
 
 function TopicPageRouteFirebase({ history, match }: TopicPageRouteIdProps) {
-  const [state] = useFirestoreTopic(
+  const { value: state } = useFirestoreTopic(
     {
       getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
       documentToState: (doc) => doc.toObjectDeep(),
