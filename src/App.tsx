@@ -21,7 +21,6 @@ import React from "react";
 import { IonAlert, IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { version } from "../package.json";
-import firebase from "firebase/app";
 // import { useDispatch } from 'react-redux';
 import HomePage from "./routes/HomePage";
 
