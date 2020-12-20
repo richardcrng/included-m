@@ -76,6 +76,19 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #f5f6f9;
 }
 
+/* Set max width */
+/* @media (min-width: 700px) {
+  .app-root {
+    width: 700px;
+    margin: auto;
+    position: relative;
+  }
+
+  .scroll-content {
+    overflow-y: auto;
+  }
+} */
+
 @media (prefers-color-scheme: fake) {
   /*
    * Dark Colors

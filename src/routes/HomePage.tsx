@@ -1,10 +1,19 @@
 import {
   IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
   IonCol,
   IonContent,
+  IonFooter,
   IonGrid,
   IonImg,
   IonRow,
+  IonSlide,
+  IonSlides,
+  IonText,
   IonToolbar,
 } from "@ionic/react";
 import React from "react";
@@ -28,6 +37,29 @@ const Logo = styled.div`
   align-items: center;
   max-width: min(250px, 30vw);
   height: 100%;
+`;
+
+const SlideBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const Callout = styled.div`
+  margin: 1rem 0;
+
+  display: flex;
+  justify-content: center;
+
+  p {
+    font-size: 16px;
+    text-align: left;
+  }
+
+  span {
+    margin-right: 0.5rem;
+  }
 `;
 
 const partnerLogoSrcs = [
@@ -61,45 +93,87 @@ function HomePage() {
   return (
     <>
       <IonToolbar>
-        <div>
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
           <IonImg
             src={INCLUDED_VC_LOGO}
             style={{
               maxWidth: "300px",
+              maxHeight: "100px",
               padding: "1rem",
               display: "inline-block",
+              margin: "auto",
             }}
           />
         </div>
       </IonToolbar>
       <IonContent className="ion-padding">
-        <h1>Learn venture for free with leading funds</h1>
-        <p>
-          <b>
-            Venture capital is <s>inaccessible</s> <i>now open</i>.
-          </b>
-        </p>
-        <p>
-          Included M is a fully open-source learning pathway created by{" "}
-          <a href="https://included.vc" target="_blank">
-            Included VC
-          </a>
-          .
-        </p>
-        <p>
-          We run a global Fellowship that's free for all participants,
-          fully-funded by our supporters:
-        </p>
-        <IonGrid>
-          <ImageRow indices={[0, 1, 2]} />
-          <ImageRow indices={[3, 4, 5]} />
-          <ImageRow indices={[6, 7, 8]} />
-          <ImageRow indices={[10, 9, 11]} />
-        </IonGrid>
+        <IonSlides>
+          <IonSlide>
+            <SlideBody>
+              <h1>Learn venture, for free</h1>
+              <IonCard>
+                <IonCardHeader>
+                  <IonCardSubtitle>
+                    Venture capital is <i>now open</i>.
+                  </IonCardSubtitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonText>
+                    <p style={{ fontSize: "16px" }}>
+                      Included M is a <b>fully open-source</b> learning pathway
+                      in venture capital.
+                    </p>
+                    <Callout>
+                      <div>
+                        <p>
+                          <span>🔑</span> Anyone can sign up
+                        </p>
+                        <p style={{ fontSize: "16px", textAlign: "left" }}>
+                          <span>📲</span> Learn on the go
+                        </p>
+                        <p style={{ fontSize: "16px", textAlign: "left" }}>
+                          <span>♾️</span> Free forever
+                        </p>
+                      </div>
+                    </Callout>
+                    <p>
+                      Brought to life by{" "}
+                      <a href="https://included.vc" target="_blank">
+                        Included VC
+                      </a>
+                    </p>
+                  </IonText>
+                </IonCardContent>
+              </IonCard>
+            </SlideBody>
+          </IonSlide>
+          <IonSlide>
+            <SlideBody>
+              <h1>Supported by leading funds</h1>
+              <IonCard>
+                <IonCardHeader>
+                  <IonCardSubtitle>Included VC Partners</IonCardSubtitle>
+                </IonCardHeader>
+                <IonGrid>
+                  <ImageRow indices={[0, 1, 2]} />
+                  <ImageRow indices={[3, 4, 5]} />
+                  <ImageRow indices={[6, 7, 8]} />
+                  <ImageRow indices={[10, 9, 11]} />
+                </IonGrid>
+              </IonCard>
+            </SlideBody>
+          </IonSlide>
+        </IonSlides>
+      </IonContent>
+      <IonFooter className="ion-no-border" style={{ backgroundColor: "white" }}>
         <IonButton routerLink={`/course/${DEFAULT_COURSE_ID}`} expand="full">
           Start
         </IonButton>
-      </IonContent>
+      </IonFooter>
     </>
   );
 }
