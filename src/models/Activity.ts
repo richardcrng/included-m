@@ -1,144 +1,71 @@
-import { ActiveClass, Schema, relations } from 'fireactive'
-import { ActivityCRUDBase, ActivityType } from '../content/types'
-import Answer, { AnswerRaw } from './Answer'
-import Card, { CardRaw } from './Card'
-import Choice, { ChoiceRawDeep } from './Choice'
-import ContentBlock, { ContentBlockRaw } from './ContentBlock'
-import { numericKeys } from './utils';
+import FirestoreModel from "./FirestoreModel";
 
-const activitySchema = {
-  lessonId: Schema.string({ optional: true }),
-  activityType: Schema.enum([
-    'read',
-    'select-an-answer',
-    'select-for-each-blank',
-    'select-multiple',
-    'swipe-cards'
-  ]),
-  contentBlockIdsOrdered: Schema.indexed.string,
-  choiceIdsOrdered: Schema.indexed.string,
-  answerIdsOrdered: Schema.indexed.string,
-  cardIdsOrdered: Schema.indexed.string
+export type ActivityType =
+  | "read"
+  | "select-an-answer"
+  | "select-for-each-blank"
+  | "select-multiple"
+  | "swipe-cards";
+
+export interface ActivityBase {
+  activityType: ActivityType;
+  blocks: (string | BlockBase)[];
+  lessonId?: string;
+  answers?: AnswerBase[];
+  choices?: ChoicesBase;
+  cards?: CardBase[];
 }
 
-export interface ActivityRaw {
-  _id: string,
-  lessonId?: string,
-  activityType: ActivityType,
-  contentBlockIds: string[],
-  choiceIds: string[],
-  answerIds: string[],
-  cardIds: string[]
+export interface BlockBase {
+  markdown: string;
 }
 
-export interface ActivityRawDeep extends ActivityRaw {
-  choices: ChoiceRawDeep[],
-  answers: AnswerRaw[],
-  cards: CardRaw[],
-  contentBlocks: ContentBlockRaw[]
+export interface ChoicesBase {
+  [match: string]: AnswerBase[];
 }
 
-export default class Activity extends ActiveClass(activitySchema) {
+export interface CardBase {
+  text: string;
+  isRight: boolean;
+  choiceRight: string;
+  choiceLeft: string;
+  feedbackOnCorrect?: string;
+  feedbackOnNotCorrect?: string;
+}
 
-  // relations
-  lesson = relations.findById('Lesson', 'lessonId')
-  choices = relations.findByIds<Activity, Choice>(Choice, () => Object.values(this.choiceIdsOrdered))
-  answers = relations.findByIds<Activity, Answer>(Answer, () => Object.values(this.answerIdsOrdered))
-  cards = relations.findByIds<Activity, Card>(Card, () => Object.values(this.cardIdsOrdered))
-  contentBlocks = relations.findByIds<Activity, ContentBlock>(ContentBlock, () => this.contentBlockIds)
+export type AnswerBase = {
+  text: string;
+  isCorrect: boolean;
+  feedback?: string;
+  isSelected?: boolean;
+};
 
-  static async createFromRaw(data: ActivityCRUDBase) {
+export type ActivityPOJO = ReturnType<Activity["toObject"]>;
 
-    let choiceIdsOrdered: Record<string, string> = {}
-    let cardIdsOrdered: Record<string, string> = {}
+// interface ActivityForFirestore extends ActivityCreateData {}
 
-    const {
-      activityType
-    } = data
-
-    const blocks = await ContentBlock.createManyFromRaw(...data.blocks)
-    const contentBlockIdsOrdered = numericKeys(
-      blocks.map(block => block.getId())
-    )
-
-    if (data.choices) {
-      const choices = await Choice.createManyFromRaw(data.choices)
-      choiceIdsOrdered = numericKeys(
-        choices.map(choice => choice.getId())
-      )
-    }
-    if (data.cards) {
-      const cards = await Card.createMany(...data.cards)
-      cardIdsOrdered = numericKeys(
-        cards.map(card => card.getId())
-      )
-    }
-
-    return await this.create({
-      activityType,
-      contentBlockIdsOrdered,
-      choiceIdsOrdered,
-      cardIdsOrdered
-    })
+export default class Activity extends FirestoreModel<ActivityBase>("activity") {
+  constructor({ blocks, ...rest }: ActivityBase) {
+    super({ blocks: standardiseBlocks(blocks), ...rest });
   }
 
-  static async createManyFromRaw(...docs: ActivityCRUDBase[]): Promise<Activity[]> {
-    return await Promise.all(docs.map(doc => (
-      this.createFromRaw(doc)
-    )))
-  }
-
-  get contentBlockIds(): string[] {
-    return Object.values(this.contentBlockIdsOrdered)
-  }
-
-  get choiceIds(): string[] {
-    return Object.values(this.choiceIdsOrdered)
-  }
-
-  get answerIds(): string[] {
-    return Object.values(this.answerIdsOrdered)
-  }
-
-  get cardIds(): string[] {
-    return Object.values(this.cardIdsOrdered)
-  }
-
-  toRaw(): ActivityRaw {
+  toObject() {
+    const obj = super.toObject();
     return {
-      _id: this.getId(),
-      lessonId: this.lessonId ? this.lessonId : undefined,
-      activityType: this.activityType,
-      contentBlockIds: this.contentBlockIds,
-      cardIds: this.cardIds,
-      answerIds: this.answerIds,
-      choiceIds: this.choiceIds
-    }
-  }
-
-  async toRawDeep(): Promise<ActivityRawDeep> {
-    const [answers, choices, cards, contentBlocks] = await Promise.all([
-      this.answers(),
-      this.choices(),
-      this.cards(),
-      this.contentBlocks()
-    ])
-
-    const [rawAnswers, rawChoices, rawCards, rawContentBlocks] = await Promise.all([
-      Promise.all(answers.map(answer => answer.toRawDeep())),
-      Promise.all(choices.map(choice => choice.toRawDeep())),
-      Promise.all(cards.map(card => card.toRawDeep())),
-      Promise.all(contentBlocks.map(block => block.toRawDeep()))
-    ])
-
-    return {
-      ...this.toRaw(),
-      answers: rawAnswers,
-      choices: rawChoices,
-      cards: rawCards,
-      contentBlocks: rawContentBlocks
-    }
+      ...obj,
+      blocks: standardiseBlocks(obj.blocks),
+    };
   }
 }
 
-relations.store(Activity)
+function standardiseBlocks(blocks: (string | BlockBase)[]): BlockBase[] {
+  return blocks.map((block) => {
+    if (typeof block === "string") {
+      return {
+        markdown: block,
+      };
+    } else {
+      return block;
+    }
+  });
+}

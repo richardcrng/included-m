@@ -1,91 +1,65 @@
-import { ActiveClass, Schema, relations } from 'fireactive'
-import { LessonCRUD } from '../content/types'
-import Activity, { ActivityRaw, ActivityRawDeep } from './Activity'
-import { numericKeys } from './utils'
+import Activity from "./Activity";
+import FirestoreModel from "./FirestoreModel";
+import relations from "./relations";
+import { AsyncReturnType } from "type-fest";
 
-const lessonSchema = {
-  chapterId: Schema.string({ optional: true }),
-  lessonTitle: Schema.string,
-  activityIdsOrdered: Schema.indexed.string,
+export type LessonType =
+  | "read"
+  | "select-an-answer"
+  | "select-for-each-blank"
+  | "select-multiple"
+  | "swipe-cards";
+
+export interface LessonBase {
+  chapterId?: string;
+  lessonTitle: string;
+  activityIdsOrdered: string[];
 }
 
-export interface LessonRaw {
-  _id: string,
-  chapterId?: string,
-  lessonTitle: string,
-  activityIds: string[]
+export interface LessonWithActivities
+  extends Omit<LessonBase, "activityIdsOrdered"> {
+  activities: ReturnType<Activity["toObject"]>[];
 }
 
-export type LessonRawDeep<R extends boolean = true> = LessonRaw & {
-  activities: R extends true
-    ? ActivityRawDeep[]
-    : R extends false
-      ? ActivityRaw[]
-      : (ActivityRaw | ActivityRawDeep)[]
-}
+export type LessonPOJO = ReturnType<Lesson["toObject"]>;
+export type LessonPOJODeep = AsyncReturnType<Lesson["toObjectDeep"]>;
 
-export default class Lesson extends ActiveClass(lessonSchema) {
+export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
+  activities = relations.findByIds(Activity, () => this.activityIdsOrdered);
 
-  chapter = relations.findById('Chapter', 'chapterId')
-
-  activities = relations.findByIds<Lesson, Activity>(Activity, () => Object.values(this.activityIdsOrdered))
-
-  static async createFromRaw(data: LessonCRUD): Promise<Lesson> {
-    const activities = await Activity.createManyFromRaw(...data.activities)
-    const activityIdsOrdered = numericKeys(
-      activities.map((activity: Activity) => activity.getId())
-    )
-    const lesson = await this.create({
-      lessonTitle: data.lessonTitle,
-      activityIdsOrdered
-    })
-    return lesson
-  }
-
-  static async createManyFromRaw(...docs: LessonCRUD[]): Promise<Lesson[]> {
-    return await Promise.all(docs.map(doc => (
-      this.createFromRaw(doc)
-    )))
-  }
-
-  get activityIds(): string[] {
-    return Object.values(this.activityIdsOrdered)
-  }
-
-  toRaw(): LessonRaw {
-    return {
-      _id: this.getId(),
-      chapterId: this.chapterId ? this.chapterId : undefined,
-      lessonTitle: this.lessonTitle,
-      activityIds: this.activityIds
-    }
-  }
-
-  async toRawDeep(recursive: true): Promise<LessonRawDeep<true>>
-  async toRawDeep(): Promise<LessonRawDeep<true>>
-  async toRawDeep(recursive: false): Promise<LessonRawDeep<false>>
-
-  async toRawDeep(recursive = true): Promise<LessonRawDeep<boolean>> {
-    if (recursive) {
-      const activities = await this.activities()
-      const rawActivities = await Promise.all(activities.map(
-        activity => activity.toRawDeep()
-      ))
-      return {
-        ...this.toRaw(),
-        activities: rawActivities
-      }
-    } else {
-      const activities = await this.activities()
-      const rawActivities = activities.map(
-        activity => activity.toRaw()
+  static async createWithActivities({
+    activities,
+    ...rest
+  }: LessonWithActivities) {
+    const thisId = this.generateId();
+    const createdActivities = await Promise.all(
+      activities.map((activity) =>
+        Activity.createAndSave({
+          ...activity,
+          lessonId: thisId,
+        })
       )
-      return {
-        ...this.toRaw(),
-        activities: rawActivities
-      }
+    );
+    const activityIdsOrdered = createdActivities.map((createdActivities) =>
+      createdActivities.getId()
+    );
+    const lesson = await this.createAndSave({
+      ...rest,
+      id: thisId,
+      activityIdsOrdered,
+    });
+    return lesson;
+  }
+
+  async toObjectDeep(): Promise<
+    Omit<ReturnType<Lesson["toObject"]>, "activityIdsOrdered"> & {
+      activities: ReturnType<Activity["toObject"]>[];
     }
+  > {
+    const activities = await this.activities();
+    return {
+      ...this.toObject(),
+      activities: activities.map((activity) => activity.toObject()),
+    };
   }
 }
-
-relations.store(Lesson)
