@@ -46,7 +46,8 @@ const App: React.FC = () => {
     return body.data.deployedVersion;
   });
 
-  const newVersionAvailable = !!(data && data !== version);
+  // const newVersionAvailable = !!(data && data !== version);
+  const newVersionAvailable = false;
 
   return (
     <IonApp>

@@ -1,16 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import selectors from "../../redux/selectors";
-import TopicDetails from "../../pages/Course/TopicDetails";
 import { RouteComponentProps } from "react-router";
-import actions from "../../redux/reducer";
-import { LOADING_STRING } from "../../redux/state";
 import TopicPageView from "./TopicPageView";
 import LoadingPage from "../../pages/LoadingPage";
 import { JSendBase } from "../../lib/jsend";
 import { TopicRawDeep } from "../../models/Topic.old";
-import { useQuery } from "react-query";
-import { SERVER_URL } from "../../constants";
 import { useFirestoreTopic } from "../../models/FirestoreModel/useFirestoreModel";
 
 interface TopicPageRouteIdProps
