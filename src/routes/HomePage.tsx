@@ -26,7 +26,7 @@ const Logo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 250px;
+  max-width: min(250px, 30vw);
   height: 100%;
 `;
 
@@ -94,7 +94,7 @@ function HomePage() {
           <ImageRow indices={[0, 1, 2]} />
           <ImageRow indices={[3, 4, 5]} />
           <ImageRow indices={[6, 7, 8]} />
-          <ImageRow indices={[9, 10]} />
+          <ImageRow indices={[10, 9, 11]} />
         </IonGrid>
         <IonButton routerLink={`/course/${DEFAULT_COURSE_ID}`} expand="full">
           Start
