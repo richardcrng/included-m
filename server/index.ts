@@ -1,9 +1,4 @@
-import { initialize } from "fireactive";
 import app from "./app";
-
-initialize({
-  databaseURL: process.env.DATABASE_URL
-})
 
 const server = app.listen(app.get("port"), () => {
   console.log(
