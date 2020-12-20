@@ -5,6 +5,7 @@ import Topic from "./Topic";
 
 export interface CourseBase {
   courseTitle: string;
+  description: string;
   topicIdsOrdered: string[];
 }
 

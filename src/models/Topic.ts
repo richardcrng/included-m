@@ -6,6 +6,7 @@ import Chapter from "./Chapter";
 export interface TopicBase {
   courseId?: string;
   topicTitle: string;
+  description: string;
   chapterIdsOrdered: string[];
 }
 

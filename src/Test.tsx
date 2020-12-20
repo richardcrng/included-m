@@ -2,9 +2,8 @@ import { IonButton, IonContent, IonHeader, IonToolbar } from "@ionic/react";
 import React from "react";
 import { AsyncReturnType } from "type-fest";
 import Lesson from "./models/Lesson";
-import Chapter from "./models/Chapter";
-import Topic from "./models/Topic";
-import Course from "./models/Course";
+import Course, { CourseWithTopics } from "./models/Course";
+import { sampleContent } from "./models/test/sample-content";
 
 function Test() {
   const [state, setState] = React.useState<
@@ -25,63 +24,29 @@ function Test() {
     fetchLesson();
   }, [fetchLesson]);
 
-  if (!state) {
-    return <div>Looking for data...</div>;
-  } else {
-    return (
-      <>
-        <IonToolbar>
-          <IonHeader>Data found</IonHeader>
-        </IonToolbar>
-        <IonContent>
-          <div style={{ margin: "1rem" }}>
-            <pre>{JSON.stringify(state, null, 2)}</pre>
-            <IonButton
-              onClick={async () => {
-                const course = await Course.createWithTopics({
-                  courseTitle: "Banana",
-                  topics: [
-                    {
-                      topicTitle: "A big topic",
-                      chapters: [
-                        {
-                          chapterTitle: "A chapter",
-                          lessons: [
-                            {
-                              lessonTitle: "Lesson 0 from a chapter",
-                              activities: [
-                                {
-                                  activityType: "read",
-                                  blocks: ["Hello world"],
-                                },
-                              ],
-                            },
-                            {
-                              lessonTitle: "Lesson 1 from a chapter",
-                              activities: [
-                                {
-                                  activityType: "read",
-                                  blocks: ["Me again"],
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                });
-                const obj = await course.toObjectDeep();
-                console.log("Created course", obj);
-              }}
-            >
-              Create Course
-            </IonButton>
-          </div>
-        </IonContent>
-      </>
-    );
-  }
+  return (
+    <>
+      <IonToolbar>
+        <IonHeader>{state ? "Data found" : "Searching for data"}</IonHeader>
+      </IonToolbar>
+      <IonContent>
+        <div style={{ margin: "1rem" }}>
+          <pre>{JSON.stringify(state, null, 2)}</pre>
+          <IonButton
+            onClick={async () => {
+              const course = await Course.createWithTopics(
+                sampleContent as CourseWithTopics
+              );
+              const obj = await course.toObjectDeep();
+              console.log("Created course", obj);
+            }}
+          >
+            Create Course
+          </IonButton>
+        </div>
+      </IonContent>
+    </>
+  );
 }
 
 export default Test;
