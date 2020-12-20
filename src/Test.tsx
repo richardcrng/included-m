@@ -38,7 +38,6 @@ function Test() {
                 sampleContent as CourseWithTopics
               );
               const obj = await course.toObjectDeep();
-              console.log("Created course", obj);
             }}
           >
             Create Course

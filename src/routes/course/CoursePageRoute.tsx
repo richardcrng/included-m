@@ -31,19 +31,11 @@ function CoursePageRouteFirebase({
     `Course-${match.params.id}`
   );
 
-  console.log("component running", state);
-
-  // const [state] = useFireactiveCourse({
-  //   getDocument: (docClass) => docClass.findById(match.params.id),
-  //   documentToState: doc => doc.toRawDeep(false)
-  // })
-
   if (state) {
     return (
       <CoursePageView
         course={state}
         onTopicStart={(topic) => {
-          console.log("Would start topic,", topic.id);
           history.push(`/topic/${topic.id}`);
         }}
       />
@@ -81,7 +73,6 @@ export type GetCourseIdSuccess = JSendBase<
 //   history,
 //   match,
 // }: CoursePageRouteFirebaseProps) {
-//   console.log("running course page");
 
 //   const { id } = match.params;
 

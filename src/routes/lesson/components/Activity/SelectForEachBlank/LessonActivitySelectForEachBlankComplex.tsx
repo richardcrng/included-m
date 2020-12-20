@@ -10,11 +10,7 @@ import MultipleAnswerCard from "../../../../../ui/atoms/MultipleAnswerCard";
 import Notification, {
   NotificationProps,
 } from "../../../../../ui/atoms/Notification";
-import {
-  ActivityPOJO,
-  AnswerBase,
-  ChoicesBase,
-} from "../../../../../models/Activity";
+import { ActivityPOJO, AnswerBase } from "../../../../../models/Activity";
 
 interface Props {
   activity: ActivityPOJO;
@@ -62,7 +58,6 @@ function LessonActivitySelectForEachBlankComplex({
   const [reducer, actions] = riduce(initialState);
 
   const [activityState, dispatch] = useReducer(reducer, initialState);
-  console.log("selectedInput", activityState.selectedInput);
 
   const activeChoices = activityState.choices[activityState.selectedInput];
 
