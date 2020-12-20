@@ -11,7 +11,6 @@ import { ClassDefinition, LazyHasOneOrFail } from "./relations.types";
  *
  * @param related The related `ActiveClass` or its name
  * @param cb A function that returns a string `_id`
- * @template RelatingInstance - The instance which owns the relation
  * @template RelatedInstance - The instance which is being related to
  *
  * @returns a `LazyHasOneOrFail` relation

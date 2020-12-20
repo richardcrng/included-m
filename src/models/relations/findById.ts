@@ -1,4 +1,3 @@
-import { get } from "lodash";
 import { ModelConstructor } from "../FirestoreModel";
 import { Relatable, retrieve } from "./relations";
 import { ClassDefinition, LazyHasOne } from "./relations.types";
@@ -12,7 +11,6 @@ import { ClassDefinition, LazyHasOne } from "./relations.types";
  *
  * @param related The related `ModelConstructor` or its name
  * @param cb A function that returns a string `_id`
- * @template RelatingInstance - The instance which owns the relation
  * @template RelatedInstance - The instance which is being related to
  *
  * @returns a `LazyHasOne` relation

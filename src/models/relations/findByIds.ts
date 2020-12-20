@@ -11,15 +11,11 @@ import { LazyHasMany, ClassDefinition } from "./relations.types";
  *
  * @param related The related `ActiveClass` or its name
  * @param cb A function that returns a string `_id`
- * @template RelatingInstance - The instance which owns the relation
  * @template RelatedInstance - The instance which is being related to
  *
  * @returns a `LazyHasMany` relation
  */
-export function findByIds<
-  RelatedInstance = unknown,
-  RelatingInstance = unknown
->(
+export function findByIds<RelatedInstance = unknown>(
   related: Relatable<ClassDefinition<RelatedInstance>>,
   cb: () => string[]
 ): LazyHasMany<RelatedInstance> {

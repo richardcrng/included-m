@@ -1,5 +1,5 @@
 import { TopicCRUD } from "../content/types";
-import { ChapterRaw, ChapterRawDeep } from "./Chapter";
+import { ChapterRaw, ChapterRawDeep } from "./Chapter.old";
 
 export interface TopicRaw {
   _id: string;

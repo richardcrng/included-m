@@ -1,4 +1,3 @@
-import firebase from "firebase/app";
 import Activity from "./Activity";
 import FirestoreModel from "./FirestoreModel";
 import relations from "./relations";
@@ -19,8 +18,6 @@ export interface LessonWithActivities
   extends Omit<LessonBase, "activityIdsOrdered"> {
   activities: ReturnType<Activity["toObject"]>[];
 }
-
-// interface LessonForFirestore extends LessonCreateData {}
 
 export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
   activities = relations.findByIds(Activity, () => this.activityIdsOrdered);
