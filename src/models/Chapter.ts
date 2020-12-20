@@ -39,7 +39,7 @@ export default class Chapter extends FirestoreModel<ChapterBase>("chapter") {
   }
 
   async toObjectDeep(): Promise<
-    ReturnType<Chapter["toObject"]> & {
+    Omit<ReturnType<Chapter["toObject"]>, "lessonIdsOrdered"> & {
       lessons: AsyncReturnType<Lesson["toObjectDeep"]>[];
     }
   > {

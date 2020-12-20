@@ -14,7 +14,7 @@ export interface TopicWithChapters
   chapters: AsyncReturnType<Chapter["toObjectDeep"]>[];
 }
 
-export default class Topic extends FirestoreModel<TopicBase>("chapter") {
+export default class Topic extends FirestoreModel<TopicBase>("topic") {
   chapters = relations.findByIds(Chapter, () => this.chapterIdsOrdered);
 
   static async createWithChapters({ chapters, ...rest }: TopicWithChapters) {
@@ -38,7 +38,7 @@ export default class Topic extends FirestoreModel<TopicBase>("chapter") {
   }
 
   async toObjectDeep(): Promise<
-    ReturnType<Topic["toObject"]> & {
+    Omit<ReturnType<Topic["toObject"]>, "chapterIdsOrdered"> & {
       chapters: AsyncReturnType<Chapter["toObjectDeep"]>[];
     }
   > {
