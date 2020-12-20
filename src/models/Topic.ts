@@ -14,7 +14,7 @@ export interface ChapterWithLessons
   lessons: AsyncReturnType<Lesson["toObjectDeep"]>[];
 }
 
-export default class Chapter extends FirestoreModel<ChapterBase>("chapter") {
+export default class Chapter extends FirestoreModel<ChapterBase>("lesson") {
   lessons = relations.findByIds(Lesson, () => this.lessonIdsOrdered);
 
   static async createWithLessons({ lessons, ...rest }: ChapterWithLessons) {
