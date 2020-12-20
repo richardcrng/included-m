@@ -18,19 +18,23 @@ export default class Chapter extends FirestoreModel<ChapterBase>("chapter") {
   lessons = relations.findByIds(Lesson, () => this.lessonIdsOrdered);
 
   static async createWithLessons({ lessons, ...rest }: ChapterWithLessons) {
+    const thisId = this.generateId();
     const createdLessons = await Promise.all(
-      lessons.map((lesson) => Lesson.createWithActivities(lesson))
+      lessons.map((lesson) =>
+        Lesson.createWithActivities({
+          ...lesson,
+          chapterId: thisId,
+        })
+      )
     );
     const lessonIdsOrdered = createdLessons.map((createdLessons) =>
       createdLessons.getId()
     );
-    const chapter = await this.createAndSave({ ...rest, lessonIdsOrdered });
-    await Promise.all(
-      createdLessons.map(async (lesson) => {
-        lesson.chapterId = chapter.id;
-        await lesson.save();
-      })
-    );
+    const chapter = await this.createAndSave({
+      ...rest,
+      id: thisId,
+      lessonIdsOrdered,
+    });
     return chapter;
   }
 

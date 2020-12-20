@@ -17,28 +17,23 @@ export interface TopicWithChapters
 export default class Topic extends FirestoreModel<TopicBase>("chapter") {
   chapters = relations.findByIds(Chapter, () => this.chapterIdsOrdered);
 
-  static async createWithChapters({
-    topicTitle,
-    chapters,
-    ...rest
-  }: TopicWithChapters) {
+  static async createWithChapters({ chapters, ...rest }: TopicWithChapters) {
+    const thisId = this.generateId();
     const createdChapters = await Promise.all(
-      chapters.map((chapter) => Chapter.createWithLessons(chapter))
+      chapters.map((chapter) =>
+        Chapter.createWithLessons({
+          ...chapter,
+          topicId: thisId,
+        })
+      )
     );
     const chapterIdsOrdered = createdChapters.map((createdChapters) =>
       createdChapters.getId()
     );
     const topic = await this.createAndSave({
-      topicTitle,
       chapterIdsOrdered,
       ...rest,
     });
-    await Promise.all(
-      createdChapters.map(async (chapter) => {
-        chapter.topicId = topic.id;
-        await chapter.save();
-      })
-    );
     return topic;
   }
 

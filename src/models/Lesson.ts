@@ -24,8 +24,8 @@ export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
   activities = relations.findByIds(Activity, () => this.activityIdsOrdered);
 
   static async createWithActivities({
-    lessonTitle,
     activities,
+    ...rest
   }: LessonWithActivities) {
     const thisId = this.generateId();
     const createdActivities = await Promise.all(
@@ -40,8 +40,8 @@ export default class Lesson extends FirestoreModel<LessonBase>("lesson") {
       createdActivities.getId()
     );
     const lesson = await this.createAndSave({
+      ...rest,
       id: thisId,
-      lessonTitle,
       activityIdsOrdered,
     });
     return lesson;
