@@ -21,6 +21,7 @@ import React from "react";
 import { IonAlert, IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { version } from "../package.json";
+import firebase from "firebase/app";
 // import { useDispatch } from 'react-redux';
 import HomePage from "./routes/HomePage";
 
@@ -31,31 +32,76 @@ import LessonPageRoute from "./routes/lesson/LessonPageRoute";
 import { JSendBase } from "./lib/jsend";
 import { useQuery } from "react-query";
 import { SERVER_URL } from "./constants";
-import Test from "./Test";
+import db from "./models/db";
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string;
 }>;
 
+interface Version {
+  versionNumber: string;
+  releaseDate: number;
+  header?: string;
+  message?: string;
+}
+
+function isNewVersionAvailable(versionToCheck: Version) {
+  return versionToCheck.versionNumber !== version;
+}
+
 const App: React.FC = () => {
   const [hideModal, setHideModal] = React.useState(false);
 
-  const { data } = useQuery("version-number", async () => {
-    const res = await fetch(`${SERVER_URL}/ping`);
-    const body = (await res.json()) as PingSuccessVersionNumber;
-    return body.data.deployedVersion;
-  });
+  // const [alert, setAlert] = React.useState({
+  //   versionNumber: version
+  // })
+  const [state, setState] = React.useState<Version[]>();
+
+  React.useEffect(() => {
+    const versionsSnapshot = db
+      .collection("metadata")
+      .doc("updates")
+      .collection("versions")
+      .withConverter({
+        fromFirestore(snapshot) {
+          const data = snapshot.data();
+          return {
+            versionNumber: data.versionNumber as string,
+            releaseDate: data.releaseDate as number,
+            header: data.header as string | undefined,
+            message: data.message as string | undefined,
+          } as Version;
+        },
+        toFirestore(doc: Version) {
+          return doc;
+        },
+      })
+      .orderBy("releaseDate", "desc")
+      .limit(5)
+      .get();
+    versionsSnapshot.then((snapshot) => {
+      const data = snapshot.docs.map((doc) => doc.data());
+      setState(data);
+    });
+  }, [setState]);
+
+  const latestVersion = state && state[0];
 
   // const newVersionAvailable = !!(data && data !== version);
-  const newVersionAvailable = false;
+  const newVersionAvailable: boolean = !!(
+    latestVersion && isNewVersionAvailable(latestVersion)
+  );
 
   return (
     <IonApp>
       <IonAlert
         isOpen={newVersionAvailable && !hideModal}
         onDidDismiss={(e) => setHideModal(true)}
-        header="New version available!"
-        message="There is a new version of this web app available - would you like to access it?"
+        header={latestVersion?.header || "New version available!"}
+        message={
+          latestVersion?.message ||
+          "There is a new version of this web app available - would you like to access it?"
+        }
         buttons={[
           {
             text: "Cancel",

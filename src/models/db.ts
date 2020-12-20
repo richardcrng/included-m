@@ -2,15 +2,21 @@ import firebase from "firebase";
 // Required for side-effects
 import "firebase/firestore";
 
-if (!firebase.apps.length) {
-  // Initialize Cloud Firestore through Firebase
-  firebase.initializeApp({
-    apiKey: "AIzaSyBPAfs2hzOGiIBmDm_iZG4hQsZfNdZaRz0",
-    authDomain: "included-m.firebaseapp.com",
-    projectId: "included-m",
-  });
+let app: firebase.app.App;
+
+function getApp() {
+  if (!firebase.apps.length) {
+    // Initialize Cloud Firestore through Firebase
+    app = firebase.initializeApp({
+      apiKey: "AIzaSyBPAfs2hzOGiIBmDm_iZG4hQsZfNdZaRz0",
+      authDomain: "included-m.firebaseapp.com",
+      projectId: "included-m",
+    });
+  }
+
+  return app;
 }
 
-const db = firebase.firestore();
+const db = firebase.firestore(getApp());
 
 export default db;
