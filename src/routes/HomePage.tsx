@@ -224,8 +224,7 @@ function HomePage() {
                   <b>
                     we're opening up our knowledge to <i>everyone</i>
                   </b>{" "}
-                  and <i>anyone</i>
-                  with a phone and internet.
+                  and <i>anyone</i> with a phone and internet.
                 </p>
               </IonCardContent>
             </IonCard>
