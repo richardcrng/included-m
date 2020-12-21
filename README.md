@@ -4,6 +4,12 @@
 
 _📱 Try the Included M demo (best on a mobile browser): [https://included-m.vercel.app](https://included-m.vercel.app)_
 
+<p float="left">
+  <img src="./images/course-view.png" width="100" />
+  <img src="./images/chapter-view.png" width="100" /> 
+  <img src="./images/lesson-view.png" width="100" />
+</p>
+
 The goals of Included M are:
 
 1. **To improve Fellow experience.** Included has great content (e.g. through 101 packs). Mostly, it's static written content at the moment. What if we could present that content in a more modern way?
