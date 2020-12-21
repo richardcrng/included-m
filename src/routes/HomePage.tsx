@@ -42,6 +42,7 @@ const SlideBody = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  text-align: center;
 `;
 
 const Callout = styled.div`
@@ -57,6 +58,40 @@ const Callout = styled.div`
 
   span {
     margin-right: 0.5rem;
+  }
+`;
+
+const NavDots = styled.div`
+  width: 100%;
+  bottom: 9px;
+  height: 11px;
+  display: block;
+  position: absolute;
+  text-align: center;
+`;
+
+interface NavDotProps {
+  isChecked?: boolean;
+}
+
+const NavDot = styled.span`
+  top: -5px;
+  width: 11px;
+  height: 11px;
+  margin: 0 4px;
+  position: relative;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    ${(props: NavDotProps) => (props.isChecked ? "0.8" : "0.3")}
+  );
+
+  :hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.8);
   }
 `;
 
@@ -88,6 +123,8 @@ function ImageRow({ indices }: { indices: number[] }) {
 }
 
 function HomePage() {
+  const [tabIndex, setTabIndex] = React.useState<number>(0);
+
   return (
     <>
       <IonToolbar>
@@ -109,7 +146,20 @@ function HomePage() {
         </div>
       </IonToolbar>
       <IonContent className="ion-padding">
-        <SwipeableViews enableMouseEvents>
+        <NavDots>
+          {[0, 1, 2].map((idx) => (
+            <NavDot
+              key={idx}
+              isChecked={tabIndex === idx}
+              // onClick={() => setTabIndex(idx)}
+            />
+          ))}
+        </NavDots>
+        <SwipeableViews
+          enableMouseEvents
+          index={tabIndex}
+          onChangeIndex={setTabIndex}
+        >
           <SlideBody>
             <h1>Learn venture, for free</h1>
             <IonCard>
