@@ -8,9 +8,17 @@ The goals of Included M are:
 2. **To broaden impact beyond Fellows.** Included has had to turn down a lot of people. We can't give them the _full_ Fellow experience, but what if we could give them _something_?
 3. **To strengthen the Included brand.** We're re-imagining how people learn venture and enter the industry. What if we had our own product to do that?
 
-Enter **Included M**: a mobile-first web app that is designed to:
+Enter [**Included M**](https://included-m.vercel.app): a mobile-first web app that is designed to:
 
 - amplify the reach of Included's content; and
 - wrap up that content in engaging, bite-sized chunks.
 
-> Why Included _M_? It represents both scale (M is the roman numeral for 1000) and an emphasis on being mobile-optimised.
+### Background
+
+Even with the pilot cohort (IVC20), there was always the aspiration to create a learning pathway that went beyond the Fellowship.
+
+This originally had a working title of _Included 1000_.
+
+Now, it's being pushed forwards by [Richard](https://richard.ng), drawing heavy inspiration from the learning experience of [Quantic's mobile-first MBA](https://quantic.edu/).
+
+> 💡 The _M_ in Included M represents both scale (M is the roman numeral for 1000) and an emphasis on being mobile-optimised.
