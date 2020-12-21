@@ -24,3 +24,21 @@ This originally had a working title of _Included 1000_.
 Now, it's being pushed forwards by [Richard](https://richard.ng), drawing heavy inspiration from the learning experience of [Quantic's mobile-first MBA](https://quantic.edu/).
 
 > 💡 The _M_ in Included M represents both scale (M is the roman numeral for 1000) and an emphasis on being mobile-optimised.
+
+### Tech used
+
+- React
+- TypeScript
+- [Riduce](https://github.com/richardcrng/riduce)
+- Firebase
+- Ionic
+- Styled Components
+- Vercel
+
+### How to contribute
+
+You can:
+
+- **Produce / adapt content** (takes _small_ amount of coding, but accessible and learnable)
+- **Test it out** and report bugs / unexpected behaviour
+- **Contribute to the web app** (React and TypeScript experience ideal, but I can teach bits)
