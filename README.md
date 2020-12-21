@@ -1,14 +1,25 @@
 <h1><img src="./src/assets/included-vc-logo.png" alt="Included VC" width="200"/></h1>
 
-## Included M
+# Included M
 
 > _📱 **Try the Included M demo** (best on a mobile browser): [https://included-m.vercel.app](https://included-m.vercel.app)_
+
+**Contents**
+
+- [Included M](#included-m)
+  - [Goals](#goals)
+  - [Background](#background)
+  - [Roadmap](#roadmap)
+  - [Tech used](#tech-used)
+  - [How to contribute](#how-to-contribute)
 
 <p float="left">
   <img src="./images/course-view.png" width="30%" />
   <img src="./images/chapter-view.png" width="30%" /> 
   <img src="./images/lesson-view.png" width="30%" />
 </p>
+
+## Goals
 
 The goals of Included M are:
 
@@ -21,7 +32,7 @@ Enter [**Included M**](https://included-m.vercel.app): a mobile-first web app th
 - amplify the reach of Included's content; and
 - wrap up that content in engaging, bite-sized chunks.
 
-### Background
+## Background
 
 Even with the pilot cohort (IVC20), there was always the aspiration to create a learning pathway that went beyond the Fellowship.
 
@@ -33,7 +44,7 @@ I'm drawing heavy inspiration from my experience of [Quantic's mobile-first MBA]
 
 > 💡 The _M_ in Included M represents both scale (M is the roman numeral for 1000) and an emphasis on being mobile-optimised.
 
-### Roadmap
+## Roadmap
 
 There's a working version of the core platform (which you can play around with on [the demo](https://included-m.vercel.app)).
 
@@ -41,7 +52,7 @@ The main piece of work required is to populate this with content. (If you try th
 
 There is some further platform development work as well (e.g. creation of user accounts, saving of user progress, possibly introducing something like [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition)).
 
-### Tech used
+## Tech used
 
 - React
 - TypeScript
@@ -51,7 +62,7 @@ There is some further platform development work as well (e.g. creation of user a
 - Styled Components
 - Vercel
 
-### How to contribute
+## How to contribute
 
 You can:
 
