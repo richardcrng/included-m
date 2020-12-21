@@ -88,11 +88,6 @@ const NavDot = styled.span`
     0,
     ${(props: NavDotProps) => (props.isChecked ? "0.8" : "0.3")}
   );
-
-  :hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.8);
-  }
 `;
 
 const partnerLogoSrcs = [
