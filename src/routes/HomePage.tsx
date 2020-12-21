@@ -111,7 +111,7 @@ function HomePage() {
         </div>
       </IonToolbar>
       <IonContent className="ion-padding">
-        <IonSlides>
+        <IonSlides pager style={{ height: "100%" }}>
           <IonSlide>
             <SlideBody>
               <h1>Learn venture, for free</h1>
@@ -155,9 +155,9 @@ function HomePage() {
             <SlideBody>
               <h1>Supported by leading funds</h1>
               <IonCard>
-                <IonCardHeader>
-                  <IonCardSubtitle>Included VC Partners</IonCardSubtitle>
-                </IonCardHeader>
+                {/* <IonCardHeader style={{ paddingBottom: "0" }}>
+                  <IonCardSubtitle>Included VC Partners:</IonCardSubtitle>
+                </IonCardHeader> */}
                 <IonGrid>
                   <ImageRow indices={[0, 1, 2]} />
                   <ImageRow indices={[3, 4, 5]} />
