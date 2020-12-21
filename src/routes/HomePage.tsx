@@ -167,6 +167,32 @@ function HomePage() {
               </IonCard>
             </SlideBody>
           </IonSlide>
+          <IonSlide>
+            <SlideBody>
+              <h1>Change the face of venture</h1>
+              <IonCard>
+                <IonCardContent>
+                  <p>
+                    The Included VC mission is to{" "}
+                    <b>change the face of the VC industry</b>.
+                  </p>
+                  <br />
+                  <p>
+                    That's why we built{" "}
+                    <a href="https://included.vc" target="_blank">
+                      a fully-funded Fellowship
+                    </a>
+                    . Now,{" "}
+                    <b>
+                      we're opening up our knowledge to <i>everyone</i>
+                    </b>{" "}
+                    and <i>anyone</i>
+                    with a phone and internet.
+                  </p>
+                </IonCardContent>
+              </IonCard>
+            </SlideBody>
+          </IonSlide>
         </IonSlides>
       </IonContent>
       <IonFooter className="ion-no-border" style={{ backgroundColor: "white" }}>
