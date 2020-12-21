@@ -2,7 +2,7 @@
 
 ## Included M
 
-_📱 Try the Included M demo (best on a mobile browser): [https://included-m.vercel.app](https://included-m.vercel.app)_
+> _📱 **Try the Included M demo** (best on a mobile browser): [https://included-m.vercel.app](https://included-m.vercel.app)_
 
 <p float="left">
   <img src="./images/course-view.png" width="30%" />
@@ -27,9 +27,19 @@ Even with the pilot cohort (IVC20), there was always the aspiration to create a 
 
 This originally had a working title of _Included 1000_.
 
-Now, it's being pushed forwards by [Richard](https://richard.ng), drawing heavy inspiration from the learning experience of [Quantic's mobile-first MBA](https://quantic.edu/).
+Now, after a conversation with Stephen and Nikita, I ([Richard](https://richard.ng)) amd trying to push this forwards.
+
+I'm drawing heavy inspiration from my experience of [Quantic's mobile-first MBA](https://quantic.edu/), which I think does a pretty good job of making text content come to life through bite-sized and frequent interaction.
 
 > 💡 The _M_ in Included M represents both scale (M is the roman numeral for 1000) and an emphasis on being mobile-optimised.
+
+### Roadmap
+
+There's a working version of the core platform (which you can play around with on [the demo](https://included-m.vercel.app)).
+
+The main piece of work required is to populate this with content. (If you try the demo, you will see that _most_ content is filler / holding at the moment. It is only the first lesson of the very first chapter that has _any_ sort of content.)
+
+There is some further platform development work as well (e.g. creation of user accounts, saving of user progress, possibly introducing something like [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition)).
 
 ### Tech used
 
@@ -41,10 +51,10 @@ Now, it's being pushed forwards by [Richard](https://richard.ng), drawing heavy 
 - Styled Components
 - Vercel
 
-### How to contribute
+### How to contribute
 
 You can:
 
-- **Produce / adapt content** (takes _small_ amount of coding, but accessible and learnable)
+- **Produce / adapt content** (takes a _small_ amount of coding, but accessible and learnable)
 - **Test it out** and report bugs / unexpected behaviour
 - **Contribute to the web app** (React and TypeScript experience ideal, but I can teach bits)
