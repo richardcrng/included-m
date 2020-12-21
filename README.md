@@ -5,9 +5,9 @@
 _📱 Try the Included M demo (best on a mobile browser): [https://included-m.vercel.app](https://included-m.vercel.app)_
 
 <p float="left">
-  <img src="./images/course-view.png" width="100" />
-  <img src="./images/chapter-view.png" width="100" /> 
-  <img src="./images/lesson-view.png" width="100" />
+  <img src="./images/course-view.png" width="30%" />
+  <img src="./images/chapter-view.png" width="30%" /> 
+  <img src="./images/lesson-view.png" width="30%" />
 </p>
 
 The goals of Included M are:
