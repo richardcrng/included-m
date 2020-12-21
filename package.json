@@ -1,6 +1,6 @@
 {
   "name": "included-m",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "dependencies": {
     "@capacitor/android": "2.4.4",
@@ -30,6 +30,7 @@
     "react": "^16.13.0",
     "react-cool-dimensions": "^1.1.10",
     "react-dom": "^16.13.0",
+    "react-firebase-hooks": "^2.2.0",
     "react-icons": "^4.1.0",
     "react-query": "^2.26.4",
     "react-rainbow-components": "^1.21.0",
