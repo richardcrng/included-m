@@ -38,7 +38,7 @@ Even with the pilot cohort (IVC20), there was always the aspiration to create a 
 
 This originally had a working title of _Included 1000_.
 
-Now, after a conversation with Stephen and Nikita, I ([Richard](https://richard.ng)) amd trying to push this forwards.
+Now, after a conversation with Stephen and Nikita, I ([Richard](https://richard.ng)) am trying to push this forwards.
 
 I'm drawing heavy inspiration from my experience of [Quantic's mobile-first MBA](https://quantic.edu/), which I think does a pretty good job of making text content come to life through bite-sized and frequent interaction.
 
