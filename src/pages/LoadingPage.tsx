@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {
   IonButtons,
   IonContent,
+  IonLoading,
   IonProgressBar,
   IonSkeletonText,
   IonSpinner,
@@ -63,6 +64,7 @@ function LoadingPage() {
           <IonSkeletonText animated style={{ width: "70%" }} />
           <IonSkeletonText animated style={{ width: "60%" }} />
         </Container>
+        <IonLoading isOpen message="Finding that for you..." />
       </IonContent>
     </>
   );
