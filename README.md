@@ -10,6 +10,8 @@
   - [Goals](#goals)
   - [Background](#background)
   - [Roadmap](#roadmap)
+    - [Content](#content)
+    - [Development](#development)
   - [Tech used](#tech-used)
   - [How to contribute](#how-to-contribute)
 
@@ -46,18 +48,32 @@ I'm drawing heavy inspiration from my experience of [Quantic's mobile-first MBA]
 
 ## Roadmap
 
+There are two parts to Included M: the _platform_ and the _content_.
+
 There's a working version of the core platform (which you can play around with on [the demo](https://included-m.vercel.app)).
 
-The main piece of work required is to populate this with content. (If you try the demo, you will see that _most_ content is filler / holding at the moment. It is only the first lesson of the very first chapter that has _any_ sort of content.)
+It pulls data from a server which provides basic content (which is version-controlled through a [separate repository](https://github.com/richardcrng/included-m-content)).
 
-There is some further platform development work as well (e.g. creation of user accounts, saving of user progress, possibly introducing something like [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition)).
+### Content
+
+Most of the work for Included M is populating content. (If you try the demo, you will see that _most_ content is filler / holding at the moment. As of December 2020, it is only the first lesson of the very first chapter that has _any_ sort of content.)
+
+Content is organised into a sequential hierarchy of:
+
+1. Courses (for now, just one: `main-course`);
+2. Topics (e.g. `main-course/fundamentals` and `maincourse-/dealflow`)
+3. Chapters (e.g. `main-course/fundamentals/what-is-venture`)
+4. Lessons (e.g. `main-course/fundamentals/what-is-venture/goals-of-venture`)
+
+### Development
+
+There is some further platform development work to be carried out as well (e.g. creation of user accounts, saving of user progress, possibly introducing something like [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition)).
 
 ## Tech used
 
 - React
 - TypeScript
 - [Riduce](https://github.com/richardcrng/riduce)
-- Firebase
 - Ionic
 - Styled Components
 - Vercel
