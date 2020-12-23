@@ -3,7 +3,7 @@ import { ChapterIndex, CourseIndex, TopicIndex } from "./content-types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23276565";
-const IS_SANDBOX = true;
+const IS_SANDBOX = false;
 
 const treeUrl = (route: string[]) =>
   process.env.NODE_ENV === "development"
