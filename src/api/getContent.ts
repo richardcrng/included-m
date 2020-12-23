@@ -1,7 +1,9 @@
 import WhyWhatError from "../lib/why-what-error";
+import { ChapterIndex, CourseIndex, TopicIndex } from "./content-types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23276565";
+const SANDBOX = true;
 
 const treeUrl = (route: string[]) =>
   process.env.NODE_ENV === "development"
@@ -46,6 +48,22 @@ export interface LessonPath {
 }
 
 export type ContentPath = CoursePath | TopicPath | ChapterPath | LessonPath;
+
+function isPathToCourse(path: ContentPath): path is CoursePath {
+  return !path.topicId;
+}
+
+function isPathToTopic(path: ContentPath): path is TopicPath {
+  return !!path.topicId && !path.chapterId;
+}
+
+function isPathToChapter(path: ContentPath): path is ChapterPath {
+  return !!path.chapterId && !path.lessonId;
+}
+
+function isPathToLesson(path: ContentPath): path is LessonPath {
+  return !!path.lessonId;
+}
 
 export async function getContent(
   path: ContentPath
@@ -101,6 +119,26 @@ interface GitLabTreeContent {
 
 const getTree = async (path: ContentPath, filterForTrees = true) => {
   const route = contentStringPath(path);
+
+  if (SANDBOX) {
+    const loaded = require("../course/" + route.join("/") + "/index.json");
+    let subDirs: string[] = [];
+    if (isPathToCourse(path)) {
+      subDirs = (<CourseIndex>loaded).topicIdsOrdered;
+    } else if (isPathToTopic(path)) {
+      subDirs = (<TopicIndex>loaded).chapterIdsOrdered;
+    } else if (isPathToChapter(path)) {
+      subDirs = (<ChapterIndex>loaded).lessonIdsOrdered;
+    }
+    return subDirs.map((subdir) => ({
+      id: subdir,
+      name: subdir,
+      type: "tree",
+      path: route.join("/"),
+      mode: "mode",
+    })) as GitLabTreeContent[];
+  }
+
   const json: GitLabTreeContent[] = await fetch(treeUrl(route)).then((res) =>
     res.json()
   );
@@ -139,4 +177,25 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
       why: "Nothing at " + route.join("/"),
     });
   }
+};
+
+const getSandboxTree = (path: ContentPath) => {
+  const route = contentStringPath(path);
+
+  const loaded = require("../course/" + route.join("/") + "/index.json");
+  let subDirs: string[] = [];
+  if (isPathToCourse(path)) {
+    subDirs = (<CourseIndex>loaded).topicIdsOrdered;
+  } else if (isPathToTopic(path)) {
+    subDirs = (<TopicIndex>loaded).chapterIdsOrdered;
+  } else if (isPathToChapter(path)) {
+    subDirs = (<ChapterIndex>loaded).lessonIdsOrdered;
+  }
+  return subDirs.map((subdir) => ({
+    id: subdir,
+    name: subdir,
+    type: "tree",
+    path: route.join("/"),
+    mode: "mode",
+  })) as GitLabTreeContent[];
 };
