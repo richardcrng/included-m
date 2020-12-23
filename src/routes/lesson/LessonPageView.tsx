@@ -4,7 +4,7 @@ import LessonActivity from "./components/Activity/LessonActivity";
 import LessonToolbar from "./components/LessonToolbar";
 import { AsyncReturnType } from "type-fest";
 import { getChapterDeep } from "../../api/getResource";
-import { ActivityJSON } from "../../content/content-types";
+import { ActivityJSON } from "../../api/content-types";
 
 type LessonCtx = {
   dispatch: React.Dispatch<Action>;

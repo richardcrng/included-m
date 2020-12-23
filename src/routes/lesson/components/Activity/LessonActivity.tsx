@@ -1,7 +1,7 @@
 import { IonButton } from "@ionic/react";
 import React from "react";
 import { useHistory } from "react-router";
-import { ActivityJSON } from "../../../../content/content-types";
+import { ActivityJSON } from "../../../../api/content-types";
 import LessonContent from "../LessonContent";
 import LessonActivityRead from "./LessonActivityRead";
 import LessonActivitySelectMultiple from "./LessonActivitySelectMultiple";

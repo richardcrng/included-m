@@ -11,7 +11,7 @@ import Notification, {
   NotificationProps,
 } from "../../../../../ui/atoms/Notification";
 import { AnswerBase } from "../../../../../models/Activity";
-import { SelectForEachBlankActivityJSON } from "../../../../../content/content-types";
+import { SelectForEachBlankActivityJSON } from "../../../../../api/content-types";
 
 interface Props {
   activity: SelectForEachBlankActivityJSON;

@@ -10,7 +10,7 @@ import Notification, {
   NotificationProps,
 } from "../../../../../ui/atoms/Notification";
 import { ChoiceAnswerState } from "./LessonActivitySelectForEachBlankComplex";
-import { SelectForEachBlankSimpleActivityJSON } from "../../../../../content/content-types";
+import { SelectForEachBlankSimpleActivityJSON } from "../../../../../api/content-types";
 
 interface Props {
   activity: SelectForEachBlankSimpleActivityJSON;

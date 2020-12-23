@@ -3,7 +3,7 @@ import {
   CourseIndex,
   LessonIndex,
   TopicIndex,
-} from "../content/content-types";
+} from "./content-types";
 import {
   ChapterPath,
   CoursePath,
