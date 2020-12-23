@@ -6,18 +6,27 @@ type ContentPath =
   | { courseId: string; topicId: string; chapterId: string; lessonId?: never }
   | { courseId: string; topicId: string; chapterId: string; lessonId: string };
 
-export const getContent = (
+export function getContent(path: ContentPath): Promise<GitLabTreeContent[]>;
+export function getContent(
+  path: ContentPath,
+  target: "tree"
+): Promise<GitLabTreeContent[]>;
+export function getContent<T = any>(
+  path: ContentPath,
+  target: "index.json"
+): Promise<T>;
+
+export function getContent<T = any>(
   path: ContentPath,
   target: "index.json" | "tree" = "index.json"
-) => {
+) {
   const route = contentStringPath(path);
-  console.log("route:", path, route);
   if (target === "tree") {
     return getTree(route);
   } else {
-    return getIndex(route);
+    return getIndex<T>(route);
   }
-};
+}
 
 const contentStringPath = (path: ContentPath): string[] => {
   const route: string[] = ["content", path["courseId"]];
@@ -33,17 +42,30 @@ const contentStringPath = (path: ContentPath): string[] => {
   return route;
 };
 
-const getTree = (path: string[]) =>
-  fetch(
+interface GitLabTreeContent {
+  id: string;
+  name: string;
+  type: "tree" | "blob";
+  path: string;
+  mode: string;
+}
+
+const getTree = async (path: string[]) => {
+  const json = await fetch(
     `https://gitlab.com/api/v4/projects/23270946/repository/tree?path=${path.join(
       "/"
     )}&ref=${BRANCH}`
-  );
+  ).then((res) => res.json());
 
-const getIndex = (path: string[]) =>
-  fetch(
+  return json as GitLabTreeContent[];
+};
+
+const getIndex = async <T = any>(path: string[]) => {
+  const json = await fetch(
     `https://gitlab.com/api/v4/projects/23270946/
 repository/files/${encodeURIComponent(
       `${path.join("/")}/index.json`
     )}/raw?ref=${BRANCH}`
-  );
+  ).then((res) => res.json());
+  return json as T;
+};

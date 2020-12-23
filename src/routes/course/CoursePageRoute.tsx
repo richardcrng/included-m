@@ -71,23 +71,20 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
     const getDirectory = getContent(
       {
         courseId: "main",
-        topicId: "fundamentals",
+        // topicId: "fundamentals",
       },
       "tree"
     );
 
-    const getIndex = getContent(
+    const getIndex = getContent<CourseIndex>(
       {
         courseId: "main",
-        topicId: "fundamentals",
+        // topicId: "fundamentals",
       },
       "index.json"
     );
 
-    const [directory, index] = await Promise.all([
-      getDirectory.then((res) => res.json()),
-      getIndex.then((res) => res.json()),
-    ]);
+    const [directory, index] = await Promise.all([getDirectory, getIndex]);
     return {
       directory,
       index,
