@@ -1,3 +1,9 @@
+import {
+  ChapterIndex,
+  LessonIndex,
+  TopicIndex,
+} from "../content/content-types";
+
 const BRANCH = "main";
 const PROJECT_ID = "23276565";
 
@@ -84,14 +90,14 @@ interface GitLabTreeContent {
   mode: string;
 }
 
-const getTree = async (path: string[]) => {
-  const json = await fetch(
+const getTree = async (path: string[], filterForTrees = true) => {
+  const json: GitLabTreeContent[] = await fetch(
     `https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tree?path=${path.join(
       "/"
     )}&ref=${BRANCH}`
   ).then((res) => res.json());
 
-  return json as GitLabTreeContent[];
+  return filterForTrees ? json.filter((val) => val.type === "tree") : json;
 };
 
 const getIndex = async <T = any>(path: string[]) => {

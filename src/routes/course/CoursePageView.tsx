@@ -14,6 +14,7 @@ import { CourseRawDeep } from "../../models/Course.old";
 import { TopicRaw, TopicRawDeep } from "../../models/Topic.old";
 import Course from "../../models/Course";
 import { AsyncReturnType } from "type-fest";
+import { getCourseDeep } from "../../api/getResource";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -41,7 +42,7 @@ const PickCourseButton = styled(IonButton)`
   height: 100%;
 `;
 interface Props {
-  course: AsyncReturnType<Course["toObjectDeep"]>;
+  course: AsyncReturnType<typeof getCourseDeep>;
   onTopicStart?(topic: any): void;
 }
 

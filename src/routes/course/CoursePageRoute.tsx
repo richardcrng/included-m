@@ -11,34 +11,36 @@ import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreMode
 import { useQuery } from "react-query";
 import { getContent } from "../../api";
 import { DEFAULT_COURSE_ID } from "../../constants";
+import { CourseIndex } from "../../content/content-types";
+import { getCourseDeep } from "../../api/getResource";
 
 interface CoursePageRouteProps
   extends RouteComponentProps<{
     courseId: string;
   }> {}
 
-function CoursePageRouteFirebase({ history, match }: CoursePageRouteProps) {
-  const { value: state } = useFirestoreCourse(
-    {
-      getDocument: (docClass) => docClass.findByIdOrFail(match.params.courseId),
-      documentToState: (doc) => doc.toObjectDeep(),
-    },
-    `Course-${match.params.courseId}`
-  );
+// function CoursePageRouteFirebase({ history, match }: CoursePageRouteProps) {
+//   const { value: state } = useFirestoreCourse(
+//     {
+//       getDocument: (docClass) => docClass.findByIdOrFail(match.params.courseId),
+//       documentToState: (doc) => doc.toObjectDeep(),
+//     },
+//     `Course-${match.params.courseId}`
+//   );
 
-  if (state) {
-    return (
-      <CoursePageView
-        course={state}
-        onTopicStart={(topic) => {
-          history.push(`/topic/${topic.id}`);
-        }}
-      />
-    );
-  } else {
-    return <LoadingPage />;
-  }
-}
+//   if (state) {
+//     return (
+//       <CoursePageView
+//         course={state}
+//         onTopicStart={(topic) => {
+//           history.push(`/topic/${topic.id}`);
+//         }}
+//       />
+//     );
+//   } else {
+//     return <LoadingPage />;
+//   }
+// }
 
 function CoursePageRouteRedux({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
@@ -59,55 +61,23 @@ function CoursePageRouteRedux({ history }: RouteComponentProps) {
   );
 }
 
-export interface CourseIndex {
-  courseTitle: string;
-  description: string;
-  topicIdsOrdered: string[];
-}
-
 function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
   const { courseId } = match.params;
 
   const { data } = useQuery(`course-${courseId}`, async () => {
-    const getDirectory = getContent(
-      {
-        courseId: DEFAULT_COURSE_ID,
-        topicId: "fundamentals",
-        chapterId: "what-is-venture",
-        lessonId: "goals-of-venture",
-        // topicId: "fundamentals",
-      },
-      "tree"
-    );
-
-    const getIndex = getContent<CourseIndex>(
-      {
-        courseId: DEFAULT_COURSE_ID,
-        topicId: "fundamentals",
-        chapterId: "what-is-venture",
-        lessonId: "goals-of-venture",
-      },
-      "index.json"
-    );
-
-    const [directory, index] = await Promise.all([getDirectory, getIndex]);
-    return {
-      directory,
-      index,
-    };
+    const course = await getCourseDeep(match.params);
+    return course;
   });
 
-  console.log(data);
-
-  if (false) {
-    // return (
-    //   <CoursePageView
-    //     course={data.directory}
-    //     onTopicStart={(topic) => {
-    //       history.push(`/topic/${topic.id}`);
-    //     }}
-    //   />
-    // );
+  if (data) {
+    return (
+      <CoursePageView
+        course={data}
+        onTopicStart={(topic) => {
+          history.push(`/topic/${topic.id}`);
+        }}
+      />
+    );
   } else {
     return <LoadingPage />;
   }
@@ -141,7 +111,7 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
 // }
 
 const CoursePageRoute = {
-  Firebase: CoursePageRouteFirebase,
+  // Firebase: CoursePageRouteFirebase,
   Redux: CoursePageRouteRedux,
   Query: CoursePageRouteQuery,
 };

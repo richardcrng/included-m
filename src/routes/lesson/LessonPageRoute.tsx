@@ -9,7 +9,7 @@ import { useFirestoreLesson } from "../../models/FirestoreModel/useFirestoreMode
 import { getContent, LessonPath } from "../../api";
 import { useQuery } from "react-query";
 import { LessonJSON } from "../../content/content-types";
-import { contentStringPath } from "../../api/api";
+import { contentStringPath } from "../../api/getContent";
 
 interface LessonPageRouteProps extends RouteComponentProps<LessonPath> {}
 

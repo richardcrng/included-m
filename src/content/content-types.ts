@@ -1,24 +1,51 @@
-export interface CourseJSON {
+interface CourseCommon {
   courseTitle: string;
   description: string;
+}
+
+export interface CourseIndex extends CourseCommon {
+  topicIdsOrdered: string[];
+}
+
+export interface CourseJSON extends CourseCommon {
   topics: TopicJSON[];
 }
 
-export interface TopicJSON {
+interface TopicCommon {
   topicTitle: string;
   description: string;
+}
+
+export interface TopicIndex extends TopicCommon {
+  chapterIdsOrdered: string[];
+}
+
+export interface TopicJSON extends TopicCommon {
   chapters: ChapterJSON[];
 }
 
-export interface ChapterJSON {
+interface ChapterCommon {
   chapterTitle: string;
+}
+
+export interface ChapterIndex extends ChapterCommon {
+  lessonIdsOrdered: string[];
+}
+
+export interface ChapterJSON extends ChapterCommon {
   lessons: LessonJSON[];
 }
 
-export interface LessonJSON {
+interface LessonCommon {
   lessonTitle: string;
+}
+
+export interface LessonIndex extends LessonCommon {
   activities: ActivityJSON[];
-  isCompleted?: boolean;
+}
+
+export interface LessonJSON extends LessonCommon {
+  activities: ActivityJSON[];
 }
 
 export type ActivityType =
