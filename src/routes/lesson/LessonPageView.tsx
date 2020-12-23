@@ -5,6 +5,8 @@ import { LessonPOJODeep } from "../../models/Lesson";
 import { LessonRawDeep } from "../../models/Lesson.old";
 import LessonActivity from "./components/Activity/LessonActivity";
 import LessonToolbar from "./components/LessonToolbar";
+import { AsyncReturnType } from "type-fest";
+import { getChapterDeep } from "../../api/getResource";
 
 type LessonCtx = {
   dispatch: React.Dispatch<Action>;
@@ -18,8 +20,10 @@ type LessonCtx = {
 // @ts-ignore
 export const LessonContext = React.createContext<LessonCtx>({});
 
+type LessonData = AsyncReturnType<typeof getChapterDeep>["lessons"][0];
+
 interface Props {
-  lesson: LessonPOJODeep;
+  lesson: LessonData;
 }
 
 function LessonPageView({ lesson }: Props) {

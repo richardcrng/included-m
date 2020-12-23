@@ -5,7 +5,7 @@ import LoadingPage from "../../pages/LoadingPage";
 import { JSendBase } from "../../lib/jsend";
 import { TopicRawDeep } from "../../models/Topic.old";
 import { useFirestoreTopic } from "../../models/FirestoreModel/useFirestoreModel";
-import { TopicPath } from "../../api";
+import { contentStringPath, TopicPath } from "../../api";
 import { getTopicDeepRecursive } from "../../api/getResource";
 import { useQuery } from "react-query";
 
@@ -56,7 +56,7 @@ interface TopicPageRouteIdProps extends RouteComponentProps<TopicPath> {}
 export type GetTopicIdSuccess = JSendBase<{ topic: TopicRawDeep }, "success">;
 
 function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
-  const { data } = useQuery(`topic-${match.params.topicId}`, async () => {
+  const { data } = useQuery(contentStringPath(match.params), async () => {
     const res = await getTopicDeepRecursive(match.params);
     return res;
   });

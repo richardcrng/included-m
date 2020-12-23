@@ -1,18 +1,18 @@
 import React from "react";
-import { BlockBase } from "../../../../models/Activity";
 import LessonContent from "../LessonContent";
 import LessonContentBlock from "../LessonContentBlock";
 import LessonContinueButton from "../LessonContinueButton";
+import { ReadActivityJSON } from "../../../../content/content-types";
 
 interface Props {
-  blocks: BlockBase[];
+  activity: ReadActivityJSON;
 }
 
-function LessonActivityRead({ blocks }: Props) {
+function LessonActivityRead({ activity }: Props) {
   return (
     <>
       <LessonContent>
-        {blocks.map((block) => (
+        {activity.blocks.map((block) => (
           <LessonContentBlock key={JSON.stringify(block)} block={block} />
         ))}
       </LessonContent>

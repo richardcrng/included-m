@@ -9,7 +9,7 @@ import CourseDetails from "../../pages/Course/CourseDetails";
 import actions from "../../redux/reducer";
 import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreModel";
 import { useQuery } from "react-query";
-import { CoursePath, getContent } from "../../api";
+import { contentStringPath, CoursePath, getContent } from "../../api";
 import { DEFAULT_COURSE_ID } from "../../constants";
 import { CourseIndex } from "../../content/content-types";
 import { getCourseDeep } from "../../api/getResource";
@@ -61,7 +61,7 @@ function CoursePageRouteRedux({ history }: RouteComponentProps) {
 function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
   const { courseId } = match.params;
 
-  const { data } = useQuery(`course-${courseId}`, async () => {
+  const { data } = useQuery(contentStringPath(match.params), async () => {
     const course = await getCourseDeep(match.params);
     return course;
   });

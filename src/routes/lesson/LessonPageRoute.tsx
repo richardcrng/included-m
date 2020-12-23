@@ -10,24 +10,25 @@ import { getContent, LessonPath } from "../../api";
 import { useQuery } from "react-query";
 import { LessonJSON } from "../../content/content-types";
 import { contentStringPath } from "../../api/getContent";
+import { getLesson } from "../../api/getResource";
 
 interface LessonPageRouteProps extends RouteComponentProps<LessonPath> {}
 
-function LessonPageRouteFirebase({ history, match }: LessonPageRouteProps) {
-  const { value: state } = useFirestoreLesson(
-    {
-      getDocument: (docClass) => docClass.findByIdOrFail(match.params.lessonId),
-      documentToState: (doc) => doc.toObjectDeep(),
-    },
-    `Lesson-${match.params.lessonId}`
-  );
+// function LessonPageRouteFirebase({ history, match }: LessonPageRouteProps) {
+//   const { value: state } = useFirestoreLesson(
+//     {
+//       getDocument: (docClass) => docClass.findByIdOrFail(match.params.lessonId),
+//       documentToState: (doc) => doc.toObjectDeep(),
+//     },
+//     `Lesson-${match.params.lessonId}`
+//   );
 
-  if (state) {
-    return <LessonPageView lesson={state} />;
-  } else {
-    return <LoadingPage />;
-  }
-}
+//   if (state) {
+//     return <LessonPageView lesson={state} />;
+//   } else {
+//     return <LoadingPage />;
+//   }
+// }
 
 export type GetLessonIdSuccess = JSendBase<
   { lesson: LessonRawDeep },
@@ -36,12 +37,11 @@ export type GetLessonIdSuccess = JSendBase<
 
 function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
   const { data } = useQuery(contentStringPath(match.params), async () => {
-    const res = await getContent<LessonJSON>(match.params, "index.json");
+    const res = await getLesson(match.params);
     return res;
   });
 
   if (data) {
-    // @ts-ignore
     return <LessonPageView lesson={data} />;
   } else {
     return <LoadingPage />;
@@ -49,7 +49,7 @@ function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
 }
 
 const LessonPageRoute = {
-  Firebase: LessonPageRouteFirebase,
+  // Firebase: LessonPageRouteFirebase,
   Query: LessonPageRouteQuery,
 };
 

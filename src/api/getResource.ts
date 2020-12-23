@@ -4,7 +4,13 @@ import {
   LessonIndex,
   TopicIndex,
 } from "../content/content-types";
-import { ChapterPath, CoursePath, getContent, TopicPath } from "./getContent";
+import {
+  ChapterPath,
+  CoursePath,
+  getContent,
+  LessonPath,
+  TopicPath,
+} from "./getContent";
 
 export async function getCourseContents(path: CoursePath) {
   const [{ topicIdsOrdered, ...rest }, topicContents] = await Promise.all([
@@ -116,4 +122,8 @@ export async function getChapterDeep(path: ChapterPath) {
 
   const lessons = await Promise.all(getLessonIndices);
   return { ...rest, lessons };
+}
+
+export async function getLesson(path: LessonPath) {
+  return getContent<LessonIndex>(path, "index.json");
 }
