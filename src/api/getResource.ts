@@ -12,8 +12,6 @@ import {
   TopicPath,
 } from "./getContent";
 
-const SANDBOX = true;
-
 export async function getCourseContents(path: CoursePath) {
   const [{ topicIdsOrdered = [], ...rest }, topicContents] = await Promise.all([
     getContent<CourseIndex>(path, "index.json"),

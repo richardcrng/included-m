@@ -118,7 +118,7 @@ interface GitLabTreeContent {
 }
 
 const getTree = async (path: ContentPath, filterForTrees = true) => {
-  if (IS_SANDBOX) return Promise.resolve(getSandboxTree(path))
+  if (IS_SANDBOX) return getSandboxTree(path)
 
   const route = contentStringPath(path);
   
@@ -139,7 +139,7 @@ const getTree = async (path: ContentPath, filterForTrees = true) => {
 const getIndex = async <T = any, P extends ContentPath = ContentPath>(
   path: P
 ) => {
-  if (IS_SANDBOX) return Promise.resolve(getSandboxIndex<T, P>(path))
+  if (IS_SANDBOX) return getSandboxIndex<T, P>(path)
 
   const route = contentStringPath(path);
 
@@ -164,10 +164,10 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
   }
 };
 
-const getSandboxTree = (path: ContentPath) => {
+const getSandboxTree = async (path: ContentPath) => {
   const route = contentStringPath(path);
 
-  const loaded = require("../course/" + route.join("/") + "/index.json");
+  const loaded = await import("../course/" + route.join("/") + "/index.json");
   let subDirs: string[] = [];
   if (isPathToCourse(path)) {
     subDirs = (loaded as CourseIndex).topicIdsOrdered;
@@ -193,9 +193,9 @@ const getSandboxTree = (path: ContentPath) => {
   }
 };
 
-const getSandboxIndex = <T = any, P extends ContentPath = ContentPath>(path: ContentPath) => {
+const getSandboxIndex = async <T = any, P extends ContentPath = ContentPath>(path: ContentPath) => {
   const route = contentStringPath(path);
-  const loaded = require("../course/" + route.join("/") + "/index.json");
+  const loaded = await import("../course/" + route.join("/") + "/index.json");
   if (loaded) {
     return {
       ...loaded,
