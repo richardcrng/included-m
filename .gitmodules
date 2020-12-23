@@ -1,0 +1,3 @@
+[submodule "src/content"]
+	path = src/content
+	url = https://gitlab.com/richardcrng/included-m-content.git
