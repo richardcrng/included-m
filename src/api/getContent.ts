@@ -170,27 +170,42 @@ const getSandboxTree = (path: ContentPath) => {
   const loaded = require("../course/" + route.join("/") + "/index.json");
   let subDirs: string[] = [];
   if (isPathToCourse(path)) {
-    subDirs = (<CourseIndex>loaded).topicIdsOrdered;
+    subDirs = (loaded as CourseIndex).topicIdsOrdered;
   } else if (isPathToTopic(path)) {
-    subDirs = (<TopicIndex>loaded).chapterIdsOrdered;
+    subDirs = (loaded as TopicIndex).chapterIdsOrdered;
   } else if (isPathToChapter(path)) {
-    subDirs = (<ChapterIndex>loaded).lessonIdsOrdered;
+    subDirs = (loaded as ChapterIndex).lessonIdsOrdered;
   }
-  return subDirs.map((subdir) => ({
-    id: subdir,
-    name: subdir,
-    type: "tree",
-    path: route.join("/"),
-    mode: "mode",
-  })) as GitLabTreeContent[];
+
+  if (subDirs) {
+    return subDirs.map((subDir) => ({
+      id: subDir,
+      name: subDir,
+      type: "tree",
+      path: route.join("/"),
+      mode: "mode",
+    })) as GitLabTreeContent[];
+  } else {
+    throw new WhyWhatError({
+      what: "Couldn't find tree",
+      why: "Nothing at " + route.join("/"),
+    });
+  }
 };
 
 const getSandboxIndex = <T = any, P extends ContentPath = ContentPath>(path: ContentPath) => {
   const route = contentStringPath(path);
   const loaded = require("../course/" + route.join("/") + "/index.json");
-  return {
-    ...loaded,
-    path,
-    route
-  } as T & { id: string; path: P }
+  if (loaded) {
+    return {
+      ...loaded,
+      path,
+      route
+    } as T & { id: string; path: P }
+  } else {
+    throw new WhyWhatError({
+      what: "Couldn't find content",
+      why: "Nothing at " + route.join("/"),
+    });
+  }
 };
