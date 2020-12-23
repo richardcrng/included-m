@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">included-m</string>
-    <string name="title_activity_main">included-m</string>
-    <string name="package_name">vc.included.app</string>
-    <string name="custom_url_scheme">vc.included.app</string>
-</resources>
