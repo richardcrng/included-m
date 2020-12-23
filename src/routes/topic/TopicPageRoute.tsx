@@ -8,6 +8,7 @@ import { useFirestoreTopic } from "../../models/FirestoreModel/useFirestoreModel
 import { contentStringPath, TopicPath } from "../../api";
 import { getTopicDeepRecursive } from "../../api/getResource";
 import { useQuery } from "react-query";
+import ErrorPage from "../../pages/ErrorPage";
 
 interface TopicPageRouteIdProps extends RouteComponentProps<TopicPath> {}
 
@@ -56,10 +57,13 @@ interface TopicPageRouteIdProps extends RouteComponentProps<TopicPath> {}
 export type GetTopicIdSuccess = JSendBase<{ topic: TopicRawDeep }, "success">;
 
 function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
-  const { data } = useQuery(contentStringPath(match.params), async () => {
-    const res = await getTopicDeepRecursive(match.params);
-    return res;
-  });
+  const { data, isError } = useQuery(
+    contentStringPath(match.params),
+    async () => {
+      const res = await getTopicDeepRecursive(match.params);
+      return res;
+    }
+  );
 
   if (data) {
     return (
@@ -70,7 +74,10 @@ function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
         }}
       />
     );
-  } else {
+  } else if (isError) {
+    return <ErrorPage />;
+  }
+  {
     return <LoadingPage />;
   }
 }

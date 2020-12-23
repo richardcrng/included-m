@@ -13,6 +13,7 @@ import { contentStringPath, CoursePath, getContent } from "../../api";
 import { DEFAULT_COURSE_ID } from "../../constants";
 import { CourseIndex } from "../../content/content-types";
 import { getCourseDeep } from "../../api/getResource";
+import ErrorPage from "../../pages/ErrorPage";
 
 interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 
@@ -61,13 +62,15 @@ function CoursePageRouteRedux({ history }: RouteComponentProps) {
 function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
   const { courseId } = match.params;
 
-  const { data } = useQuery(contentStringPath(match.params), async () => {
-    const course = await getCourseDeep(match.params);
-    return course;
-  });
+  const { data, isError } = useQuery(
+    contentStringPath(match.params),
+    async () => {
+      const course = await getCourseDeep(match.params);
+      return course;
+    }
+  );
 
   if (data) {
-    console.log(data);
     return (
       <CoursePageView
         course={data}
@@ -76,6 +79,8 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
         }}
       />
     );
+  } else if (isError) {
+    return <ErrorPage />;
   } else {
     return <LoadingPage />;
   }

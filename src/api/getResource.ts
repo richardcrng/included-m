@@ -13,7 +13,7 @@ import {
 } from "./getContent";
 
 export async function getCourseContents(path: CoursePath) {
-  const [{ topicIdsOrdered, ...rest }, topicContents] = await Promise.all([
+  const [{ topicIdsOrdered = [], ...rest }, topicContents] = await Promise.all([
     getContent<CourseIndex>(path, "index.json"),
     getContent(path, "tree"),
   ]);
@@ -55,7 +55,10 @@ export async function getCourseDeepRecursive(path: CoursePath) {
 }
 
 export async function getTopicContents(path: TopicPath) {
-  const [{ chapterIdsOrdered, ...rest }, chapterContents] = await Promise.all([
+  const [
+    { chapterIdsOrdered = [], ...rest },
+    chapterContents,
+  ] = await Promise.all([
     getContent<TopicIndex>(path, "index.json"),
     getContent(path, "tree"),
   ]);
@@ -97,7 +100,10 @@ export async function getTopicDeepRecursive(path: TopicPath) {
 }
 
 export async function getChapterContents(path: ChapterPath) {
-  const [{ lessonIdsOrdered, ...rest }, chapterContents] = await Promise.all([
+  const [
+    { lessonIdsOrdered = [], ...rest },
+    chapterContents,
+  ] = await Promise.all([
     getContent<ChapterIndex>(path, "index.json"),
     getContent(path, "tree"),
   ]);

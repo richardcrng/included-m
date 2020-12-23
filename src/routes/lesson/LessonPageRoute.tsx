@@ -11,6 +11,7 @@ import { useQuery } from "react-query";
 import { LessonJSON } from "../../content/content-types";
 import { contentStringPath } from "../../api/getContent";
 import { getLesson } from "../../api/getResource";
+import ErrorPage from "../../pages/ErrorPage";
 
 interface LessonPageRouteProps extends RouteComponentProps<LessonPath> {}
 
@@ -36,14 +37,20 @@ export type GetLessonIdSuccess = JSendBase<
 >;
 
 function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
-  const { data } = useQuery(contentStringPath(match.params), async () => {
-    const res = await getLesson(match.params);
-    return res;
-  });
+  const { data, isError } = useQuery(
+    contentStringPath(match.params),
+    async () => {
+      const res = await getLesson(match.params);
+      return res;
+    }
+  );
 
   if (data) {
     return <LessonPageView lesson={data} />;
-  } else {
+  } else if (isError) {
+    return <ErrorPage />;
+  }
+  {
     return <LoadingPage />;
   }
 }

@@ -1,3 +1,5 @@
+import WhyWhatError from "../lib/why-what-error";
+
 const BRANCH = "main";
 const PROJECT_ID = "23276565";
 
@@ -90,7 +92,14 @@ const getTree = async (path: ContentPath, filterForTrees = true) => {
     )}&ref=${BRANCH}`
   ).then((res) => res.json());
 
-  return filterForTrees ? json.filter((val) => val.type === "tree") : json;
+  if (json) {
+    return filterForTrees ? json.filter((val) => val.type === "tree") : json;
+  } else {
+    throw new WhyWhatError({
+      what: "Couldn't find tree",
+      why: "Nothing at " + route.join("/"),
+    });
+  }
 };
 
 const getIndex = async <T = any, P extends ContentPath = ContentPath>(
@@ -104,10 +113,22 @@ repository/files/${encodeURIComponent(
       `${route.join("/")}/index.json`
     )}/raw?ref=${BRANCH}`
   ).then((res) => res.json());
-  return {
-    ...json,
-    id: route[route.length - 1],
-    path,
-    route,
-  } as T & { id: string; path: P };
+  if (json && String(json.message).match("404")) {
+    throw new WhyWhatError({
+      what: "Couldn't find content",
+      why: "Nothing at " + route.join("/"),
+    });
+  } else if (json) {
+    return {
+      ...json,
+      id: route[route.length - 1],
+      path,
+      route,
+    } as T & { id: string; path: P };
+  } else {
+    throw new WhyWhatError({
+      what: "Couldn't find content",
+      why: "Nothing at " + route.join("/"),
+    });
+  }
 };
