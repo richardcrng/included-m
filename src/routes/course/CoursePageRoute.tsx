@@ -1,17 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import selectors from "../../redux/selectors";
 import { RouteComponentProps } from "react-router";
-import { LOADING_STRING } from "../../redux/state";
 import CoursePageView from "./CoursePageView";
 import LoadingPage from "../../pages/LoadingPage";
-import CourseDetails from "../../pages/Course/CourseDetails";
-import actions from "../../redux/reducer";
-import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreModel";
 import { useQuery } from "react-query";
-import { contentStringPath, CoursePath, getContent } from "../../api";
-import { DEFAULT_COURSE_ID } from "../../constants";
-import { CourseIndex } from "../../content/content-types";
+import { contentStringPath, CoursePath } from "../../api";
 import { getCourseDeep } from "../../api/getResource";
 import ErrorPage from "../../pages/ErrorPage";
 
@@ -39,25 +31,6 @@ interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 //     return <LoadingPage />;
 //   }
 // }
-
-function CoursePageRouteRedux({ history }: RouteComponentProps) {
-  const dispatch = useDispatch();
-  const course = useSelector(selectors.getLoadedCourse);
-
-  if ([course.courseTitle, course.description].includes(LOADING_STRING)) {
-    history.push("/");
-  }
-
-  return (
-    <CourseDetails
-      course={course}
-      onTopicStart={(topic) => {
-        dispatch(actions.loaded.topic.create.update(topic));
-        history.push("/topic");
-      }}
-    />
-  );
-}
 
 function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
   const { courseId } = match.params;
@@ -88,7 +61,6 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
 
 const CoursePageRoute = {
   // Firebase: CoursePageRouteFirebase,
-  Redux: CoursePageRouteRedux,
   Query: CoursePageRouteQuery,
 };
 

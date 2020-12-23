@@ -2,7 +2,7 @@ import React from "react";
 import LessonContent from "../LessonContent";
 import LessonContentBlock from "../LessonContentBlock";
 import LessonContinueButton from "../LessonContinueButton";
-import { ReadActivityJSON } from "../../../../content/content-types";
+import { ReadActivityJSON } from "../../../../api/content-types";
 
 interface Props {
   activity: ReadActivityJSON;

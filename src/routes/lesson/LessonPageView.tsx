@@ -1,18 +1,16 @@
 import React, { useReducer } from "react";
 import riduce, { Action, ActionsProxy } from "riduce";
-import { ActivityRawDeep } from "../../models/Activity.old";
-import { LessonPOJODeep } from "../../models/Lesson";
-import { LessonRawDeep } from "../../models/Lesson.old";
 import LessonActivity from "./components/Activity/LessonActivity";
 import LessonToolbar from "./components/LessonToolbar";
 import { AsyncReturnType } from "type-fest";
 import { getChapterDeep } from "../../api/getResource";
+import { ActivityJSON } from "../../api/content-types";
 
 type LessonCtx = {
   dispatch: React.Dispatch<Action>;
   actions: ActionsProxy<LessonCtx["state"], LessonCtx["state"], {}>;
   state: {
-    activities: ActivityRawDeep[];
+    activities: ActivityJSON[];
     currentIdx: number;
   };
 };
@@ -40,9 +38,7 @@ function LessonPageView({ lesson }: Props) {
     <LessonContext.Provider
       value={{
         dispatch,
-        // @ts-ignore
         actions,
-        // @ts-ignore
         state: lessonState,
       }}
     >

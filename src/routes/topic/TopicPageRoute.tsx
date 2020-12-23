@@ -3,8 +3,6 @@ import { RouteComponentProps } from "react-router";
 import TopicPageView from "./TopicPageView";
 import LoadingPage from "../../pages/LoadingPage";
 import { JSendBase } from "../../lib/jsend";
-import { TopicRawDeep } from "../../models/Topic.old";
-import { useFirestoreTopic } from "../../models/FirestoreModel/useFirestoreModel";
 import { contentStringPath, TopicPath } from "../../api";
 import { getTopicDeepRecursive } from "../../api/getResource";
 import { useQuery } from "react-query";
@@ -35,27 +33,6 @@ interface TopicPageRouteIdProps extends RouteComponentProps<TopicPath> {}
 //   }
 // }
 
-// function TopicPageRouteRedux({ history }: RouteComponentProps) {
-//   const dispatch = useDispatch()
-//   const topic = useSelector(selectors.getLoadedTopic)
-
-//   if ([topic.topicTitle, topic.description].includes(LOADING_STRING)) {
-//     history.push('/')
-//   }
-
-//   return (
-//     <TopicDetails
-//       topic={topic}
-//       onLessonSelect={(lesson) => {
-//         dispatch(actions.loaded.lesson.create.update(lesson))
-//         history.push('/lesson')
-//       }}
-//     />
-//   )
-// }
-
-export type GetTopicIdSuccess = JSendBase<{ topic: TopicRawDeep }, "success">;
-
 function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
   const { data, isError } = useQuery(
     contentStringPath(match.params),
@@ -84,7 +61,6 @@ function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
 
 const TopicPageRoute = {
   // Firebase: TopicPageRouteFirebase,
-  // Redux: TopicPageRouteRedux,
   Query: TopicPageRouteQuery,
 };
 

@@ -8,7 +8,7 @@ import LessonContinueButton from "../LessonContinueButton";
 import Notification, {
   NotificationProps,
 } from "../../../../ui/atoms/Notification";
-import { ActivityJSON } from "../../../../content/content-types";
+import { ActivityJSON } from "../../../../api/content-types";
 
 interface Props {
   activity: ActivityJSON;

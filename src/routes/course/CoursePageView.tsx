@@ -10,9 +10,6 @@ import {
 } from "@ionic/react";
 import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
 import { useHistory } from "react-router";
-import { CourseRawDeep } from "../../models/Course.old";
-import { TopicRaw, TopicRawDeep } from "../../models/Topic.old";
-import Course from "../../models/Course";
 import { AsyncReturnType } from "type-fest";
 import { getCourseDeep } from "../../api/getResource";
 

@@ -16,7 +16,7 @@ import Notification, {
 } from "../../../../../ui/atoms/Notification";
 import LessonContinueButton from "../../LessonContinueButton";
 import { CardRaw } from "../../../../../models/Card";
-import { SwipeCardsActivityJSON } from "../../../../../content/content-types";
+import { SwipeCardsActivityJSON } from "../../../../../api/content-types";
 
 interface Props {
   activity: SwipeCardsActivityJSON;

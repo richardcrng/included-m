@@ -1,16 +1,9 @@
 import React from "react";
 import { RouteComponentProps } from "react-router";
 import LessonPageView from "./LessonPageView";
-// import { useFireactiveLesson } from "../../lib/useFireactive/useFireactiveDocument";
 import LoadingPage from "../../pages/LoadingPage";
-import { JSendBase } from "../../lib/jsend";
-import { LessonRawDeep } from "../../models/Lesson.old";
-import { useFirestoreLesson } from "../../models/FirestoreModel/useFirestoreModel";
-import { getContent, LessonPath } from "../../api";
+import { contentStringPath, getLesson, LessonPath } from "../../api";
 import { useQuery } from "react-query";
-import { LessonJSON } from "../../content/content-types";
-import { contentStringPath } from "../../api/getContent";
-import { getLesson } from "../../api/getResource";
 import ErrorPage from "../../pages/ErrorPage";
 
 interface LessonPageRouteProps extends RouteComponentProps<LessonPath> {}
@@ -30,11 +23,6 @@ interface LessonPageRouteProps extends RouteComponentProps<LessonPath> {}
 //     return <LoadingPage />;
 //   }
 // }
-
-export type GetLessonIdSuccess = JSendBase<
-  { lesson: LessonRawDeep },
-  "success"
->;
 
 function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
   const { data, isError } = useQuery(
