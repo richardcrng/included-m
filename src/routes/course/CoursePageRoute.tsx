@@ -33,8 +33,6 @@ interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 // }
 
 function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
-  const { courseId } = match.params;
-
   const { data, isError } = useQuery(
     contentStringPath(match.params),
     async () => {

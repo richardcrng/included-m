@@ -184,7 +184,11 @@ function HomePage() {
                   </Callout>
                   <p>
                     Brought to life by{" "}
-                    <a href="https://included.vc" target="_blank">
+                    <a
+                      href="https://included.vc"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       Included VC
                     </a>
                   </p>
@@ -217,7 +221,11 @@ function HomePage() {
                 <br />
                 <p>
                   That's why we built{" "}
-                  <a href="https://included.vc" target="_blank">
+                  <a
+                    href="https://included.vc"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     a fully-funded Fellowship
                   </a>
                   . Now,{" "}

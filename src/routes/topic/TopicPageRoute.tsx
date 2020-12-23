@@ -2,7 +2,6 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import TopicPageView from "./TopicPageView";
 import LoadingPage from "../../pages/LoadingPage";
-import { JSendBase } from "../../lib/jsend";
 import { contentStringPath, TopicPath } from "../../api";
 import { getTopicDeepRecursive } from "../../api/getResource";
 import { useQuery } from "react-query";
@@ -53,8 +52,7 @@ function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
     );
   } else if (isError) {
     return <ErrorPage />;
-  }
-  {
+  } else {
     return <LoadingPage />;
   }
 }

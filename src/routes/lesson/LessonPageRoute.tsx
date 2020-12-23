@@ -37,8 +37,7 @@ function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
     return <LessonPageView lesson={data} />;
   } else if (isError) {
     return <ErrorPage />;
-  }
-  {
+  } else {
     return <LoadingPage />;
   }
 }
