@@ -3,7 +3,7 @@ import { ChapterIndex, CourseIndex, TopicIndex } from "./content-types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23276565";
-const SANDBOX = true;
+const IS_SANDBOX = true;
 
 const treeUrl = (route: string[]) =>
   process.env.NODE_ENV === "development"
@@ -118,27 +118,10 @@ interface GitLabTreeContent {
 }
 
 const getTree = async (path: ContentPath, filterForTrees = true) => {
+  if (IS_SANDBOX) return Promise.resolve(getSandboxTree(path))
+
   const route = contentStringPath(path);
-
-  if (SANDBOX) {
-    const loaded = require("../course/" + route.join("/") + "/index.json");
-    let subDirs: string[] = [];
-    if (isPathToCourse(path)) {
-      subDirs = (<CourseIndex>loaded).topicIdsOrdered;
-    } else if (isPathToTopic(path)) {
-      subDirs = (<TopicIndex>loaded).chapterIdsOrdered;
-    } else if (isPathToChapter(path)) {
-      subDirs = (<ChapterIndex>loaded).lessonIdsOrdered;
-    }
-    return subDirs.map((subdir) => ({
-      id: subdir,
-      name: subdir,
-      type: "tree",
-      path: route.join("/"),
-      mode: "mode",
-    })) as GitLabTreeContent[];
-  }
-
+  
   const json: GitLabTreeContent[] = await fetch(treeUrl(route)).then((res) =>
     res.json()
   );
@@ -156,6 +139,8 @@ const getTree = async (path: ContentPath, filterForTrees = true) => {
 const getIndex = async <T = any, P extends ContentPath = ContentPath>(
   path: P
 ) => {
+  if (IS_SANDBOX) return Promise.resolve(getSandboxIndex<T, P>(path))
+
   const route = contentStringPath(path);
 
   const json = await fetch(indexUrl(route)).then((res) => res.json());
@@ -198,4 +183,14 @@ const getSandboxTree = (path: ContentPath) => {
     path: route.join("/"),
     mode: "mode",
   })) as GitLabTreeContent[];
+};
+
+const getSandboxIndex = <T = any, P extends ContentPath = ContentPath>(path: ContentPath) => {
+  const route = contentStringPath(path);
+  const loaded = require("../course/" + route.join("/") + "/index.json");
+  return {
+    ...loaded,
+    path,
+    route
+  } as T & { id: string; path: P }
 };
