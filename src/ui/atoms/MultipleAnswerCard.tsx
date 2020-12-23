@@ -1,41 +1,28 @@
-import React from 'react';
-import Markdown from 'markdown-to-jsx';
-import {
-  IonCard,
-  IonCardContent
-} from '@ionic/react'
-import { AnswerCRUD } from '../../content/types';
+import React from "react";
+import Markdown from "markdown-to-jsx";
+import { IonCard, IonCardContent } from "@ionic/react";
+import { AnswerJSON } from "../../content/content-types";
 
 interface Props {
-  answer: AnswerCRUD
-  onClick(): void,
-  disabled?: boolean
+  answer: AnswerJSON;
+  onClick(): void;
+  disabled?: boolean;
 }
 
 function MultipleAnswerCRUDCard({
   answer: { text, isSelected, isCorrect },
   onClick,
-  disabled
+  disabled,
 }: Props) {
-
-  const color = isSelected
-    ? isCorrect ? 'success' : 'warning'
-    : undefined
+  const color = isSelected ? (isCorrect ? "success" : "warning") : undefined;
 
   return (
-    <IonCard
-      button
-      color={color}
-      disabled={disabled}
-      onClick={onClick}
-    >
+    <IonCard button color={color} disabled={disabled} onClick={onClick}>
       <IonCardContent>
-        <Markdown>
-          {text}
-        </Markdown>
+        <Markdown>{text}</Markdown>
       </IonCardContent>
     </IonCard>
-  )
+  );
 }
 
-export default MultipleAnswerCRUDCard
+export default MultipleAnswerCRUDCard;
