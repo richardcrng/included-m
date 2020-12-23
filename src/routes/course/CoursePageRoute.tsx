@@ -7,19 +7,15 @@ import CoursePageView from "./CoursePageView";
 import LoadingPage from "../../pages/LoadingPage";
 import CourseDetails from "../../pages/Course/CourseDetails";
 import actions from "../../redux/reducer";
-import { JSendBase } from "../../lib/jsend";
-import { CourseRawDeep } from "../../models/Course.old";
 import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreModel";
+import { useQuery } from "react-query";
 
-interface CoursePageRouteFirebaseProps
+interface CoursePageRouteProps
   extends RouteComponentProps<{
     id: string;
   }> {}
 
-function CoursePageRouteFirebase({
-  history,
-  match,
-}: CoursePageRouteFirebaseProps) {
+function CoursePageRouteFirebase({ history, match }: CoursePageRouteProps) {
   const { value: state } = useFirestoreCourse(
     {
       getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
@@ -61,15 +57,56 @@ function CoursePageRouteRedux({ history }: RouteComponentProps) {
   );
 }
 
-export type GetCourseIdSuccess = JSendBase<
-  { course: CourseRawDeep<false> },
-  "success"
->;
+export interface CourseIndex {
+  courseTitle: string;
+  description: string;
+  topicIdsOrdered: string[];
+}
+
+function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
+  const { id } = match.params;
+
+  const { data } = useQuery(`course-${id}`, async () => {
+    const getDirectory = fetch(
+      `https://gitlab.com/api/v4/projects/23270946/repository/tree?path=content/main&ref=content-folder`
+    );
+
+    const getIndex = fetch(
+      `https://gitlab.com/api/v4/projects/23270946/
+repository/files/${encodeURIComponent(
+        "content/main/index.json"
+      )}/raw?ref=content-folder`
+    );
+    const [directory, index] = await Promise.all([
+      getDirectory.then((res) => res.json()),
+      getIndex.then((res) => res.json()),
+    ]);
+    return {
+      directory,
+      index,
+    };
+  });
+
+  console.log(data);
+
+  if (false) {
+    // return (
+    //   <CoursePageView
+    //     course={data.directory}
+    //     onTopicStart={(topic) => {
+    //       history.push(`/topic/${topic.id}`);
+    //     }}
+    //   />
+    // );
+  } else {
+    return <LoadingPage />;
+  }
+}
 
 // function CoursePageRouteQuery({
 //   history,
 //   match,
-// }: CoursePageRouteFirebaseProps) {
+// }: CoursePageRouteProps) {
 
 //   const { id } = match.params;
 
@@ -96,7 +133,7 @@ export type GetCourseIdSuccess = JSendBase<
 const CoursePageRoute = {
   Firebase: CoursePageRouteFirebase,
   Redux: CoursePageRouteRedux,
-  // Query: CoursePageRouteQuery,
+  Query: CoursePageRouteQuery,
 };
 
 export default CoursePageRoute;
