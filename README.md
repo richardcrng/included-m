@@ -46,7 +46,11 @@ I'm drawing heavy inspiration from my experience of [Quantic's mobile-first MBA]
 
 ## Roadmap
 
+There are two parts to Included M: the _platform_ and the _content_.
+
 There's a working version of the core platform (which you can play around with on [the demo](https://included-m.vercel.app)).
+
+It pulls data from a server which provides basic content (which is version-controlled through a [separate repository](https://github.com/richardcrng/included-m-content)).
 
 The main piece of work required is to populate this with content. (If you try the demo, you will see that _most_ content is filler / holding at the moment. It is only the first lesson of the very first chapter that has _any_ sort of content.)
 
@@ -57,7 +61,6 @@ There is some further platform development work as well (e.g. creation of user a
 - React
 - TypeScript
 - [Riduce](https://github.com/richardcrng/riduce)
-- Firebase
 - Ionic
 - Styled Components
 - Vercel
