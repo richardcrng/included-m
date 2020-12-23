@@ -55,7 +55,7 @@ function CoursePageView({ course, onTopicStart }: Props) {
         <Buttons slot="start">
           <IoArrowBack
             onClick={() => {
-              history.push("/");
+              history.goBack();
             }}
             size={24}
           />

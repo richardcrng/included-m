@@ -18,6 +18,8 @@ import { TopicRawDeep } from "../../models/Topic.old";
 import { LessonRawDeep } from "../../models/Lesson.old";
 import { DEFAULT_COURSE_ID } from "../../constants";
 import { TopicPOJODeep } from "../../models/Topic";
+import { AsyncReturnType } from "type-fest";
+import { getTopicDeepRecursive } from "../../api/getResource";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -62,15 +64,15 @@ const LessonStartButton = styled(IonButton)`
 `;
 
 interface Props {
-  topic: TopicPOJODeep;
-  onLessonSelect?(lesson: any): void;
+  topic: AsyncReturnType<typeof getTopicDeepRecursive>;
+  onLessonSelect?(lesson: any, chapter: any): void;
 }
 
 function TopicPageView({ topic, onLessonSelect }: Props) {
   const history = useHistory();
 
-  const createLessonSelectHandler = (lesson: any) => () =>
-    onLessonSelect && onLessonSelect(lesson);
+  const createLessonSelectHandler = (lesson: any, chapter: any) => () =>
+    onLessonSelect && onLessonSelect(lesson, chapter);
 
   return (
     <>
@@ -110,7 +112,8 @@ function TopicPageView({ topic, onLessonSelect }: Props) {
                   <br />
                   <IonButton
                     onClick={createLessonSelectHandler(
-                      topic.chapters[0].lessons[0]
+                      topic.chapters[0].lessons[0],
+                      topic.chapters[0]
                     )}
                   >
                     Start Topic
@@ -131,17 +134,17 @@ function TopicPageView({ topic, onLessonSelect }: Props) {
               )}
             </MainCTAContent>
           </IonCard>
-          {topic.chapters.map(({ chapterTitle, lessons }, chapterIdx) => (
-            <React.Fragment key={chapterTitle}>
+          {topic.chapters.map((chapter, chapterIdx) => (
+            <React.Fragment key={chapter.chapterTitle}>
               <IonList>
                 <IonItemDivider color="primary">
                   Chapter{" "}
                   {chapterIdx < 9 ? `0${chapterIdx + 1}` : chapterIdx + 1}
                 </IonItemDivider>
                 <IonItem color="medium">
-                  <h2>{chapterTitle}</h2>
+                  <h2>{chapter.chapterTitle}</h2>
                 </IonItem>
-                {lessons.map((lesson, lessonIdx) => (
+                {chapter.lessons.map((lesson, lessonIdx) => (
                   <IonItem key={lesson.lessonTitle}>
                     <IonLabel>
                       <p>Lesson {lessonIdx + 1}</p>
@@ -151,7 +154,7 @@ function TopicPageView({ topic, onLessonSelect }: Props) {
                       slot="end"
                       expand="full"
                       color="success"
-                      onClick={createLessonSelectHandler(lesson)}
+                      onClick={createLessonSelectHandler(lesson, chapter)}
                     >
                       {">"}
                     </LessonStartButton>

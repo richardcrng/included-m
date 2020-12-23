@@ -9,15 +9,12 @@ import CourseDetails from "../../pages/Course/CourseDetails";
 import actions from "../../redux/reducer";
 import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreModel";
 import { useQuery } from "react-query";
-import { getContent } from "../../api";
+import { CoursePath, getContent } from "../../api";
 import { DEFAULT_COURSE_ID } from "../../constants";
 import { CourseIndex } from "../../content/content-types";
 import { getCourseDeep } from "../../api/getResource";
 
-interface CoursePageRouteProps
-  extends RouteComponentProps<{
-    courseId: string;
-  }> {}
+interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 
 // function CoursePageRouteFirebase({ history, match }: CoursePageRouteProps) {
 //   const { value: state } = useFirestoreCourse(
@@ -70,11 +67,12 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
   });
 
   if (data) {
+    console.log(data);
     return (
       <CoursePageView
         course={data}
         onTopicStart={(topic) => {
-          history.push(`/topic/${topic.id}`);
+          history.push(`/learn/${courseId}/${topic.id}`);
         }}
       />
     );
@@ -82,33 +80,6 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
     return <LoadingPage />;
   }
 }
-
-// function CoursePageRouteQuery({
-//   history,
-//   match,
-// }: CoursePageRouteProps) {
-
-//   const { id } = match.params;
-
-//   const { data } = useQuery(`course-${id}`, async () => {
-//     const res = await fetch(`${SERVER_URL}/courses/${id}`);
-//     const body = (await res.json()) as GetCourseIdSuccess;
-//     return body.data.course;
-//   });
-
-//   if (data) {
-//     return (
-//       <CoursePageView
-//         course={data}
-//         onTopicStart={(topic) => {
-//           history.push(`/topic/${topic._id}`);
-//         }}
-//       />
-//     );
-//   } else {
-//     return <LoadingPage />;
-//   }
-// }
 
 const CoursePageRoute = {
   // Firebase: CoursePageRouteFirebase,

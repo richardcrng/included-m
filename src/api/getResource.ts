@@ -14,7 +14,7 @@ export async function getCourseContents(path: CoursePath) {
 }
 
 export async function getCourseDeep(path: CoursePath) {
-  const [{ courseTitle, description }, contents] = await getCourseContents(
+  const [{ topicIdsOrdered, ...rest }, contents] = await getCourseContents(
     path
   );
 
@@ -29,11 +29,11 @@ export async function getCourseDeep(path: CoursePath) {
   );
 
   const topics = await Promise.all(getTopicIndices);
-  return { courseTitle, description, topics };
+  return { ...rest, topics };
 }
 
 export async function getCourseDeepRecursive(path: CoursePath) {
-  const [{ courseTitle, description }, contents] = await getCourseContents(
+  const [{ topicIdsOrdered, ...rest }, contents] = await getCourseContents(
     path
   );
 
@@ -45,7 +45,7 @@ export async function getCourseDeepRecursive(path: CoursePath) {
   );
 
   const topics = await Promise.all(getTopicIndices);
-  return { courseTitle, description, topics };
+  return { ...rest, topics };
 }
 
 export async function getTopicContents(path: TopicPath) {
@@ -56,7 +56,9 @@ export async function getTopicContents(path: TopicPath) {
 }
 
 export async function getTopicDeep(path: TopicPath) {
-  const [{ topicTitle, description }, contents] = await getTopicContents(path);
+  const [{ chapterIdsOrdered, ...rest }, contents] = await getTopicContents(
+    path
+  );
 
   const getChapterIndices = contents.map((val) =>
     getContent<ChapterIndex>(
@@ -69,11 +71,13 @@ export async function getTopicDeep(path: TopicPath) {
   );
 
   const chapters = await Promise.all(getChapterIndices);
-  return { topicTitle, description, chapters };
+  return { ...rest, chapters };
 }
 
 export async function getTopicDeepRecursive(path: TopicPath) {
-  const [{ topicTitle, description }, contents] = await getTopicContents(path);
+  const [{ chapterIdsOrdered, ...rest }, contents] = await getTopicContents(
+    path
+  );
 
   const getChapterIndices = contents.map((val) =>
     getChapterDeep({
@@ -83,7 +87,7 @@ export async function getTopicDeepRecursive(path: TopicPath) {
   );
 
   const chapters = await Promise.all(getChapterIndices);
-  return { topicTitle, description, chapters };
+  return { ...rest, chapters };
 }
 
 export async function getChapterContents(path: ChapterPath) {
@@ -94,7 +98,9 @@ export async function getChapterContents(path: ChapterPath) {
 }
 
 export async function getChapterDeep(path: ChapterPath) {
-  const [{ chapterTitle }, contents] = await getChapterContents(path);
+  const [{ lessonIdsOrdered, ...rest }, contents] = await getChapterContents(
+    path
+  );
 
   const getLessonIndices = contents.map((val) =>
     getContent<LessonIndex>(
@@ -107,5 +113,5 @@ export async function getChapterDeep(path: ChapterPath) {
   );
 
   const lessons = await Promise.all(getLessonIndices);
-  return { chapterTitle, lessons };
+  return { ...rest, lessons };
 }

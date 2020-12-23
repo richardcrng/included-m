@@ -119,17 +119,17 @@ const App: React.FC = () => {
         <Switch>
           <Route
             exact
-            path="/course/:courseId"
+            path="/learn/:courseId"
             component={CoursePageRoute.Query}
           />
-          {/* <Route
-            exact
-            path="/course/:courseId/:topicId"
-            component={CoursePageRoute.Query}
-          /> */}
           <Route
             exact
-            path="/course/:courseId/:topicId/:chapterId/:lessonId"
+            path="/learn/:courseId/:topicId"
+            component={TopicPageRoute.Query}
+          />
+          <Route
+            exact
+            path="/learn/:courseId/:topicId/:chapterId/:lessonId"
             component={LessonPageRoute.Query}
           />
           {/* <Route exact path="/course/:id" component={CoursePageRoute.Query} /> */}

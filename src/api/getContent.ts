@@ -46,12 +46,12 @@ export async function getContent(
 export async function getContent<T = any>(
   path: ContentPath,
   target: "index.json"
-): Promise<T>;
+): Promise<T & { id: string }>;
 export async function getContent<T = any>(
   path: ContentPath,
   target: "index.json",
   recursive: true
-): Promise<T>;
+): Promise<T & { id: string }>;
 
 export async function getContent<T = any>(
   path: ContentPath,
@@ -107,5 +107,8 @@ repository/files/${encodeURIComponent(
       `${path.join("/")}/index.json`
     )}/raw?ref=${BRANCH}`
   ).then((res) => res.json());
-  return json as T;
+  return {
+    ...json,
+    id: path[path.length - 1],
+  } as T & { id: string };
 };
