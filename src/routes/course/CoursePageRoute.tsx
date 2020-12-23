@@ -9,29 +9,6 @@ import ErrorPage from "../../pages/ErrorPage";
 
 interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 
-// function CoursePageRouteFirebase({ history, match }: CoursePageRouteProps) {
-//   const { value: state } = useFirestoreCourse(
-//     {
-//       getDocument: (docClass) => docClass.findByIdOrFail(match.params.courseId),
-//       documentToState: (doc) => doc.toObjectDeep(),
-//     },
-//     `Course-${match.params.courseId}`
-//   );
-
-//   if (state) {
-//     return (
-//       <CoursePageView
-//         course={state}
-//         onTopicStart={(topic) => {
-//           history.push(`/topic/${topic.id}`);
-//         }}
-//       />
-//     );
-//   } else {
-//     return <LoadingPage />;
-//   }
-// }
-
 function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
   const { data, isError } = useQuery(
     contentStringPath(match.params),
