@@ -1,7 +1,7 @@
 import includedVcLogo from "./assets/included-vc-logo.png";
 import includedMLogo from "./assets/included-m-logo.png";
 
-export const DEFAULT_COURSE_ID = "main";
+export const DEFAULT_COURSE_ID = "main-course";
 
 export const SERVER_URL =
   process.env.REACT_APP_SERVER_URL ||

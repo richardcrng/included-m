@@ -117,13 +117,28 @@ const App: React.FC = () => {
       />
       <IonReactRouter>
         <Switch>
-          <Route exact path="/course/:id" component={CoursePageRoute.Query} />
-          <Route exact path="/topic/:id" component={TopicPageRoute.Firebase} />
+          <Route
+            exact
+            path="/course/:courseId"
+            component={CoursePageRoute.Query}
+          />
+          {/* <Route
+            exact
+            path="/course/:courseId/:topicId"
+            component={CoursePageRoute.Query}
+          /> */}
+          <Route
+            exact
+            path="/course/:courseId/:topicId/:chapterId/:lessonId"
+            component={LessonPageRoute.Query}
+          />
+          {/* <Route exact path="/course/:id" component={CoursePageRoute.Query} /> */}
+          {/* <Route exact path="/topic/:id" component={TopicPageRoute.Firebase} />
           <Route
             exact
             path="/lesson/:id"
             component={LessonPageRoute.Firebase}
-          />
+          /> */}
           <Route exact path="/" component={HomePage} />
           <Redirect to="/" />
         </Switch>

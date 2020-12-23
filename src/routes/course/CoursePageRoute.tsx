@@ -10,19 +10,20 @@ import actions from "../../redux/reducer";
 import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreModel";
 import { useQuery } from "react-query";
 import { getContent } from "../../api";
+import { DEFAULT_COURSE_ID } from "../../constants";
 
 interface CoursePageRouteProps
   extends RouteComponentProps<{
-    id: string;
+    courseId: string;
   }> {}
 
 function CoursePageRouteFirebase({ history, match }: CoursePageRouteProps) {
   const { value: state } = useFirestoreCourse(
     {
-      getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
+      getDocument: (docClass) => docClass.findByIdOrFail(match.params.courseId),
       documentToState: (doc) => doc.toObjectDeep(),
     },
-    `Course-${match.params.id}`
+    `Course-${match.params.courseId}`
   );
 
   if (state) {
@@ -65,12 +66,15 @@ export interface CourseIndex {
 }
 
 function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
-  const { id } = match.params;
+  const { courseId } = match.params;
 
-  const { data } = useQuery(`course-${id}`, async () => {
+  const { data } = useQuery(`course-${courseId}`, async () => {
     const getDirectory = getContent(
       {
-        courseId: "main",
+        courseId: DEFAULT_COURSE_ID,
+        topicId: "fundamentals",
+        chapterId: "what-is-venture",
+        lessonId: "goals-of-venture",
         // topicId: "fundamentals",
       },
       "tree"
@@ -78,8 +82,10 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
 
     const getIndex = getContent<CourseIndex>(
       {
-        courseId: "main",
-        // topicId: "fundamentals",
+        courseId: DEFAULT_COURSE_ID,
+        topicId: "fundamentals",
+        chapterId: "what-is-venture",
+        lessonId: "goals-of-venture",
       },
       "index.json"
     );

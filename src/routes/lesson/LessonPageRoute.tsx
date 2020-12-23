@@ -6,19 +6,20 @@ import LoadingPage from "../../pages/LoadingPage";
 import { JSendBase } from "../../lib/jsend";
 import { LessonRawDeep } from "../../models/Lesson.old";
 import { useFirestoreLesson } from "../../models/FirestoreModel/useFirestoreModel";
+import { getContent, LessonPath } from "../../api";
+import { useQuery } from "react-query";
+import { LessonJSON } from "../../content/content-types";
+import { contentStringPath } from "../../api/api";
 
-interface LessonPageRouteIdProps
-  extends RouteComponentProps<{
-    id: string;
-  }> {}
+interface LessonPageRouteProps extends RouteComponentProps<LessonPath> {}
 
-function LessonPageRouteFirebase({ history, match }: LessonPageRouteIdProps) {
+function LessonPageRouteFirebase({ history, match }: LessonPageRouteProps) {
   const { value: state } = useFirestoreLesson(
     {
-      getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
+      getDocument: (docClass) => docClass.findByIdOrFail(match.params.lessonId),
       documentToState: (doc) => doc.toObjectDeep(),
     },
-    `Lesson-${match.params.id}`
+    `Lesson-${match.params.lessonId}`
   );
 
   if (state) {
@@ -33,25 +34,23 @@ export type GetLessonIdSuccess = JSendBase<
   "success"
 >;
 
-// function LessonPageRouteQuery({ history, match }: LessonPageRouteIdProps) {
-//   const { id } = match.params;
+function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
+  const { data } = useQuery(contentStringPath(match.params), async () => {
+    const res = await getContent<LessonJSON>(match.params, "index.json");
+    return res;
+  });
 
-//   const { data } = useQuery(`lesson-${id}`, async () => {
-//     const res = await fetch(`${SERVER_URL}/lessons/${id}`);
-//     const body = (await res.json()) as GetLessonIdSuccess;
-//     return body.data.lesson;
-//   });
-
-//   if (data) {
-//     return <LessonPageView lesson={data} />;
-//   } else {
-//     return <LoadingPage />;
-//   }
-// }
+  if (data) {
+    // @ts-ignore
+    return <LessonPageView lesson={data} />;
+  } else {
+    return <LoadingPage />;
+  }
+}
 
 const LessonPageRoute = {
   Firebase: LessonPageRouteFirebase,
-  // Query: LessonPageRouteQuery,
+  Query: LessonPageRouteQuery,
 };
 
 export default LessonPageRoute;
