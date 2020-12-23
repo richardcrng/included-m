@@ -55,7 +55,7 @@ export type ActivityType =
   | "select-multiple"
   | "swipe-cards";
 
-export type ActivityJSONBase = {
+export interface ActivityJSONCommon {
   activityType: ActivityType;
   blocks: ContentBlockJSON[];
   answers?: AnswerJSON[];
@@ -63,7 +63,7 @@ export type ActivityJSONBase = {
     [blankKey: string]: AnswerJSON[];
   };
   cards?: CardJSON[];
-};
+}
 
 export interface ChoicesJSON {
   [match: string]: AnswerJSON[];
@@ -91,10 +91,13 @@ export type ContentBlockJSON =
       markdown: string;
     };
 
-export type ReadActivityJSON = {
+export interface ReadActivityJSON extends ActivityJSONCommon {
   activityType: "read";
   blocks: ContentBlockJSON[];
-};
+  answers: never;
+  choices: never;
+  cards: never;
+}
 
 export type AnswerFeedback =
   | string
@@ -104,55 +107,59 @@ export type AnswerFeedback =
       buttonText?: string;
     };
 
-export type SelectAnAnswerActivityJSON = {
+export interface SelectAnAnswerActivityJSON extends ActivityJSONCommon {
   activityType: "select-an-answer";
   blocks: ContentBlockJSON[];
   answers: AnswerJSON[];
-};
+  choices: never;
+  cards: never;
+}
 
 export type SelectForEachBlankActivityJSON =
   | SelectForEachBlankSimpleActivityJSON
   | SelectForEachBlankComplexActivityJSON;
 
-export type SelectForEachBlankSimpleActivityJSON = {
+export interface SelectForEachBlankSimpleActivityJSON
+  extends ActivityJSONCommon {
   activityType: "select-for-each-blank";
   blocks: ContentBlockJSON[];
-};
+  answers: never;
+  cards: never;
+}
 
-export type SelectForEachBlankComplexActivityJSON = SelectForEachBlankSimpleActivityJSON & {
+export interface SelectForEachBlankComplexActivityJSON
+  extends SelectForEachBlankSimpleActivityJSON {
   choices: {
     [blankKey: string]: AnswerJSON[];
   };
-};
+}
 
-export type SelectForEachBlankChoices = {
-  [blankKey: string]: AnswerJSON[];
-};
-
-export type SelectMultipleActivityJSON = {
+export interface SelectMultipleActivityJSON extends ActivityJSONCommon {
   activityType: "select-multiple";
   blocks: ContentBlockJSON[];
   answers: AnswerJSON[];
-};
+  cards: never;
+  choices: never;
+}
 
-export type AnswerJSON = {
+export interface AnswerJSON {
   text: string;
   isCorrect: boolean;
   feedback?: string;
   isSelected?: boolean;
-};
+}
 
-export type SwipeCardsActivityJSON = ActivityJSONBase & {
+export interface SwipeCardsActivityJSON extends ActivityJSONCommon {
   activityType: "swipe-cards";
   blocks: ContentBlockJSON[];
-  cards: SwipeCard[];
-};
+  cards: CardJSON[];
+}
 
-export type SwipeCard = {
-  text: string;
-  isRight: boolean;
-  feedbackOnCorrect?: AnswerFeedback;
-  feedbackOnNotCorrect?: AnswerFeedback;
-  choiceLeft: string;
-  choiceRight: string;
-};
+// export type SwipeCard = {
+//   text: string;
+//   isRight: boolean;
+//   feedbackOnCorrect?: AnswerFeedback;
+//   feedbackOnNotCorrect?: AnswerFeedback;
+//   choiceLeft: string;
+//   choiceRight: string;
+// };
