@@ -61,9 +61,9 @@ function isPathToChapter(path: ContentPath): path is ChapterPath {
   return !!path.chapterId && !path.lessonId;
 }
 
-function isPathToLesson(path: ContentPath): path is LessonPath {
-  return !!path.lessonId;
-}
+// function isPathToLesson(path: ContentPath): path is LessonPath {
+//   return !!path.lessonId;
+// }
 
 export async function getContent(
   path: ContentPath
