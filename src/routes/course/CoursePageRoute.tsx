@@ -71,7 +71,7 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
     const getDirectory = getContent(
       {
         courseId: "main",
-        // topicId: "fundamentals",
+        topicId: "fundamentals",
       },
       "tree"
     );
@@ -79,7 +79,7 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
     const getIndex = getContent(
       {
         courseId: "main",
-        // topicId: "fundamentals",
+        topicId: "fundamentals",
       },
       "index.json"
     );
