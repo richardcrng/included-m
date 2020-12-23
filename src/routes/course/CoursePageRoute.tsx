@@ -9,6 +9,7 @@ import CourseDetails from "../../pages/Course/CourseDetails";
 import actions from "../../redux/reducer";
 import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreModel";
 import { useQuery } from "react-query";
+import { getContent } from "../../api";
 
 interface CoursePageRouteProps
   extends RouteComponentProps<{
@@ -67,16 +68,22 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
   const { id } = match.params;
 
   const { data } = useQuery(`course-${id}`, async () => {
-    const getDirectory = fetch(
-      `https://gitlab.com/api/v4/projects/23270946/repository/tree?path=content/main&ref=content-folder`
+    const getDirectory = getContent(
+      {
+        courseId: "main",
+        // topicId: "fundamentals",
+      },
+      "tree"
     );
 
-    const getIndex = fetch(
-      `https://gitlab.com/api/v4/projects/23270946/
-repository/files/${encodeURIComponent(
-        "content/main/index.json"
-      )}/raw?ref=content-folder`
+    const getIndex = getContent(
+      {
+        courseId: "main",
+        // topicId: "fundamentals",
+      },
+      "index.json"
     );
+
     const [directory, index] = await Promise.all([
       getDirectory.then((res) => res.json()),
       getIndex.then((res) => res.json()),
