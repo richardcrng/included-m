@@ -41,9 +41,12 @@ const Container = styled.div`
 const PickCourseButton = styled(IonButton)`
   height: 100%;
 `;
+
+type CourseData = AsyncReturnType<typeof getCourseDeep>;
+
 interface Props {
-  course: AsyncReturnType<typeof getCourseDeep>;
-  onTopicStart?(topic: any): void;
+  course: CourseData;
+  onTopicStart?(topic: CourseData["topics"][0]): void;
 }
 
 function CoursePageView({ course, onTopicStart }: Props) {

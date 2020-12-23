@@ -72,7 +72,7 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
       <CoursePageView
         course={data}
         onTopicStart={(topic) => {
-          history.push(`/learn/${courseId}/${topic.id}`);
+          history.push(`/learn/${topic.route.join("/")}`);
         }}
       />
     );

@@ -65,10 +65,8 @@ function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
     return (
       <TopicPageView
         topic={data}
-        onLessonSelect={(lesson: any, chapter: any) => {
-          history.push(
-            `/learn/${match.params.courseId}/${match.params.topicId}/${chapter.id}/${lesson.id}`
-          );
+        onLessonSelect={(lesson) => {
+          history.push(`/learn/${lesson.route.join("/")}`);
         }}
       />
     );

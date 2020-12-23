@@ -40,12 +40,12 @@ export async function getContent(
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
   target: "index.json"
-): Promise<T & { id: string; path: P }>;
+): Promise<T & { id: string; path: P; route: string[] }>;
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
   target: "index.json",
   recursive: true
-): Promise<T & { id: string; path: P }>;
+): Promise<T & { id: string; path: P; route: string[] }>;
 
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
@@ -108,5 +108,6 @@ repository/files/${encodeURIComponent(
     ...json,
     id: route[route.length - 1],
     path,
+    route,
   } as T & { id: string; path: P };
 };

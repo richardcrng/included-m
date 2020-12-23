@@ -63,16 +63,22 @@ const LessonStartButton = styled(IonButton)`
   height: 100%;
 `;
 
+type TopicData = AsyncReturnType<typeof getTopicDeepRecursive>;
+type ChapterData = TopicData["chapters"][0];
+type LessonData = ChapterData["lessons"][0];
+
 interface Props {
-  topic: AsyncReturnType<typeof getTopicDeepRecursive>;
-  onLessonSelect?(lesson: any, chapter: any): void;
+  topic: TopicData;
+  onLessonSelect?(lesson: LessonData, chapter: ChapterData): void;
 }
 
 function TopicPageView({ topic, onLessonSelect }: Props) {
   const history = useHistory();
 
-  const createLessonSelectHandler = (lesson: any, chapter: any) => () =>
-    onLessonSelect && onLessonSelect(lesson, chapter);
+  const createLessonSelectHandler = (
+    lesson: LessonData,
+    chapter: ChapterData
+  ) => () => onLessonSelect && onLessonSelect(lesson, chapter);
 
   return (
     <>
