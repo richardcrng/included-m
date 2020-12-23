@@ -82,7 +82,7 @@ export function makeUseFirestoreDocument<C extends Class<any>>(
       if (!hasRefreshedCache || !value || !document) {
         fetchFromFirestore();
       }
-    }, [fetchFromFirestore]);
+    }, [fetchFromFirestore, document, hasRefreshedCache, value]);
 
     return state;
   };

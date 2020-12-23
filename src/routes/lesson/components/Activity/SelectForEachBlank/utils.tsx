@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { BlockBase } from "../../../../../models/Activity";
-import { ContentBlockRaw } from "../../../../../models/ContentBlock";
 import { ChoiceAnswerState } from "./LessonActivitySelectForEachBlankComplex";
 
 interface InputProps {

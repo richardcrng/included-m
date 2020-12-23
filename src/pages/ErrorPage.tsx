@@ -1,14 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  IonButtons,
-  IonContent,
-  IonLoading,
-  IonProgressBar,
-  IonSkeletonText,
-  IonSpinner,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButtons, IonContent, IonToolbar } from "@ionic/react";
 import { IoArrowBack, IoWarningOutline } from "react-icons/io5";
 import { useHistory } from "react-router";
 

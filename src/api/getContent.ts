@@ -3,6 +3,21 @@ import WhyWhatError from "../lib/why-what-error";
 const BRANCH = "main";
 const PROJECT_ID = "23276565";
 
+const treeUrl = (route: string[]) =>
+  process.env.NODE_ENV === "development"
+    ? `http://localhost:4000/tree/${route.join("/")}`
+    : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tree?path=${route.join(
+        "/"
+      )}&ref=${BRANCH}`;
+
+const indexUrl = (route: string[]) =>
+  process.env.NODE_ENV === "development"
+    ? `http://localhost:4000/json/${route.join("/")}`
+    : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/
+repository/files/${encodeURIComponent(
+        `${route.join("/")}/index.json`
+      )}/raw?ref=${BRANCH}`;
+
 export interface CoursePath {
   courseId: string;
   topicId?: never;
@@ -86,11 +101,9 @@ interface GitLabTreeContent {
 
 const getTree = async (path: ContentPath, filterForTrees = true) => {
   const route = contentStringPath(path);
-  const json: GitLabTreeContent[] = await fetch(
-    `https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tree?path=${route.join(
-      "/"
-    )}&ref=${BRANCH}`
-  ).then((res) => res.json());
+  const json: GitLabTreeContent[] = await fetch(treeUrl(route)).then((res) =>
+    res.json()
+  );
 
   if (json) {
     return filterForTrees ? json.filter((val) => val.type === "tree") : json;
@@ -107,12 +120,7 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
 ) => {
   const route = contentStringPath(path);
 
-  const json = await fetch(
-    `https://gitlab.com/api/v4/projects/${PROJECT_ID}/
-repository/files/${encodeURIComponent(
-      `${route.join("/")}/index.json`
-    )}/raw?ref=${BRANCH}`
-  ).then((res) => res.json());
+  const json = await fetch(indexUrl(route)).then((res) => res.json());
   if (json && String(json.message).match("404")) {
     throw new WhyWhatError({
       what: "Couldn't find content",

@@ -9,7 +9,7 @@ import {
   IonSpinner,
   IonToolbar,
 } from "@ionic/react";
-import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
 import { useHistory } from "react-router";
 
 const Buttons = styled(IonButtons)`
