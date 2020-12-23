@@ -7,22 +7,24 @@ import {
 import { ChapterPath, CoursePath, getContent, TopicPath } from "./getContent";
 
 export async function getCourseContents(path: CoursePath) {
-  return Promise.all([
+  const [{ topicIdsOrdered, ...rest }, topicContents] = await Promise.all([
     getContent<CourseIndex>(path, "index.json"),
     getContent(path, "tree"),
   ]);
+  const topicIds = topicIdsOrdered.filter((topicId) =>
+    topicContents.some((topic) => topic.name === topicId)
+  );
+  return { topicIds, ...rest };
 }
 
 export async function getCourseDeep(path: CoursePath) {
-  const [{ topicIdsOrdered, ...rest }, contents] = await getCourseContents(
-    path
-  );
+  const { topicIds, ...rest } = await getCourseContents(path);
 
-  const getTopicIndices = contents.map((val) =>
+  const getTopicIndices = topicIds.map((topicId) =>
     getContent<TopicIndex>(
       {
         ...path,
-        topicId: val.name,
+        topicId,
       },
       "index.json"
     )
@@ -33,14 +35,12 @@ export async function getCourseDeep(path: CoursePath) {
 }
 
 export async function getCourseDeepRecursive(path: CoursePath) {
-  const [{ topicIdsOrdered, ...rest }, contents] = await getCourseContents(
-    path
-  );
+  const { topicIds, ...rest } = await getCourseContents(path);
 
-  const getTopicIndices = contents.map((val) =>
+  const getTopicIndices = topicIds.map((topicId) =>
     getTopicDeep({
       ...path,
-      topicId: val.name,
+      topicId,
     })
   );
 
@@ -49,22 +49,24 @@ export async function getCourseDeepRecursive(path: CoursePath) {
 }
 
 export async function getTopicContents(path: TopicPath) {
-  return Promise.all([
+  const [{ chapterIdsOrdered, ...rest }, chapterContents] = await Promise.all([
     getContent<TopicIndex>(path, "index.json"),
     getContent(path, "tree"),
   ]);
+  const chapterIds = chapterIdsOrdered.filter((chapterId) =>
+    chapterContents.some((chapter) => chapter.name === chapterId)
+  );
+  return { chapterIds, ...rest };
 }
 
 export async function getTopicDeep(path: TopicPath) {
-  const [{ chapterIdsOrdered, ...rest }, contents] = await getTopicContents(
-    path
-  );
+  const { chapterIds, ...rest } = await getTopicContents(path);
 
-  const getChapterIndices = contents.map((val) =>
+  const getChapterIndices = chapterIds.map((chapterId) =>
     getContent<ChapterIndex>(
       {
         ...path,
-        chapterId: val.name,
+        chapterId,
       },
       "index.json"
     )
@@ -75,14 +77,12 @@ export async function getTopicDeep(path: TopicPath) {
 }
 
 export async function getTopicDeepRecursive(path: TopicPath) {
-  const [{ chapterIdsOrdered, ...rest }, contents] = await getTopicContents(
-    path
-  );
+  const { chapterIds, ...rest } = await getTopicContents(path);
 
-  const getChapterIndices = contents.map((val) =>
+  const getChapterIndices = chapterIds.map((chapterId) =>
     getChapterDeep({
       ...path,
-      chapterId: val.name,
+      chapterId,
     })
   );
 
@@ -91,22 +91,24 @@ export async function getTopicDeepRecursive(path: TopicPath) {
 }
 
 export async function getChapterContents(path: ChapterPath) {
-  return Promise.all([
+  const [{ lessonIdsOrdered, ...rest }, chapterContents] = await Promise.all([
     getContent<ChapterIndex>(path, "index.json"),
     getContent(path, "tree"),
   ]);
+  const lessonIds = lessonIdsOrdered.filter((lessonId) =>
+    chapterContents.some((lesson) => lesson.name === lessonId)
+  );
+  return { lessonIds, ...rest };
 }
 
 export async function getChapterDeep(path: ChapterPath) {
-  const [{ lessonIdsOrdered, ...rest }, contents] = await getChapterContents(
-    path
-  );
+  const { lessonIds, ...rest } = await getChapterContents(path);
 
-  const getLessonIndices = contents.map((val) =>
+  const getLessonIndices = lessonIds.map((lessonId) =>
     getContent<LessonIndex>(
       {
         ...path,
-        lessonId: val.name,
+        lessonId,
       },
       "index.json"
     )
