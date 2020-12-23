@@ -7,40 +7,38 @@ import CoursePageView from "./CoursePageView";
 import LoadingPage from "../../pages/LoadingPage";
 import CourseDetails from "../../pages/Course/CourseDetails";
 import actions from "../../redux/reducer";
-import { JSendBase } from "../../lib/jsend";
-import { CourseRawDeep } from "../../models/Course.old";
 import { useFirestoreCourse } from "../../models/FirestoreModel/useFirestoreModel";
+import { useQuery } from "react-query";
+import { contentStringPath, CoursePath, getContent } from "../../api";
+import { DEFAULT_COURSE_ID } from "../../constants";
+import { CourseIndex } from "../../content/content-types";
+import { getCourseDeep } from "../../api/getResource";
+import ErrorPage from "../../pages/ErrorPage";
 
-interface CoursePageRouteFirebaseProps
-  extends RouteComponentProps<{
-    id: string;
-  }> {}
+interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 
-function CoursePageRouteFirebase({
-  history,
-  match,
-}: CoursePageRouteFirebaseProps) {
-  const { value: state } = useFirestoreCourse(
-    {
-      getDocument: (docClass) => docClass.findByIdOrFail(match.params.id),
-      documentToState: (doc) => doc.toObjectDeep(),
-    },
-    `Course-${match.params.id}`
-  );
+// function CoursePageRouteFirebase({ history, match }: CoursePageRouteProps) {
+//   const { value: state } = useFirestoreCourse(
+//     {
+//       getDocument: (docClass) => docClass.findByIdOrFail(match.params.courseId),
+//       documentToState: (doc) => doc.toObjectDeep(),
+//     },
+//     `Course-${match.params.courseId}`
+//   );
 
-  if (state) {
-    return (
-      <CoursePageView
-        course={state}
-        onTopicStart={(topic) => {
-          history.push(`/topic/${topic.id}`);
-        }}
-      />
-    );
-  } else {
-    return <LoadingPage />;
-  }
-}
+//   if (state) {
+//     return (
+//       <CoursePageView
+//         course={state}
+//         onTopicStart={(topic) => {
+//           history.push(`/topic/${topic.id}`);
+//         }}
+//       />
+//     );
+//   } else {
+//     return <LoadingPage />;
+//   }
+// }
 
 function CoursePageRouteRedux({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
@@ -61,42 +59,37 @@ function CoursePageRouteRedux({ history }: RouteComponentProps) {
   );
 }
 
-export type GetCourseIdSuccess = JSendBase<
-  { course: CourseRawDeep<false> },
-  "success"
->;
+function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
+  const { courseId } = match.params;
 
-// function CoursePageRouteQuery({
-//   history,
-//   match,
-// }: CoursePageRouteFirebaseProps) {
+  const { data, isError } = useQuery(
+    contentStringPath(match.params),
+    async () => {
+      const course = await getCourseDeep(match.params);
+      return course;
+    }
+  );
 
-//   const { id } = match.params;
-
-//   const { data } = useQuery(`course-${id}`, async () => {
-//     const res = await fetch(`${SERVER_URL}/courses/${id}`);
-//     const body = (await res.json()) as GetCourseIdSuccess;
-//     return body.data.course;
-//   });
-
-//   if (data) {
-//     return (
-//       <CoursePageView
-//         course={data}
-//         onTopicStart={(topic) => {
-//           history.push(`/topic/${topic._id}`);
-//         }}
-//       />
-//     );
-//   } else {
-//     return <LoadingPage />;
-//   }
-// }
+  if (data) {
+    return (
+      <CoursePageView
+        course={data}
+        onTopicStart={(topic) => {
+          history.push(`/learn/${topic.route.join("/")}`);
+        }}
+      />
+    );
+  } else if (isError) {
+    return <ErrorPage />;
+  } else {
+    return <LoadingPage />;
+  }
+}
 
 const CoursePageRoute = {
-  Firebase: CoursePageRouteFirebase,
+  // Firebase: CoursePageRouteFirebase,
   Redux: CoursePageRouteRedux,
-  // Query: CoursePageRouteQuery,
+  Query: CoursePageRouteQuery,
 };
 
 export default CoursePageRoute;

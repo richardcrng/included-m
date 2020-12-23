@@ -16,10 +16,10 @@ import Notification, {
 } from "../../../../../ui/atoms/Notification";
 import LessonContinueButton from "../../LessonContinueButton";
 import { CardRaw } from "../../../../../models/Card";
-import { ActivityPOJO } from "../../../../../models/Activity";
+import { SwipeCardsActivityJSON } from "../../../../../content/content-types";
 
 interface Props {
-  activity: ActivityPOJO;
+  activity: SwipeCardsActivityJSON;
 }
 
 function LessonActivitySwipeCards({ activity }: Props) {

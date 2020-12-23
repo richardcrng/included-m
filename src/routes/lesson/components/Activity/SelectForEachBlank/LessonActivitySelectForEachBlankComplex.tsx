@@ -10,10 +10,11 @@ import MultipleAnswerCard from "../../../../../ui/atoms/MultipleAnswerCard";
 import Notification, {
   NotificationProps,
 } from "../../../../../ui/atoms/Notification";
-import { ActivityPOJO, AnswerBase } from "../../../../../models/Activity";
+import { AnswerBase } from "../../../../../models/Activity";
+import { SelectForEachBlankActivityJSON } from "../../../../../content/content-types";
 
 interface Props {
-  activity: ActivityPOJO;
+  activity: SelectForEachBlankActivityJSON;
 }
 
 export interface ChoiceAnswerState extends AnswerBase {
@@ -141,7 +142,7 @@ function LessonActivitySelectForEachBlankComplex({
       />
       <LessonContent>
         {blocks.map((block) => {
-          const { markdown } = block;
+          const markdown = typeof block === "string" ? block : block.markdown;
 
           const blockBlanks = hasBlanks(markdown);
           if (blockBlanks) {

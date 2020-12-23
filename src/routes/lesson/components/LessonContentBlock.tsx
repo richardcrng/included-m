@@ -3,7 +3,7 @@ import Markdown from "markdown-to-jsx";
 import { BlockBase } from "../../../models/Activity";
 
 interface Props {
-  block: BlockBase;
+  block: string | BlockBase;
 }
 
 function LessonContentBlock({ block }: Props) {

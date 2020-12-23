@@ -10,10 +10,10 @@ import Notification, {
   NotificationProps,
 } from "../../../../../ui/atoms/Notification";
 import { ChoiceAnswerState } from "./LessonActivitySelectForEachBlankComplex";
-import { ActivityPOJO } from "../../../../../models/Activity";
+import { SelectForEachBlankSimpleActivityJSON } from "../../../../../content/content-types";
 
 interface Props {
-  activity: ActivityPOJO;
+  activity: SelectForEachBlankSimpleActivityJSON;
 }
 
 function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
@@ -100,7 +100,7 @@ function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
       />
       <LessonContent>
         {blocks.map((block) => {
-          const { markdown } = block;
+          const markdown = typeof block === "string" ? block : block.markdown;
           const blockBlanks = hasBlanks(markdown);
           if (blockBlanks) {
             const { remaining, nodes } = blockBlanks.reduce(

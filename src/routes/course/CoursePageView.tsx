@@ -14,6 +14,7 @@ import { CourseRawDeep } from "../../models/Course.old";
 import { TopicRaw, TopicRawDeep } from "../../models/Topic.old";
 import Course from "../../models/Course";
 import { AsyncReturnType } from "type-fest";
+import { getCourseDeep } from "../../api/getResource";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -40,9 +41,12 @@ const Container = styled.div`
 const PickCourseButton = styled(IonButton)`
   height: 100%;
 `;
+
+type CourseData = AsyncReturnType<typeof getCourseDeep>;
+
 interface Props {
-  course: AsyncReturnType<Course["toObjectDeep"]>;
-  onTopicStart?(topic: any): void;
+  course: CourseData;
+  onTopicStart?(topic: CourseData["topics"][0]): void;
 }
 
 function CoursePageView({ course, onTopicStart }: Props) {
@@ -54,7 +58,7 @@ function CoursePageView({ course, onTopicStart }: Props) {
         <Buttons slot="start">
           <IoArrowBack
             onClick={() => {
-              history.push("/");
+              history.goBack();
             }}
             size={24}
           />

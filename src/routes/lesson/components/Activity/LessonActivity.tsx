@@ -1,6 +1,7 @@
 import { IonButton } from "@ionic/react";
 import React from "react";
 import { useHistory } from "react-router";
+import { ActivityJSON } from "../../../../content/content-types";
 import { ActivityPOJO } from "../../../../models/Activity";
 import { ActivityRawDeep } from "../../../../models/Activity.old";
 import LessonContent from "../LessonContent";
@@ -11,7 +12,7 @@ import LessonActivitySelectForEachBlankComplex from "./SelectForEachBlank/Lesson
 import LessonActivitySwipeCards from "./SwipeCards";
 
 interface Props {
-  activity: ActivityPOJO;
+  activity: ActivityJSON;
 }
 
 function LessonActivity({ activity }: Props) {
@@ -47,8 +48,10 @@ function LessonActivity({ activity }: Props) {
     }
   } else if (activity.activityType === "swipe-cards") {
     return <LessonActivitySwipeCards activity={activity} />;
+  } else if (activity.activityType === "read") {
+    return <LessonActivityRead activity={activity} />;
   } else {
-    return <LessonActivityRead blocks={activity.blocks} />;
+    return null;
   }
 }
 

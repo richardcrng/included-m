@@ -8,11 +8,10 @@ import LessonContinueButton from "../LessonContinueButton";
 import Notification, {
   NotificationProps,
 } from "../../../../ui/atoms/Notification";
-import { ActivityRawDeep } from "../../../../models/Activity.old";
-import { ActivityPOJO } from "../../../../models/Activity";
+import { ActivityJSON } from "../../../../content/content-types";
 
 interface Props {
-  activity: ActivityPOJO;
+  activity: ActivityJSON;
 }
 
 function LessonActivitySelectMultiple({

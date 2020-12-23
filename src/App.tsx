@@ -119,15 +119,26 @@ const App: React.FC = () => {
         <Switch>
           <Route
             exact
-            path="/course/:id"
-            component={CoursePageRoute.Firebase}
+            path="/learn/:courseId"
+            component={CoursePageRoute.Query}
           />
-          <Route exact path="/topic/:id" component={TopicPageRoute.Firebase} />
+          <Route
+            exact
+            path="/learn/:courseId/:topicId"
+            component={TopicPageRoute.Query}
+          />
+          <Route
+            exact
+            path="/learn/:courseId/:topicId/:chapterId/:lessonId"
+            component={LessonPageRoute.Query}
+          />
+          {/* <Route exact path="/course/:id" component={CoursePageRoute.Query} /> */}
+          {/* <Route exact path="/topic/:id" component={TopicPageRoute.Firebase} />
           <Route
             exact
             path="/lesson/:id"
             component={LessonPageRoute.Firebase}
-          />
+          /> */}
           <Route exact path="/" component={HomePage} />
           <Redirect to="/" />
         </Switch>

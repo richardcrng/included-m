@@ -33,19 +33,19 @@ const LockedAnswer = styled.span`
 
 export const hasBlanks = (str: string) => str.match(/{{(.+?)}}/g);
 
-export const allBlanks = (blocks: BlockBase[]): string[] => {
+export const allBlanks = (blocks: (string | BlockBase)[]): string[] => {
   return blocks.reduce((acc, block) => {
-    const { markdown } = block;
+    const markdown = typeof block === "string" ? block : block.markdown;
     const matches = hasBlanks(markdown);
     return matches ? [...acc, ...matches] : acc;
   }, [] as string[]);
 };
 
 export const answersFromBlocks = (
-  blocks: BlockBase[]
+  blocks: (string | BlockBase)[]
 ): Record<string, ChoiceAnswerState> => {
   return blocks.reduce((acc: Record<string, ChoiceAnswerState>, block) => {
-    const { markdown } = block;
+    const markdown = typeof block === "string" ? block : block.markdown;
 
     const matches = hasBlanks(markdown);
     return matches
