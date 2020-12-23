@@ -1,9 +1,3 @@
-import {
-  ChapterIndex,
-  LessonIndex,
-  TopicIndex,
-} from "../content/content-types";
-
 const BRANCH = "main";
 const PROJECT_ID = "23276565";
 
@@ -43,28 +37,26 @@ export async function getContent(
   path: ContentPath,
   target: "tree"
 ): Promise<GitLabTreeContent[]>;
-export async function getContent<T = any>(
-  path: ContentPath,
+export async function getContent<T = any, P extends ContentPath = ContentPath>(
+  path: P,
   target: "index.json"
-): Promise<T & { id: string }>;
-export async function getContent<T = any>(
-  path: ContentPath,
+): Promise<T & { id: string; path: P }>;
+export async function getContent<T = any, P extends ContentPath = ContentPath>(
+  path: P,
   target: "index.json",
   recursive: true
-): Promise<T & { id: string }>;
+): Promise<T & { id: string; path: P }>;
 
-export async function getContent<T = any>(
-  path: ContentPath,
+export async function getContent<T = any, P extends ContentPath = ContentPath>(
+  path: P,
   target: "index.json" | "tree" = "index.json",
   recursive = false
 ) {
-  const route = contentStringPath(path);
+  // const route = contentStringPath(path);
   if (target === "tree") {
-    return getTree(route);
-  } else if (!recursive) {
-    return getIndex<T>(route);
+    return getTree(path);
   } else {
-    return getIndex<T>(route);
+    return getIndex<T, P>(path);
   }
 }
 
@@ -90,9 +82,10 @@ interface GitLabTreeContent {
   mode: string;
 }
 
-const getTree = async (path: string[], filterForTrees = true) => {
+const getTree = async (path: ContentPath, filterForTrees = true) => {
+  const route = contentStringPath(path);
   const json: GitLabTreeContent[] = await fetch(
-    `https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tree?path=${path.join(
+    `https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tree?path=${route.join(
       "/"
     )}&ref=${BRANCH}`
   ).then((res) => res.json());
@@ -100,15 +93,20 @@ const getTree = async (path: string[], filterForTrees = true) => {
   return filterForTrees ? json.filter((val) => val.type === "tree") : json;
 };
 
-const getIndex = async <T = any>(path: string[]) => {
+const getIndex = async <T = any, P extends ContentPath = ContentPath>(
+  path: P
+) => {
+  const route = contentStringPath(path);
+
   const json = await fetch(
     `https://gitlab.com/api/v4/projects/${PROJECT_ID}/
 repository/files/${encodeURIComponent(
-      `${path.join("/")}/index.json`
+      `${route.join("/")}/index.json`
     )}/raw?ref=${BRANCH}`
   ).then((res) => res.json());
   return {
     ...json,
-    id: path[path.length - 1],
-  } as T & { id: string };
+    id: route[route.length - 1],
+    path,
+  } as T & { id: string; path: P };
 };
