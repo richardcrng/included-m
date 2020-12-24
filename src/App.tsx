@@ -11,6 +11,7 @@ import LessonPageRoute from "./routes/lesson/LessonPageRoute";
 import { JSendBase } from "./lib/jsend";
 import db from "./models/db";
 import SignInPageRoute from "./routes/sign-in/SignInPageRoute";
+import withAuth from "./routes/sign-in/withAuth";
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string;
@@ -100,17 +101,17 @@ const App: React.FC = () => {
           <Route
             exact
             path="/learn/:courseId"
-            component={CoursePageRoute.Query}
+            component={withAuth(CoursePageRoute.Query)}
           />
           <Route
             exact
             path="/learn/:courseId/:topicId"
-            component={TopicPageRoute.Query}
+            component={withAuth(TopicPageRoute.Query)}
           />
           <Route
             exact
             path="/learn/:courseId/:topicId/:chapterId/:lessonId"
-            component={LessonPageRoute.Query}
+            component={withAuth(LessonPageRoute.Query)}
           />
           <Route exact path="/" component={HomePage} />
           <Redirect to="/" />
