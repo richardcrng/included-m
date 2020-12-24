@@ -143,8 +143,8 @@ function SignInPageView({
               }}
             >
               {formMode === "signup"
-                ? "I'm ready to start!"
-                : "Continue my journey!"}
+                ? "I'm ready to start"
+                : "Continue my journey"}
             </IonButton>
             {error && (
               <IonText color="danger" style={{ fontSize: "0.7rem" }}>

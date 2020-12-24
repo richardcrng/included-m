@@ -27,18 +27,26 @@ function SignInPageRoute() {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then(navigateToLearn)
-            .catch((err) => setErrMessage(err.message))
+            .catch((err) => setErrMessage(sanitisedErrorMessage(err.message)))
         }
         onTrySignUp={(email, password) =>
           firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then(navigateToLearn)
-            .catch((err) => setErrMessage(err.message))
+            .catch((err) => setErrMessage(sanitisedErrorMessage(err.message)))
         }
       />
     );
   }
 }
+
+const sanitisedErrorMessage = (message: string) => {
+  if (message.match(/email address is badly formatted/)) {
+    return "That email address looks odd to us - make sure it's a conventional email!";
+  } else {
+    return message;
+  }
+};
 
 export default SignInPageRoute;
