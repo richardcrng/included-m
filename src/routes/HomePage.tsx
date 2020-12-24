@@ -240,7 +240,7 @@ function HomePage() {
         </SwipeableViews>
       </IonContent>
       <IonFooter className="ion-no-border" style={{ backgroundColor: "white" }}>
-        <IonButton routerLink={`/learn/${DEFAULT_COURSE_ID}`} expand="full">
+        <IonButton routerLink={`/sign-in`} expand="full">
           Start
         </IonButton>
       </IonFooter>
