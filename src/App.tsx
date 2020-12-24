@@ -12,6 +12,7 @@ import { JSendBase } from "./lib/jsend";
 import db from "./models/db";
 import SignInPageRoute from "./routes/sign-in/SignInPageRoute";
 import withAuth from "./routes/sign-in/withAuth";
+import AccountRecoveryPageRoute from "./routes/account-recovery/AccountRecoveryPageRoute";
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string;
@@ -98,6 +99,11 @@ const App: React.FC = () => {
       <IonReactRouter>
         <Switch>
           <Route exact path="/sign-in" component={SignInPageRoute} />
+          <Route
+            exact
+            path="/account-recovery"
+            component={AccountRecoveryPageRoute}
+          />
           <Route
             exact
             path="/learn/:courseId"
