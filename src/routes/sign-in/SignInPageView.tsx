@@ -51,6 +51,8 @@ function SignInPageView({}: Props) {
   const history = useHistory();
 
   const [formMode, setFormMode] = React.useState<SignInFormValue>("signup");
+  const [emailTyped, setEmailTyped] = React.useState("");
+  const [passwordTyped, setPasswordTyped] = React.useState("");
 
   return (
     <>
@@ -76,9 +78,9 @@ function SignInPageView({}: Props) {
         <Title>
           <Message>Almost there...</Message>
         </Title>
+        <IonProgressBar value={0.5} />
       </IonToolbar>
       <IonContent>
-        <IonProgressBar value={0.5} />
         <Container>
           <h1>
             {formMode === "signup"
@@ -107,11 +109,20 @@ function SignInPageView({}: Props) {
                   type="email"
                   autofocus
                   placeholder="aaliya.guittierez@address.com"
+                  value={emailTyped}
+                  onIonChange={(e) => setEmailTyped(e.detail.value as string)}
                 />
               </IonItem>
               <IonItem>
                 <IonLabel position="stacked">Password</IonLabel>
-                <IonInput type="password" autofocus />
+                <IonInput
+                  type="password"
+                  autofocus
+                  value={passwordTyped}
+                  onIonChange={(e) =>
+                    setPasswordTyped(e.detail.value as string)
+                  }
+                />
               </IonItem>
             </IonList>
             <IonButton expand="full" size="large">
