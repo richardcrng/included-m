@@ -11,6 +11,7 @@ function SignInPageRoute() {
 
   return (
     <SignInPageView
+      error="test"
       onTryAnonymous={navigateToLearn}
       onTryLogIn={(email, password) =>
         firebase

@@ -45,11 +45,17 @@ interface Props {
   onTryLogIn(email: string, password: string): void;
   onTrySignUp(email: string, password: string): void;
   onTryAnonymous(): void;
+  error?: string;
 }
 
 type SignInFormValue = "signup" | "login";
 
-function SignInPageView({ onTryLogIn, onTrySignUp, onTryAnonymous }: Props) {
+function SignInPageView({
+  error,
+  onTryLogIn,
+  onTrySignUp,
+  onTryAnonymous,
+}: Props) {
   const history = useHistory();
 
   const [formMode, setFormMode] = React.useState<SignInFormValue>("signup");
@@ -110,7 +116,7 @@ function SignInPageView({ onTryLogIn, onTrySignUp, onTryAnonymous }: Props) {
                 <IonInput
                   type="email"
                   autofocus
-                  placeholder="aaliya.guittierez@address.com"
+                  placeholder="aaliyah@address.com"
                   value={emailTyped}
                   onIonChange={(e) => setEmailTyped(e.detail.value as string)}
                 />
@@ -120,6 +126,7 @@ function SignInPageView({ onTryLogIn, onTrySignUp, onTryAnonymous }: Props) {
                 <IonInput
                   type="password"
                   autofocus
+                  placeholder="correct-horse-battery-staple"
                   value={passwordTyped}
                   onIonChange={(e) =>
                     setPasswordTyped(e.detail.value as string)
@@ -140,6 +147,11 @@ function SignInPageView({ onTryLogIn, onTrySignUp, onTryAnonymous }: Props) {
                 ? "I'm ready to start!"
                 : "Continue my journey!"}
             </IonButton>
+            {error && (
+              <IonText color="danger" style={{ fontSize: "0.7rem" }}>
+                {error}
+              </IonText>
+            )}
           </div>
         </Container>
       </IonContent>
@@ -155,7 +167,7 @@ function SignInPageView({ onTryLogIn, onTrySignUp, onTryAnonymous }: Props) {
         <IonButton
           expand="full"
           color="medium"
-          size="default"
+          size="small"
           onClick={onTryAnonymous}
         >
           Browse with guest account
