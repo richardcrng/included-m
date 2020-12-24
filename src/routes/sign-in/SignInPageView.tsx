@@ -19,6 +19,7 @@ import {
 } from "@ionic/react";
 import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -188,6 +189,21 @@ function SignInPageView({
                 )}
               </IonText>
             )}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                fontSize: "0.7rem",
+              }}
+            >
+              <Link
+                to={`/account-recovery${
+                  emailTyped ? `?email=${emailTyped}` : ""
+                }`}
+              >
+                Forgotten your password?
+              </Link>
+            </div>
           </div>
           <Container>
             <IonText color="medium" style={{ fontSize: "0.7rem" }}>
