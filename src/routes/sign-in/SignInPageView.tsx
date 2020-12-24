@@ -42,12 +42,14 @@ const Container = styled.div`
 
 interface Props {
   // course: CourseData;
-  // onTopicStart?(topic: CourseData["topics"][0]): void;
+  onTryLogIn(email: string, password: string): void;
+  onTrySignUp(email: string, password: string): void;
+  onTryAnonymous(): void;
 }
 
 type SignInFormValue = "signup" | "login";
 
-function SignInPageView({}: Props) {
+function SignInPageView({ onTryLogIn, onTrySignUp, onTryAnonymous }: Props) {
   const history = useHistory();
 
   const [formMode, setFormMode] = React.useState<SignInFormValue>("signup");
@@ -125,7 +127,15 @@ function SignInPageView({}: Props) {
                 />
               </IonItem>
             </IonList>
-            <IonButton expand="full" size="large">
+            <IonButton
+              expand="full"
+              size="large"
+              onClick={() => {
+                formMode === "signup"
+                  ? onTrySignUp(emailTyped, passwordTyped)
+                  : onTryLogIn(emailTyped, passwordTyped);
+              }}
+            >
               {formMode === "signup"
                 ? "I'm ready to start!"
                 : "Continue my journey!"}
@@ -142,7 +152,12 @@ function SignInPageView({}: Props) {
             you can also continue as a guest...
           </IonText>
         </Container>
-        <IonButton expand="full" color="medium" size="default">
+        <IonButton
+          expand="full"
+          color="medium"
+          size="default"
+          onClick={onTryAnonymous}
+        >
           Browse with guest account
         </IonButton>
       </IonFooter>

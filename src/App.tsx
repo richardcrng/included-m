@@ -10,7 +10,7 @@ import TopicPageRoute from "./routes/topic/TopicPageRoute";
 import LessonPageRoute from "./routes/lesson/LessonPageRoute";
 import { JSendBase } from "./lib/jsend";
 import db from "./models/db";
-import SignInPageView from "./routes/sign-in/SignInPageView";
+import SignInPageRoute from "./routes/sign-in/SignInPageRoute";
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string;
@@ -96,7 +96,7 @@ const App: React.FC = () => {
       />
       <IonReactRouter>
         <Switch>
-          <Route exact path="/sign-in" component={SignInPageView} />
+          <Route exact path="/sign-in" component={SignInPageRoute} />
           <Route
             exact
             path="/learn/:courseId"
