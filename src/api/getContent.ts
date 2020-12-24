@@ -3,7 +3,7 @@ import { ChapterIndex, CourseIndex, TopicIndex } from "./content-types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23276565";
-const IS_SANDBOX = false;
+const IS_SANDBOX = process.env.NODE_ENV === "development";
 
 const treeUrl = (route: string[]) =>
   process.env.NODE_ENV === "development"
@@ -78,14 +78,12 @@ export async function getContent<T = any, P extends ContentPath = ContentPath>(
 ): Promise<T & { id: string; path: P; route: string[] }>;
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
-  target: "index.json",
-  recursive: true
+  target: "index.json"
 ): Promise<T & { id: string; path: P; route: string[] }>;
 
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
-  target: "index.json" | "tree" = "index.json",
-  recursive = false
+  target: "index.json" | "tree" = "index.json"
 ) {
   // const route = contentStringPath(path);
   if (target === "tree") {
@@ -117,11 +115,14 @@ interface GitLabTreeContent {
   mode: string;
 }
 
-const getTree = async (path: ContentPath, filterForTrees = true) => {
-  if (IS_SANDBOX) return Promise.resolve(getSandboxTree(path))
+const getTree = async (
+  path: ContentPath,
+  filterForTrees = true
+): Promise<GitLabTreeContent[]> => {
+  if (IS_SANDBOX) return getSandboxTree(path);
 
   const route = contentStringPath(path);
-  
+
   const json: GitLabTreeContent[] = await fetch(treeUrl(route)).then((res) =>
     res.json()
   );
@@ -138,8 +139,13 @@ const getTree = async (path: ContentPath, filterForTrees = true) => {
 
 const getIndex = async <T = any, P extends ContentPath = ContentPath>(
   path: P
-) => {
-  if (IS_SANDBOX) return Promise.resolve(getSandboxIndex<T, P>(path))
+): Promise<
+  T & {
+    id: string;
+    path: P;
+  }
+> => {
+  if (IS_SANDBOX) return getSandboxIndex<T, P>(path);
 
   const route = contentStringPath(path);
 
@@ -164,17 +170,17 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
   }
 };
 
-const getSandboxTree = (path: ContentPath) => {
+const getSandboxTree = async (path: ContentPath) => {
   const route = contentStringPath(path);
 
-  const loaded = require("../course/" + route.join("/") + "/index.json");
+  const loaded = await import("../course/" + route.join("/") + "/index.json");
   let subDirs: string[] = [];
   if (isPathToCourse(path)) {
-    subDirs = (loaded as CourseIndex).topicIdsOrdered;
+    subDirs = (loaded as CourseIndex).topicIdsOrdered || [];
   } else if (isPathToTopic(path)) {
-    subDirs = (loaded as TopicIndex).chapterIdsOrdered;
+    subDirs = (loaded as TopicIndex).chapterIdsOrdered || [];
   } else if (isPathToChapter(path)) {
-    subDirs = (loaded as ChapterIndex).lessonIdsOrdered;
+    subDirs = (loaded as ChapterIndex).lessonIdsOrdered || [];
   }
 
   if (subDirs) {
@@ -193,15 +199,17 @@ const getSandboxTree = (path: ContentPath) => {
   }
 };
 
-const getSandboxIndex = <T = any, P extends ContentPath = ContentPath>(path: ContentPath) => {
+const getSandboxIndex = async <T = any, P extends ContentPath = ContentPath>(
+  path: ContentPath
+) => {
   const route = contentStringPath(path);
-  const loaded = require("../course/" + route.join("/") + "/index.json");
+  const loaded = await import("../course/" + route.join("/") + "/index.json");
   if (loaded) {
     return {
       ...loaded,
       path,
-      route
-    } as T & { id: string; path: P }
+      route,
+    } as T & { id: string; path: P };
   } else {
     throw new WhyWhatError({
       what: "Couldn't find content",
