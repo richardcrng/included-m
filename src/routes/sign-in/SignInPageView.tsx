@@ -72,7 +72,7 @@ function SignInPageView({
         <Buttons slot="start">
           <IoArrowBack
             onClick={() => {
-              history.goBack();
+              history.push("/");
             }}
             size={24}
           />
