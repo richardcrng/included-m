@@ -152,17 +152,17 @@ function SignInPageView({
               </IonText>
             )}
           </div>
+          <Container>
+            <IonText color="medium" style={{ fontSize: "0.7rem" }}>
+              We'd love you to use an account - it helps us to save your
+              progress, tailor your experience and keep improving our content.
+              But, since we're committed to making our education as freely open
+              as possible, you can also continue as a guest.
+            </IonText>
+          </Container>
         </Container>
       </IonContent>
       <IonFooter style={{ backgroundColor: "white" }}>
-        <Container>
-          <IonText color="medium" style={{ fontSize: "0.7rem" }}>
-            We'd love you to use an account - it helps us to save your progress,
-            tailor your experience and keep improving our content. But, since
-            we're committed to making our education as freely open as possible,
-            you can also continue as a guest...
-          </IonText>
-        </Container>
         <IonButton
           expand="full"
           color="medium"
