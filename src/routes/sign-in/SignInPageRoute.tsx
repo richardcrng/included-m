@@ -32,7 +32,6 @@ function SignInPageRoute() {
             .signInWithEmailAndPassword(email, password)
             .then(navigateToLearn)
             .catch((err) => {
-              console.log(err);
               setSignInError(err);
             })
         }
@@ -42,7 +41,6 @@ function SignInPageRoute() {
             .createUserWithEmailAndPassword(email, password)
             .then(navigateToLearn)
             .catch((err) => {
-              console.log(err);
               setSignInError(err);
             })
         }
