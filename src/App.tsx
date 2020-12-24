@@ -11,8 +11,10 @@ import LessonPageRoute from "./routes/lesson/LessonPageRoute";
 import { JSendBase } from "./lib/jsend";
 import db from "./models/db";
 import SignInPageRoute from "./routes/sign-in/SignInPageRoute";
-import withAuth from "./routes/sign-in/withAuth";
+import withAuth from "./auth/withAuth";
 import AccountRecoveryPageRoute from "./routes/account-recovery/AccountRecoveryPageRoute";
+import withAuthForward from "./auth/withAuthForward";
+import { DEFAULT_COURSE_ID } from "./constants";
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string;
@@ -98,11 +100,21 @@ const App: React.FC = () => {
       />
       <IonReactRouter>
         <Switch>
-          <Route exact path="/sign-in" component={SignInPageRoute} />
+          <Route
+            exact
+            path="/sign-in"
+            component={withAuthForward(
+              SignInPageRoute,
+              `/learn/${DEFAULT_COURSE_ID}`
+            )}
+          />
           <Route
             exact
             path="/account-recovery"
-            component={AccountRecoveryPageRoute}
+            component={withAuthForward(
+              AccountRecoveryPageRoute,
+              `/learn/${DEFAULT_COURSE_ID}`
+            )}
           />
           <Route
             exact

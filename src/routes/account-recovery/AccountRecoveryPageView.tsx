@@ -85,14 +85,6 @@ function AccountRecoveryPageView({
             size={24}
           />
         </Buttons>
-        <Buttons slot="end">
-          <IoInformationCircleOutline
-            size={24}
-            onClick={() => {
-              // setShowAlert(true);
-            }}
-          />
-        </Buttons>
         <Title>
           <Message>Account Recovery</Message>
         </Title>
@@ -113,6 +105,7 @@ function AccountRecoveryPageView({
           <IonItem>
             <IonLabel position="stacked">Email</IonLabel>
             <IonInput
+              placeholder="aaliyah@address.com"
               value={emailTyped}
               onIonChange={(e) => {
                 onClearError();
