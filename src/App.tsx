@@ -12,7 +12,7 @@ import { JSendBase } from "./lib/jsend";
 import db from "./models/db";
 import SignInPageRoute from "./routes/sign-in/SignInPageRoute";
 import withAuth from "./routes/sign-in/withAuth";
-import AccountRecoveryPageRoute from "./routes/reset-password/AccountRecoveryPageRoute";
+import AccountRecoveryPageRoute from "./routes/account-recovery/AccountRecoveryPageRoute";
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string;
