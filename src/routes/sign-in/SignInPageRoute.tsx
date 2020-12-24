@@ -25,7 +25,9 @@ function SignInPageRoute() {
       <SignInPageView
         error={signInError}
         onClearError={() => setSignInError(undefined)}
-        onTryAnonymous={navigateToLearn}
+        onTryAnonymous={() => {
+          firebase.auth().signInAnonymously().then(navigateToLearn);
+        }}
         onTryLogIn={(email, password) =>
           firebase
             .auth()
