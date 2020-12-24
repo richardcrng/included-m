@@ -10,7 +10,10 @@ import LoadingPage from "../../pages/LoadingPage";
 function SignInPageRoute() {
   const history = useHistory();
   const [user, loading, error] = useAuthState(firebase.auth());
-  const [errMessage, setErrMessage] = React.useState("");
+  const [
+    signInError,
+    setSignInError,
+  ] = React.useState<firebase.auth.AuthError>();
   const navigateToLearn = () => history.push(`/learn/${DEFAULT_COURSE_ID}`);
 
   if (loading) {
@@ -20,14 +23,18 @@ function SignInPageRoute() {
   } else {
     return (
       <SignInPageView
-        error={errMessage}
+        error={signInError}
+        onClearError={() => setSignInError(undefined)}
         onTryAnonymous={navigateToLearn}
         onTryLogIn={(email, password) =>
           firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then(navigateToLearn)
-            .catch((err) => setErrMessage(sanitisedErrorMessage(err)))
+            .catch((err) => {
+              console.log(err);
+              setSignInError(err);
+            })
         }
         onTrySignUp={(email, password) =>
           firebase
@@ -36,24 +43,12 @@ function SignInPageRoute() {
             .then(navigateToLearn)
             .catch((err) => {
               console.log(err);
-              setErrMessage(sanitisedErrorMessage(err));
+              setSignInError(err);
             })
         }
       />
     );
   }
 }
-
-const sanitisedErrorMessage = (error: firebase.auth.AuthError) => {
-  if (error.code === "auth/invalid-email") {
-    return "That email address looks odd to us - make sure it's a conventional email!";
-  } else if (error.code === "auth/weak-password") {
-    return "To secure your account, please use a password that's at least 6 characters!";
-  } else if (error.code === "auth/email-already-in-use") {
-    return "There is already an account registered to that email - did you mean to log in?";
-  } else {
-    return error.message;
-  }
-};
 
 export default SignInPageRoute;

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import firebase from "firebase/app";
 import {
   IonAlert,
   IonButton,
@@ -46,7 +47,8 @@ interface Props {
   onTryLogIn(email: string, password: string): void;
   onTrySignUp(email: string, password: string): void;
   onTryAnonymous(): void;
-  error?: string;
+  onClearError(): void;
+  error?: firebase.auth.AuthError;
 }
 
 type SignInFormValue = "signup" | "login";
@@ -56,6 +58,7 @@ function SignInPageView({
   onTryLogIn,
   onTrySignUp,
   onTryAnonymous,
+  onClearError,
 }: Props) {
   const history = useHistory();
   const [formMode, setFormMode] = React.useState<SignInFormValue>("signup");
@@ -103,6 +106,7 @@ function SignInPageView({
             <IonSegment
               value={formMode}
               onIonChange={(e) => {
+                onClearError();
                 setFormMode(e.detail.value as SignInFormValue);
               }}
             >
@@ -117,7 +121,10 @@ function SignInPageView({
                   autofocus
                   placeholder="aaliyah@address.com"
                   value={emailTyped}
-                  onIonChange={(e) => setEmailTyped(e.detail.value as string)}
+                  onIonChange={(e) => {
+                    onClearError();
+                    setEmailTyped(e.detail.value as string);
+                  }}
                 />
               </IonItem>
               <IonItem>
@@ -127,9 +134,10 @@ function SignInPageView({
                   autofocus
                   placeholder="correct-horse-battery-staple"
                   value={passwordTyped}
-                  onIonChange={(e) =>
-                    setPasswordTyped(e.detail.value as string)
-                  }
+                  onIonChange={(e) => {
+                    onClearError();
+                    setPasswordTyped(e.detail.value as string);
+                  }}
                 />
               </IonItem>
             </IonList>
@@ -148,7 +156,35 @@ function SignInPageView({
             </IonButton>
             {error && (
               <IonText color="danger" style={{ fontSize: "0.7rem" }}>
-                {error}
+                {error.code === "auth/email-already-in-use" ? (
+                  <>
+                    There is already an account registered to that email - did
+                    you<span> </span>
+                    <a
+                      onClick={() => {
+                        setFormMode("login");
+                        onTryLogIn(emailTyped, passwordTyped);
+                      }}
+                    >
+                      intend to log in?
+                    </a>
+                  </>
+                ) : error.code === "auth/user-not-found" ? (
+                  <>
+                    We couldn't find an account registered to that email - did
+                    you<span> </span>
+                    <a
+                      onClick={() => {
+                        setFormMode("signup");
+                      }}
+                    >
+                      intend to sign up
+                    </a>
+                    ?
+                  </>
+                ) : (
+                  <>{sanitisedErrorMessage(error)}</>
+                )}
               </IonText>
             )}
           </div>
@@ -182,5 +218,24 @@ function SignInPageView({
     </>
   );
 }
+
+const sanitisedErrorMessage = (error: firebase.auth.AuthError) => {
+  switch (error.code) {
+    case "auth/email-already-in-use":
+      return "There is already an account registered to that email - did you mean to log in?";
+    case "auth/invalid-email":
+      return "That email address looks odd to us - make sure it's a conventional email!";
+    case "auth/too-many-requests":
+      return "We've noticed lots of login attempts to this email - to be safe, we've disabled login for this account temporarily";
+    case "auth/user-not-found":
+      return "We couldn't find an account registered";
+    case "auth/weak-password":
+      return "To secure your account, please use a password that's at least 6 characters!";
+    case "auth/wrong-password":
+      return "Check what you've typed - that's not the correct password for that email address";
+    default:
+      return error.message;
+  }
+};
 
 export default SignInPageView;
