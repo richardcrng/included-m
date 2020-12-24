@@ -6,14 +6,10 @@ import {
   IonButton,
   IonButtons,
   IonContent,
-  IonFooter,
   IonInput,
   IonItem,
   IonLabel,
-  IonList,
   IonProgressBar,
-  IonSegment,
-  IonSegmentButton,
   IonText,
   IonToolbar,
 } from "@ionic/react";
@@ -60,19 +56,21 @@ function useQuery() {
 }
 
 interface Props {
+  codeSent?: boolean;
   error?: firebase.auth.AuthError;
   onClearError(): void;
   onGetRecovery(email: string): void;
 }
 
 function AccountRecoveryPageView({
+  codeSent,
   error,
   onClearError,
   onGetRecovery,
 }: Props) {
   const query = useQuery();
   const history = useHistory();
-  const [showAlert, setShowAlert] = React.useState(false);
+  const [alertClosed, setAlertClosed] = React.useState(false);
   const [emailTyped, setEmailTyped] = React.useState(query.get("email") ?? "");
   const [passwordTyped, setPasswordTyped] = React.useState("");
 
@@ -129,6 +127,12 @@ function AccountRecoveryPageView({
               {authErrorMessage(error)}
             </IonText>
           )}
+          <IonAlert
+            isOpen={!!codeSent && !alertClosed}
+            header="Recovery code sent"
+            message="We've sent a recovery code to your email address. Please follow the instructions there to recover your account!"
+            buttons={["Okay"]}
+          />
         </Container>
       </IonContent>
     </>
