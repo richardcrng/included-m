@@ -122,7 +122,7 @@ function AccountRecoveryPageView({
             />
           </IonItem>
           <IonButton expand="full" onClick={() => onGetRecovery(emailTyped)}>
-            Get recovery code
+            Get reset link
           </IonButton>
           {error && (
             <IonText color="danger" style={{ fontSize: "0.7rem" }}>
