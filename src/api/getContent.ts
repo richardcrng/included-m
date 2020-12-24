@@ -176,11 +176,11 @@ const getSandboxTree = async (path: ContentPath) => {
   const loaded = await import("../course/" + route.join("/") + "/index.json");
   let subDirs: string[] = [];
   if (isPathToCourse(path)) {
-    subDirs = (loaded as CourseIndex).topicIdsOrdered;
+    subDirs = (loaded as CourseIndex).topicIdsOrdered || [];
   } else if (isPathToTopic(path)) {
-    subDirs = (loaded as TopicIndex).chapterIdsOrdered;
+    subDirs = (loaded as TopicIndex).chapterIdsOrdered || [];
   } else if (isPathToChapter(path)) {
-    subDirs = (loaded as ChapterIndex).lessonIdsOrdered;
+    subDirs = (loaded as ChapterIndex).lessonIdsOrdered || [];
   }
 
   if (subDirs) {
