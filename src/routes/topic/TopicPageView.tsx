@@ -124,7 +124,7 @@ function TopicPageView({ topic, onLessonSelect }: Props) {
                   <p>
                     This topic is under construction. Why don't you try another?
                   </p>
-                  <IonButton routerLink={`/course/${DEFAULT_COURSE_ID}`}>
+                  <IonButton routerLink={`/learn/${DEFAULT_COURSE_ID}`}>
                     Choose another
                   </IonButton>
                 </>
