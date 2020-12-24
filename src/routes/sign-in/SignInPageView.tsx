@@ -142,6 +142,7 @@ function SignInPageView({
               </IonItem>
             </IonList>
             <IonButton
+              color={formMode === "signup" ? "success" : "primary"}
               expand="full"
               size="large"
               onClick={() => {
