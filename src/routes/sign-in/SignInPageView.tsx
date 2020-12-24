@@ -57,7 +57,6 @@ function SignInPageView({
   onTryAnonymous,
 }: Props) {
   const history = useHistory();
-
   const [formMode, setFormMode] = React.useState<SignInFormValue>("signup");
   const [emailTyped, setEmailTyped] = React.useState("");
   const [passwordTyped, setPasswordTyped] = React.useState("");
