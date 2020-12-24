@@ -103,11 +103,12 @@ function AccountRecoveryPageView({
           <h1>⛑️ We can fix this!</h1>
           <p>Your account is safe with us.</p>
           <p>
-            If you've forgotten your password, we can email you a recovery code.
+            If you've forgotten your password, we can email you a password reset
+            link.
           </p>
           <p>
-            Enter your email address below, and we'll send you an email with a
-            code which you can use to reset your password!
+            Enter your email address below, and we'll send you an email with
+            instructions on how to reset your password and recover your account.
           </p>
           <IonItem>
             <IonLabel position="stacked">Email</IonLabel>
@@ -115,6 +116,7 @@ function AccountRecoveryPageView({
               value={emailTyped}
               onIonChange={(e) => {
                 onClearError();
+                setAlertClosed(false);
                 setEmailTyped(e.detail.value as string);
               }}
             />
@@ -127,10 +129,18 @@ function AccountRecoveryPageView({
               {authErrorMessage(error)}
             </IonText>
           )}
+          {alertClosed && (
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Link to="/sign-in">Back to sign in</Link>
+            </div>
+          )}
           <IonAlert
             isOpen={!!codeSent && !alertClosed}
+            onDidDismiss={() => {
+              setAlertClosed(true);
+            }}
             header="Recovery code sent"
-            message="We've sent a recovery code to your email address. Please follow the instructions there to recover your account!"
+            message="We've sent some account recovery instructions to your email address. Please follow the instructions there!"
             buttons={["Okay"]}
           />
         </Container>
