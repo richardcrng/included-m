@@ -12,7 +12,7 @@ import { JSendBase } from "./lib/jsend";
 import db from "./models/db";
 import SignInPageRoute from "./routes/sign-in/SignInPageRoute";
 import withAuth from "./routes/sign-in/withAuth";
-import AccountRecoveryPageView from "./routes/reset-password/AccountRecoveryView";
+import AccountRecoveryPageRoute from "./routes/reset-password/AccountRecoveryPageRoute";
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string;
@@ -102,7 +102,7 @@ const App: React.FC = () => {
           <Route
             exact
             path="/account-recovery"
-            component={AccountRecoveryPageView}
+            component={AccountRecoveryPageRoute}
           />
           <Route
             exact

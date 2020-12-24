@@ -20,6 +20,7 @@ import {
 import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
 import { useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import { authErrorMessage } from "../../auth";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -58,7 +59,17 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-function AccountRecoveryPageView() {
+interface Props {
+  error?: firebase.auth.AuthError;
+  onClearError(): void;
+  onGetRecovery(email: string): void;
+}
+
+function AccountRecoveryPageView({
+  error,
+  onClearError,
+  onGetRecovery,
+}: Props) {
   const query = useQuery();
   const history = useHistory();
   const [showAlert, setShowAlert] = React.useState(false);
@@ -80,7 +91,7 @@ function AccountRecoveryPageView() {
           <IoInformationCircleOutline
             size={24}
             onClick={() => {
-              setShowAlert(true);
+              // setShowAlert(true);
             }}
           />
         </Buttons>
@@ -92,22 +103,34 @@ function AccountRecoveryPageView() {
       <IonContent>
         <Container>
           <h1>⛑️ We can fix this!</h1>
-          <p>Your account is safe with us!</p>
+          <p>Your account is safe with us.</p>
           <p>
             If you've forgotten your password, we can email you a recovery code.
+          </p>
+          <p>
+            Enter your email address below, and we'll send you an email with a
+            code which you can use to reset your password!
           </p>
           <IonItem>
             <IonLabel position="stacked">Email</IonLabel>
             <IonInput
               value={emailTyped}
-              onIonChange={(e) => setEmailTyped(e.detail.value as string)}
+              onIonChange={(e) => {
+                onClearError();
+                setEmailTyped(e.detail.value as string);
+              }}
             />
           </IonItem>
+          <IonButton expand="full" onClick={() => onGetRecovery(emailTyped)}>
+            Get recovery code
+          </IonButton>
+          {error && (
+            <IonText color="danger" style={{ fontSize: "0.7rem" }}>
+              {authErrorMessage(error)}
+            </IonText>
+          )}
         </Container>
       </IonContent>
-      <IonFooter style={{ backgroundColor: "white" }}>
-        <IonButton expand="full">Get recovery code</IonButton>
-      </IonFooter>
     </>
   );
 }
