@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {
+  IonAlert,
   IonButton,
   IonButtons,
   IonContent,
@@ -58,6 +59,7 @@ function SignInPageView({
 }: Props) {
   const history = useHistory();
   const [formMode, setFormMode] = React.useState<SignInFormValue>("signup");
+  const [showAlert, setShowAlert] = React.useState(false);
   const [emailTyped, setEmailTyped] = React.useState("");
   const [passwordTyped, setPasswordTyped] = React.useState("");
 
@@ -76,9 +78,7 @@ function SignInPageView({
           <IoInformationCircleOutline
             size={24}
             onClick={() => {
-              window.alert(
-                "This is a proof-of-concept for Included M. It's a work in progress!"
-              );
+              setShowAlert(true);
             }}
           />
         </Buttons>
@@ -161,6 +161,13 @@ function SignInPageView({
             </IonText>
           </Container>
         </Container>
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header="Why do I need to sign up?"
+          message="You don't! You can continue with a guest account. However, this means that future features (e.g. saving of progress) will be unavailable to you, so we recommend signing up if you can."
+          buttons={["Back"]}
+        />
       </IonContent>
       <IonFooter style={{ backgroundColor: "white" }}>
         <IonButton
