@@ -27,25 +27,32 @@ function SignInPageRoute() {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then(navigateToLearn)
-            .catch((err) => setErrMessage(sanitisedErrorMessage(err.message)))
+            .catch((err) => setErrMessage(sanitisedErrorMessage(err)))
         }
         onTrySignUp={(email, password) =>
           firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then(navigateToLearn)
-            .catch((err) => setErrMessage(sanitisedErrorMessage(err.message)))
+            .catch((err) => {
+              console.log(err);
+              setErrMessage(sanitisedErrorMessage(err));
+            })
         }
       />
     );
   }
 }
 
-const sanitisedErrorMessage = (message: string) => {
-  if (message.match(/email address is badly formatted/)) {
+const sanitisedErrorMessage = (error: firebase.auth.AuthError) => {
+  if (error.code === "auth/invalid-email") {
     return "That email address looks odd to us - make sure it's a conventional email!";
+  } else if (error.code === "auth/weak-password") {
+    return "To secure your account, please use a password that's at least 6 characters!";
+  } else if (error.code === "auth/email-already-in-use") {
+    return "There is already an account registered to that email - did you mean to log in?";
   } else {
-    return message;
+    return error.message;
   }
 };
 
