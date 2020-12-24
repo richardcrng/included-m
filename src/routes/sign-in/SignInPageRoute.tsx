@@ -7,25 +7,27 @@ import { DEFAULT_COURSE_ID } from "../../constants";
 
 function SignInPageRoute() {
   const history = useHistory();
+  const [errMessage, setErrMessage] = React.useState("");
+
   const navigateToLearn = () => history.push(`/learn/${DEFAULT_COURSE_ID}`);
 
   return (
     <SignInPageView
-      error="test"
+      error={errMessage}
       onTryAnonymous={navigateToLearn}
       onTryLogIn={(email, password) =>
         firebase
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(navigateToLearn)
-          .catch((err) => console.log(err))
+          .catch((err) => setErrMessage(err.message))
       }
       onTrySignUp={(email, password) =>
         firebase
           .auth()
           .createUserWithEmailAndPassword(email, password)
           .then(navigateToLearn)
-          .catch((err) => console.log(err))
+          .catch((err) => setErrMessage(err.message))
       }
     />
   );
