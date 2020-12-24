@@ -1,0 +1,142 @@
+import React from "react";
+import styled from "styled-components";
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonFooter,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonProgressBar,
+  IonSegment,
+  IonSegmentButton,
+  IonText,
+  IonToolbar,
+} from "@ionic/react";
+import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
+import { useHistory } from "react-router";
+
+const Buttons = styled(IonButtons)`
+  margin: 0 1rem;
+`;
+
+const Title = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Message = styled.p`
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
+const Container = styled.div`
+  margin: 1rem;
+`;
+
+interface Props {
+  // course: CourseData;
+  // onTopicStart?(topic: CourseData["topics"][0]): void;
+}
+
+type SignInFormValue = "signup" | "login";
+
+function SignInPageView({}: Props) {
+  const history = useHistory();
+
+  const [formMode, setFormMode] = React.useState<SignInFormValue>("signup");
+
+  return (
+    <>
+      <IonToolbar>
+        <Buttons slot="start">
+          <IoArrowBack
+            onClick={() => {
+              history.goBack();
+            }}
+            size={24}
+          />
+        </Buttons>
+        <Buttons slot="end">
+          <IoInformationCircleOutline
+            size={24}
+            onClick={() => {
+              window.alert(
+                "This is a proof-of-concept for Included M. It's a work in progress!"
+              );
+            }}
+          />
+        </Buttons>
+        <Title>
+          <Message>Almost there...</Message>
+        </Title>
+      </IonToolbar>
+      <IonContent>
+        <IonProgressBar value={0.5} />
+        <Container>
+          <h1>
+            {formMode === "signup"
+              ? "👋🏾 Nice to meet you!"
+              : "👋🏾 Welcome back!"}
+          </h1>
+          <p>
+            {formMode === "signup"
+              ? "We'd love to be able to save your learning preferences and progress."
+              : "Let's retrieve your learning preferences and progress."}
+          </p>
+          <div>
+            <IonSegment
+              value={formMode}
+              onIonChange={(e) => {
+                setFormMode(e.detail.value as SignInFormValue);
+              }}
+            >
+              <IonSegmentButton value="signup">Sign up</IonSegmentButton>
+              <IonSegmentButton value="login">Log in</IonSegmentButton>
+            </IonSegment>
+            <IonList>
+              <IonItem>
+                <IonLabel position="stacked">Email</IonLabel>
+                <IonInput
+                  type="email"
+                  autofocus
+                  placeholder="aaliya.guittierez@address.com"
+                />
+              </IonItem>
+              <IonItem>
+                <IonLabel position="stacked">Password</IonLabel>
+                <IonInput type="password" autofocus />
+              </IonItem>
+            </IonList>
+            <IonButton expand="full" size="large">
+              {formMode === "signup"
+                ? "I'm ready to start!"
+                : "Continue my journey!"}
+            </IonButton>
+          </div>
+        </Container>
+      </IonContent>
+      <IonFooter style={{ backgroundColor: "white" }}>
+        <Container>
+          <IonText color="medium" style={{ fontSize: "0.7rem" }}>
+            We'd love you to use an account - it helps us to save your progress,
+            tailor your experience and keep improving our content. But, since
+            we're committed to making our education as freely open as possible,
+            you can also continue as a guest...
+          </IonText>
+        </Container>
+        <IonButton expand="full" color="medium" size="default">
+          Browse with guest account
+        </IonButton>
+      </IonFooter>
+    </>
+  );
+}
+
+export default SignInPageView;

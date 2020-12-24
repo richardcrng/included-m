@@ -10,6 +10,7 @@ import TopicPageRoute from "./routes/topic/TopicPageRoute";
 import LessonPageRoute from "./routes/lesson/LessonPageRoute";
 import { JSendBase } from "./lib/jsend";
 import db from "./models/db";
+import SignInPageView from "./routes/sign-in/SignInPageView";
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string;
@@ -95,6 +96,7 @@ const App: React.FC = () => {
       />
       <IonReactRouter>
         <Switch>
+          <Route exact path="/sign-in" component={SignInPageView} />
           <Route
             exact
             path="/learn/:courseId"
@@ -110,13 +112,6 @@ const App: React.FC = () => {
             path="/learn/:courseId/:topicId/:chapterId/:lessonId"
             component={LessonPageRoute.Query}
           />
-          {/* <Route exact path="/course/:id" component={CoursePageRoute.Query} /> */}
-          {/* <Route exact path="/topic/:id" component={TopicPageRoute.Firebase} />
-          <Route
-            exact
-            path="/lesson/:id"
-            component={LessonPageRoute.Firebase}
-          /> */}
           <Route exact path="/" component={HomePage} />
           <Redirect to="/" />
         </Switch>
