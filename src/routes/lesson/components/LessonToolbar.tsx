@@ -1,14 +1,10 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { IonButtons, IonToolbar } from "@ionic/react";
-import {
-  IoArrowBack,
-  // IoInformationCircleOutline
-} from "react-icons/io5";
+import { IoArrowBack, IoClose } from "react-icons/io5";
 import { LessonContext } from "../LessonPageView";
 import { useHistory } from "react-router";
 import ProgressBoxes from "../../../ui/atoms/ProgressBoxes";
-import SignOutIcon from "../../../ui/atoms/SignOutIcon";
 
 const Buttons = styled(IonButtons)`
   margin: 1rem;
@@ -79,7 +75,12 @@ function LessonToolbar({ message }: Props) {
         />
       </Buttons>
       <Buttons slot="end">
-        <SignOutIcon />
+        <IoClose
+          size={24}
+          onClick={() => {
+            history.goBack();
+          }}
+        />
       </Buttons>
       <Title>
         <ProgressBoxes
