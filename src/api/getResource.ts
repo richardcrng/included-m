@@ -14,7 +14,7 @@ import {
 
 export async function getCourseContents(path: CoursePath) {
   const [{ topicIdsOrdered = [], ...rest }, topicContents] = await Promise.all([
-    getContent<CourseIndex>(path, "index.json"),
+    getContent<CourseIndex>(path, "index"),
     getContent(path, "tree"),
   ]);
   const topicIds = topicIdsOrdered.filter((topicId) =>
@@ -32,7 +32,7 @@ export async function getCourseDeep(path: CoursePath) {
         ...path,
         topicId,
       },
-      "index.json"
+      "index"
     )
   );
 
@@ -59,7 +59,7 @@ export async function getTopicContents(path: TopicPath) {
     { chapterIdsOrdered = [], ...rest },
     chapterContents,
   ] = await Promise.all([
-    getContent<TopicIndex>(path, "index.json"),
+    getContent<TopicIndex>(path, "index"),
     getContent(path, "tree"),
   ]);
   const chapterIds = chapterIdsOrdered.filter((chapterId) =>
@@ -77,7 +77,7 @@ export async function getTopicDeep(path: TopicPath) {
         ...path,
         chapterId,
       },
-      "index.json"
+      "index"
     )
   );
 
@@ -104,7 +104,7 @@ export async function getChapterContents(path: ChapterPath) {
     { lessonIdsOrdered = [], ...rest },
     chapterContents,
   ] = await Promise.all([
-    getContent<ChapterIndex>(path, "index.json"),
+    getContent<ChapterIndex>(path, "index"),
     getContent(path, "tree"),
   ]);
   const lessonIds = lessonIdsOrdered.filter((lessonId) =>
@@ -122,7 +122,7 @@ export async function getChapterDeep(path: ChapterPath) {
         ...path,
         lessonId,
       },
-      "index.json"
+      "index"
     )
   );
 
@@ -131,5 +131,5 @@ export async function getChapterDeep(path: ChapterPath) {
 }
 
 export async function getLesson(path: LessonPath) {
-  return getContent<LessonIndex>(path, "index.json");
+  return getContent<LessonIndex>(path, "index");
 }
