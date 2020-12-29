@@ -1,23 +1,25 @@
+import { safeLoad } from "js-yaml";
 import WhyWhatError from "../lib/why-what-error";
 import { ChapterIndex, CourseIndex, TopicIndex } from "./content-types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23276565";
 const IS_SANDBOX = process.env.NODE_ENV === "development";
+// const IS_SANDBOX = false;
 
 const treeUrl = (route: string[]) =>
-  process.env.NODE_ENV === "development"
+  IS_SANDBOX
     ? `http://localhost:4000/tree/${route.join("/")}`
     : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tree?path=${route.join(
         "/"
       )}&ref=${BRANCH}`;
 
 const indexUrl = (route: string[]) =>
-  process.env.NODE_ENV === "development"
+  IS_SANDBOX
     ? `http://localhost:4000/json/${route.join("/")}`
     : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/
 repository/files/${encodeURIComponent(
-        `${route.join("/")}/index.json`
+        `${route.join("/")}/index.yaml`
       )}/raw?ref=${BRANCH}`;
 
 export interface CoursePath {
@@ -74,16 +76,16 @@ export async function getContent(
 ): Promise<GitLabTreeContent[]>;
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
-  target: "index.json"
+  target: "index"
 ): Promise<T & { id: string; path: P; route: string[] }>;
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
-  target: "index.json"
+  target: "index"
 ): Promise<T & { id: string; path: P; route: string[] }>;
 
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
-  target: "index.json" | "tree" = "index.json"
+  target: "index" | "tree" = "index"
 ) {
   // const route = contentStringPath(path);
   if (target === "tree") {
@@ -149,7 +151,16 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
 
   const route = contentStringPath(path);
 
-  const json = await fetch(indexUrl(route)).then((res) => res.json());
+  const json = await fetch(indexUrl(route))
+    .then((res) => res.blob())
+    .then((res) => res.text())
+    .then((yamlAsString): any => {
+      console.log("yaml res:", yamlAsString);
+      const yamlObj = safeLoad(yamlAsString);
+      console.log("yaml object", yamlObj);
+      return yamlObj;
+    });
+  console.log(json);
   if (json && String(json.message).match("404")) {
     throw new WhyWhatError({
       what: "Couldn't find content",
@@ -173,14 +184,17 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
 const getSandboxTree = async (path: ContentPath) => {
   const route = contentStringPath(path);
 
-  const loaded = await import("../course/" + route.join("/") + "/index.json");
+  const loaded = await fetch(
+    `/course/${route.join("/")}/index.yaml`
+  ).then((res) => res.text());
+  const yamlObj = safeLoad(loaded) as any;
   let subDirs: string[] = [];
   if (isPathToCourse(path)) {
-    subDirs = (loaded as CourseIndex).topicIdsOrdered || [];
+    subDirs = (yamlObj as CourseIndex).topicIdsOrdered || [];
   } else if (isPathToTopic(path)) {
-    subDirs = (loaded as TopicIndex).chapterIdsOrdered || [];
+    subDirs = (yamlObj as TopicIndex).chapterIdsOrdered || [];
   } else if (isPathToChapter(path)) {
-    subDirs = (loaded as ChapterIndex).lessonIdsOrdered || [];
+    subDirs = (yamlObj as ChapterIndex).lessonIdsOrdered || [];
   }
 
   if (subDirs) {
@@ -203,10 +217,13 @@ const getSandboxIndex = async <T = any, P extends ContentPath = ContentPath>(
   path: ContentPath
 ) => {
   const route = contentStringPath(path);
-  const loaded = await import("../course/" + route.join("/") + "/index.json");
-  if (loaded) {
+  const loaded = await fetch(
+    `/course/${route.join("/")}/index.yaml`
+  ).then((res) => res.text());
+  const yamlObj = safeLoad(loaded) as any;
+  if (yamlObj) {
     return {
-      ...loaded,
+      ...yamlObj,
       path,
       route,
     } as T & { id: string; path: P };
