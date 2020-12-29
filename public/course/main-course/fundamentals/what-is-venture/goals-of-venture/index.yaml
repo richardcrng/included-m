@@ -1,0 +1,103 @@
+lessonTitle: The goals of venture capital
+activities:
+  - activityType: read
+    blocks:
+      - "# Included M"
+      - Welcome to this proof-of-concept for **Included M**!
+      - "---"
+      - "### About the demo"
+      - This demo uses some of the content from IVC20's first 101 pack.
+      - It's meant to be more indicative of functionality than of materials.
+  - activityType: read
+    blocks:
+      - "# VC Fundamentals: Lesson 1"
+      - "## What is Venture Capital?"
+      - In this lesson, we will learn a little bit about the basics of venture capital.
+      - On most pages, there are activities that you will need to complete before you can move onto the next page.
+      - "(If you can't see the 'Continue' button, you haven't finished that page's activities!)"
+      - So... let's begin!
+  - activityType: select-for-each-blank
+    blocks:
+      - Venture Capital (VC) is a form of private financing provided by VC funds to early-stage, high potential companies.
+      - Whilst providing {{capital to early-stage companies in exchange for equity}} is arguably the *primary* role of a VC investor, some also provide founders with {{other ‘services’ such as strategic guidance and expertise in relevant industries}}.
+    choices:
+      "{{capital to early-stage companies in exchange for equity}}":
+        - text: capital to early-stage companies in exchange for equity
+          isCorrect: true
+          feedback: Yep! If they don't provide capital, they're not a traditional VC.
+        - text: other ‘services’ such as strategic guidance and expertise in relevant industries
+          isCorrect: false
+          feedback: Some VCs do this, but it's not normally thought of as the primary VC function.
+      # prettier-ignore
+      "{{other ‘services’ such as strategic guidance and expertise in relevant industries}}":
+        - text: capital to early-stage companies in exchange for equity
+          isCorrect: false
+          feedback: This is core, rather than an add-on
+        - text: other ‘services’ such as strategic guidance and expertise in relevant industries
+          isCorrect: true
+          feedback: We'll be learning more about the 'Platform' function of VCs in a later lesson!
+  - activityType: select-multiple
+    blocks:
+      - Every fund looks to define their unique opportunity space and sustainable competitive advantage, but they share some things in common.
+      - What do you think those things are?
+    answers:
+      - text: They take risks by funding early-stage ventures.
+        isCorrect: true
+        feedback: That's right - what an exciting business!
+      - text: They are profitable.
+        isCorrect: false
+        feedback: If only! There's no guarantee in venture capital of profitability...
+      - text: They manage billions of pounds of assets.
+        isCorrect: false
+        feedback: Some funds might have a portfolio valued at billions, but most funds have millions rather than billions that they deploy.
+      - text: They have the intention of achieving large returns for their investors.
+        isCorrect: true
+        feedback: That's right - VCs have their own investors to answer to!
+  - activityType: read
+    blocks:
+      - As is the case with most high-risk investment vehicles, VC investments experience high rates of failure.
+      - A 2012 research project conducted by HBS Professor, Shikhar Ghosh stated that around 75% of all venture-backed start-ups fail, whilst a report by Startup Genome predicted this figure to be as high as 90%.
+  - activityType: select-an-answer
+    blocks:
+      - The best performing funds tend to have a different failure rate in startups that they back to average funds.
+      - How do you think it's different?
+    answers:
+      - text: Higher - go big or go home!
+        isCorrect: true
+        feedback: That's right! Isn't that interesting?
+      - text: Lower - they're better performing funds after all!
+        isCorrect: false
+        feedback: You might think so, but no! Fund returns are not *just* a function of failure rate.
+  - activityType: read
+    blocks:
+      - Regardless of the exact figure, it is pretty clear that a startup’s pathway to success is an arduous one.
+      - This means that VC investors have to be exacting with their capital, structured in a way so as to balance good governance with risk-taking while endeavouring to create substantial returns for their investors.
+  - activityType: swipe-cards
+    blocks:
+      - "Let's review: which of these are true and false?"
+    cards:
+      - text: It's commonly estimated that around 30% of startups fail
+        isRight: false
+        feedbackOnCorrect: You're right - it's much higher!
+        feedbackOnNotCorrect: You're such an optimist...!
+        choiceLeft: "false"
+        choiceRight: "true"
+      - text: Not all venture capital firms are profitable
+        isRight: true
+        feedbackOnCorrect: Ah, the real world...
+        feedbackOnNotCorrect: Can profit ever be guaranteed...?
+        choiceLeft: "false"
+        choiceRight: "true"
+      - text: Fund performance is not the same as portfolio company failure rate
+        isRight: true
+        feedbackOnCorrect: Right! We'll learn more about fund metrics soon.
+        feedbackOnNotCorrect: A VC fund can generate massive returns even with a high failure rate - we'll learn how soon!
+        choiceLeft: "false"
+        choiceRight: "true"
+  - activityType: read
+    blocks:
+      - "# *Fin*"
+      - That's the end of this demo!
+      - Please report the inevitable bugs or mistakes to Richard and he will try to fix them.
+      - "Contributions are also welcomed, both in: \n\n1. Converting content from 101s to Included M format; and \n2. Building technical features."
+      - "Get in touch: [hi@richard.ng](mailto:hi@richard.ng)"
