@@ -154,13 +154,7 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
   const json = await fetch(indexUrl(route))
     .then((res) => res.blob())
     .then((res) => res.text())
-    .then((yamlAsString): any => {
-      console.log("yaml res:", yamlAsString);
-      const yamlObj = safeLoad(yamlAsString);
-      console.log("yaml object", yamlObj);
-      return yamlObj;
-    });
-  console.log(json);
+    .then((yamlAsString): any => safeLoad(yamlAsString));
   if (json && String(json.message).match("404")) {
     throw new WhyWhatError({
       what: "Couldn't find content",
