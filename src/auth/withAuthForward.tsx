@@ -10,7 +10,7 @@ function withAuthForward<P = any>(
   redirectTo: string
 ) {
   return (props: P) => {
-    const [user, loading, error] = useAuthState(firebase.auth());
+    const [user, loading] = useAuthState(firebase.auth());
 
     if (loading) {
       return <LoadingPage />;
