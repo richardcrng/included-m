@@ -3,17 +3,12 @@ import { IonAlert, IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route, Switch } from "react-router";
 import { version } from "../package.json";
-import HomePage from "./routes/HomePage";
 
 import CoursePageRoute from "./routes/course/CoursePageRoute";
 import TopicPageRoute from "./routes/topic/TopicPageRoute";
 import LessonPageRoute from "./routes/lesson/LessonPageRoute";
 import { JSendBase } from "./lib/jsend";
 import db from "./models/db";
-import SignInPageRoute from "./routes/sign-in/SignInPageRoute";
-import withAuth from "./auth/withAuth";
-import AccountRecoveryPageRoute from "./routes/account-recovery/AccountRecoveryPageRoute";
-import withAuthForward from "./auth/withAuthForward";
 import { DEFAULT_COURSE_ID } from "./constants";
 
 export type PingSuccessVersionNumber = JSendBase<{
@@ -102,36 +97,24 @@ const App: React.FC = () => {
         <Switch>
           <Route
             exact
-            path="/sign-in"
-            component={withAuthForward(
-              SignInPageRoute,
-              `/learn/${DEFAULT_COURSE_ID}`
-            )}
-          />
-          <Route
-            exact
-            path="/account-recovery"
-            component={withAuthForward(
-              AccountRecoveryPageRoute,
-              `/learn/${DEFAULT_COURSE_ID}`
-            )}
-          />
-          <Route
-            exact
             path="/learn/:courseId"
-            component={withAuth(CoursePageRoute.Query)}
+            component={CoursePageRoute.Query}
           />
           <Route
             exact
             path="/learn/:courseId/:topicId"
-            component={withAuth(TopicPageRoute.Query)}
+            component={TopicPageRoute.Query}
           />
           <Route
             exact
             path="/learn/:courseId/:topicId/:chapterId/:lessonId"
-            component={withAuth(LessonPageRoute.Query)}
+            component={LessonPageRoute.Query}
           />
-          <Route exact path="/" component={HomePage} />
+          <Route
+            exact
+            path="/"
+            component={() => <Redirect to={`/learn/${DEFAULT_COURSE_ID}`} />}
+          />
           <Redirect to="/" />
         </Switch>
       </IonReactRouter>
