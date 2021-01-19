@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React from "react";
 import styled from "styled-components";
 import firebase from "firebase/app";
@@ -164,6 +166,7 @@ function SignInPageView({
                     There is already an account registered to that email - did
                     you<span> </span>
                     <a
+                      href="#"
                       onClick={() => {
                         setFormMode("login");
                         onTryLogIn(emailTyped, passwordTyped);

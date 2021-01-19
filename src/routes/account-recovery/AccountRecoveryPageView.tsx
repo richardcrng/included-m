@@ -13,7 +13,7 @@ import {
   IonText,
   IonToolbar,
 } from "@ionic/react";
-import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
 import { useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { authErrorMessage } from "../../auth";
@@ -72,7 +72,6 @@ function AccountRecoveryPageView({
   const history = useHistory();
   const [alertClosed, setAlertClosed] = React.useState(false);
   const [emailTyped, setEmailTyped] = React.useState(query.get("email") ?? "");
-  const [passwordTyped, setPasswordTyped] = React.useState("");
 
   return (
     <>
