@@ -12,11 +12,12 @@ import {
   IonList,
   IonToolbar,
 } from "@ionic/react";
-import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
 import { useHistory } from "react-router";
 import { DEFAULT_COURSE_ID } from "../../constants";
 import { AsyncReturnType } from "type-fest";
 import { getTopicDeepRecursive } from "../../api/getResource";
+import SignOutIcon from "../../ui/atoms/SignOutIcon";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -89,14 +90,7 @@ function TopicPageView({ topic, onLessonSelect }: Props) {
           />
         </Buttons>
         <Buttons slot="end">
-          <IoInformationCircleOutline
-            size={24}
-            onClick={() => {
-              window.alert(
-                "This is a proof-of-concept for Included M. It's a work in progress!"
-              );
-            }}
-          />
+          <SignOutIcon />
         </Buttons>
         <Title>
           <Message>Topic Details</Message>
@@ -130,7 +124,7 @@ function TopicPageView({ topic, onLessonSelect }: Props) {
                   <p>
                     This topic is under construction. Why don't you try another?
                   </p>
-                  <IonButton routerLink={`/course/${DEFAULT_COURSE_ID}`}>
+                  <IonButton routerLink={`/learn/${DEFAULT_COURSE_ID}`}>
                     Choose another
                   </IonButton>
                 </>

@@ -1,11 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { IonButtons, IonToolbar } from "@ionic/react";
-import {
-  IoArrowBack,
-  IoClose,
-  // IoInformationCircleOutline
-} from "react-icons/io5";
+import { IoArrowBack, IoClose } from "react-icons/io5";
 import { LessonContext } from "../LessonPageView";
 import { useHistory } from "react-router";
 import ProgressBoxes from "../../../ui/atoms/ProgressBoxes";

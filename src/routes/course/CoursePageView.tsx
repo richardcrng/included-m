@@ -8,10 +8,11 @@ import {
   IonLabel,
   IonToolbar,
 } from "@ionic/react";
-import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
+import { IoArrowBack } from "react-icons/io5";
 import { useHistory } from "react-router";
 import { AsyncReturnType } from "type-fest";
 import { getCourseDeep } from "../../api/getResource";
+import SignOutIcon from "../../ui/atoms/SignOutIcon";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -55,20 +56,13 @@ function CoursePageView({ course, onTopicStart }: Props) {
         <Buttons slot="start">
           <IoArrowBack
             onClick={() => {
-              history.goBack();
+              history.push("/learn");
             }}
             size={24}
           />
         </Buttons>
         <Buttons slot="end">
-          <IoInformationCircleOutline
-            size={24}
-            onClick={() => {
-              window.alert(
-                "This is a proof-of-concept for Included M. It's a work in progress!"
-              );
-            }}
-          />
+          <SignOutIcon />
         </Buttons>
         <Title>
           <Message>Included M</Message>

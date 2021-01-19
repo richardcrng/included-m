@@ -10,6 +10,11 @@ import TopicPageRoute from "./routes/topic/TopicPageRoute";
 import LessonPageRoute from "./routes/lesson/LessonPageRoute";
 import { JSendBase } from "./lib/jsend";
 import db from "./models/db";
+import SignInPageRoute from "./routes/sign-in/SignInPageRoute";
+import withAuth from "./auth/withAuth";
+import AccountRecoveryPageRoute from "./routes/account-recovery/AccountRecoveryPageRoute";
+import withAuthForward from "./auth/withAuthForward";
+import { DEFAULT_COURSE_ID } from "./constants";
 
 export type PingSuccessVersionNumber = JSendBase<{
   deployedVersion: string;
@@ -97,26 +102,35 @@ const App: React.FC = () => {
         <Switch>
           <Route
             exact
+            path="/sign-in"
+            component={withAuthForward(
+              SignInPageRoute,
+              `/learn/${DEFAULT_COURSE_ID}`
+            )}
+          />
+          <Route
+            exact
+            path="/account-recovery"
+            component={withAuthForward(
+              AccountRecoveryPageRoute,
+              `/learn/${DEFAULT_COURSE_ID}`
+            )}
+          />
+          <Route
+            exact
             path="/learn/:courseId"
-            component={CoursePageRoute.Query}
+            component={withAuth(CoursePageRoute.Query)}
           />
           <Route
             exact
             path="/learn/:courseId/:topicId"
-            component={TopicPageRoute.Query}
+            component={withAuth(TopicPageRoute.Query)}
           />
           <Route
             exact
             path="/learn/:courseId/:topicId/:chapterId/:lessonId"
-            component={LessonPageRoute.Query}
+            component={withAuth(LessonPageRoute.Query)}
           />
-          {/* <Route exact path="/course/:id" component={CoursePageRoute.Query} /> */}
-          {/* <Route exact path="/topic/:id" component={TopicPageRoute.Firebase} />
-          <Route
-            exact
-            path="/lesson/:id"
-            component={LessonPageRoute.Firebase}
-          /> */}
           <Route exact path="/" component={HomePage} />
           <Redirect to="/" />
         </Switch>
