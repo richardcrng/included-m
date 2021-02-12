@@ -3,23 +3,26 @@ import WhyWhatError from "../lib/why-what-error";
 import { ChapterIndex, CourseIndex, TopicIndex } from "./content-types";
 
 const BRANCH = "main";
-const PROJECT_ID = "23276565";
+const PROJECT_ID = "23270946";
 const IS_SANDBOX = process.env.NODE_ENV === "development";
 // const IS_SANDBOX = false;
 
-const treeUrl = (route: string[]) =>
+const coursePath = (route: string[]): string =>
+  ["public", "course", ...route].join("/");
+
+const treeUrl = (route: string[]): string =>
   IS_SANDBOX
     ? `http://localhost:4000/tree/${route.join("/")}`
-    : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tree?path=${route.join(
-        "/"
+    : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tree?path=${coursePath(
+        route
       )}&ref=${BRANCH}`;
 
-const indexUrl = (route: string[]) =>
+const indexUrl = (route: string[]): string =>
   IS_SANDBOX
     ? `http://localhost:4000/json/${route.join("/")}`
     : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/
 repository/files/${encodeURIComponent(
-        `${route.join("/")}/index.yaml`
+        `${coursePath(route)}/index.yaml`
       )}/raw?ref=${BRANCH}`;
 
 export interface CoursePath {
