@@ -16,7 +16,7 @@ import {
 import React from "react";
 import styled from "styled-components";
 import SwipeableViews from "react-swipeable-views";
-import { DEFAULT_COURSE_ID, INCLUDED_VC_LOGO } from "../constants";
+import { INCLUDED_VC_LOGO } from "../constants";
 import creandum from "../assets/partners/creandum-logo.png";
 import daphni from "../assets/partners/daphni-logo.png";
 import enern from "../assets/partners/enern-logo.png";
