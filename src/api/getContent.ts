@@ -4,8 +4,9 @@ import { ChapterIndex, CourseIndex, TopicIndex } from "./content-types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23270946";
-const IS_SANDBOX = process.env.NODE_ENV === "development";
+// const IS_SANDBOX = process.env.NODE_ENV === "development";
 // const IS_SANDBOX = false;
+const IS_SANDBOX = true;
 
 const coursePath = (route: string[]): string =>
   ["public", "course", ...route].join("/");
@@ -17,12 +18,12 @@ const treeUrl = (route: string[]): string =>
         route
       )}&ref=${BRANCH}`;
 
-const indexUrl = (route: string[]): string =>
+const indexUrl = (route: string[], fileName = "index"): string =>
   IS_SANDBOX
     ? `http://localhost:4000/json/${route.join("/")}`
     : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/
 repository/files/${encodeURIComponent(
-        `${coursePath(route)}/index.yaml`
+        `${coursePath(route)}/${fileName}.yaml`
       )}/raw?ref=${BRANCH}`;
 
 export interface CoursePath {
@@ -64,6 +65,18 @@ function isPathToTopic(path: ContentPath): path is TopicPath {
 
 function isPathToChapter(path: ContentPath): path is ChapterPath {
   return !!path.chapterId && !path.lessonId;
+}
+
+function yamlFileName(path: ContentPath): string {
+  if (isPathToCourse(path)) {
+    return "course";
+  } else if (isPathToTopic(path)) {
+    return "topic";
+  } else if (isPathToChapter(path)) {
+    return "chapter";
+  } else {
+    return "lesson";
+  }
 }
 
 // function isPathToLesson(path: ContentPath): path is LessonPath {
@@ -154,7 +167,7 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
 
   const route = contentStringPath(path);
 
-  const json = await fetch(indexUrl(route))
+  const json = await fetch(indexUrl(route, yamlFileName(path)))
     .then((res) => res.blob())
     .then((res) => res.text())
     .then((yamlAsString): any => safeLoad(yamlAsString));
@@ -182,7 +195,7 @@ const getSandboxTree = async (path: ContentPath) => {
   const route = contentStringPath(path);
 
   const loaded = await fetch(
-    `/course/${route.join("/")}/index.yaml`
+    `/course/${route.join("/")}/${yamlFileName(path)}.yaml`
   ).then((res) => res.text());
   const yamlObj = safeLoad(loaded) as any;
   let subDirs: string[] = [];
@@ -215,7 +228,7 @@ const getSandboxIndex = async <T = any, P extends ContentPath = ContentPath>(
 ) => {
   const route = contentStringPath(path);
   const loaded = await fetch(
-    `/course/${route.join("/")}/index.yaml`
+    `/course/${route.join("/")}/${yamlFileName(path)}.yaml`
   ).then((res) => res.text());
   const yamlObj = safeLoad(loaded) as any;
   if (yamlObj) {
