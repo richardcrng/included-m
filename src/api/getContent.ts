@@ -4,8 +4,8 @@ import { ChapterIndex, CourseIndex, TopicIndex } from "./content-types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23270946";
-// const IS_SANDBOX = process.env.NODE_ENV === "development";
-const IS_SANDBOX = false;
+const IS_SANDBOX = process.env.NODE_ENV === "development";
+// const IS_SANDBOX = false;
 
 const coursePath = (route: string[]): string =>
   ["public", "course", ...route].join("/");
