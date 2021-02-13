@@ -1,17 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButtons, IonContent, IonToolbar } from "@ionic/react";
 import { IoArrowBack } from "react-icons/io5";
 import { useHistory } from "react-router";
 import SignOutIcon from "../../ui/atoms/SignOutIcon";
 import { CourseYamlDeep } from "../../../content/types/content-yaml.types";
+import CourseTopicItem from "./CourseTopicItem";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -33,10 +27,6 @@ const Message = styled.p`
 
 const Container = styled.div`
   margin: 1rem;
-`;
-
-const PickCourseButton = styled(IonButton)`
-  height: 100%;
 `;
 
 type CourseData = CourseYamlDeep;
@@ -71,26 +61,8 @@ function CoursePageView({ course, onTopicStart }: Props) {
         <Container>
           <h1>{course.courseTitle}</h1>
           <p>{course.description}</p>
-          {course.topics.map((topic, idx) => (
-            <React.Fragment key={topic.topicTitle}>
-              <IonItem>
-                <IonLabel>
-                  <h2 className="ion-text-wrap">
-                    <b>{topic.topicTitle}</b>
-                  </h2>
-                  <p className="ion-text-wrap">{topic.description}</p>
-                </IonLabel>
-                <PickCourseButton
-                  slot="end"
-                  expand="full"
-                  color="success"
-                  onClick={() => onTopicStart && onTopicStart(topic)}
-                >
-                  {">"}
-                </PickCourseButton>
-              </IonItem>
-              {idx < course.topics.length - 1 ? <br /> : null}
-            </React.Fragment>
+          {course.topics.map((topic) => (
+            <CourseTopicItem key={topic.topicTitle} topic={topic} />
           ))}
         </Container>
       </IonContent>
