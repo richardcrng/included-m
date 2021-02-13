@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { capitalCase } from "change-case";
 import {
   IonButton,
   IonButtons,
@@ -149,7 +150,9 @@ function TopicPageView({ topic, onLessonSelect }: Props) {
                   >
                     <IonLabel>
                       <p>Lesson {lessonIdx + 1}</p>
-                      <h2 className="ion-text-wrap">{lesson.lessonTitle}</h2>
+                      <h2 className="ion-text-wrap">
+                        {lesson.lessonTitle ?? capitalCase(lesson.id)}
+                      </h2>
                     </IonLabel>
                     <LessonStartButton
                       slot="end"

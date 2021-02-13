@@ -23,7 +23,14 @@ function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
       <TopicPageView
         topic={data.parsed}
         onLessonSelect={(lesson) => {
-          history.push(`/learn/${lesson.route.join("/")}`);
+          const lessonHasActivities = lesson.activities?.length > 0;
+          if (lessonHasActivities) {
+            history.push(`/learn/${lesson.route.join("/")}`);
+          } else {
+            window.alert(
+              "🚧 We're still building this lesson - why don't you try another?"
+            );
+          }
         }}
       />
     );
