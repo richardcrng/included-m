@@ -6,6 +6,7 @@ import { contentStringPath, TopicPath } from "../../api";
 import { useQuery } from "react-query";
 import ErrorPage from "../../pages/ErrorPage";
 import { fetchAndParsePublicTopicRecursive } from "../../api/public/getPublicContent";
+import { alertUnderConstruction } from "../../lib/utils";
 
 interface TopicPageRouteIdProps extends RouteComponentProps<TopicPath> {}
 
@@ -27,9 +28,7 @@ function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
           if (lessonHasActivities) {
             history.push(`/learn/${lesson.route.join("/")}`);
           } else {
-            window.alert(
-              "🚧 We're still building this lesson - why don't you try another?"
-            );
+            alertUnderConstruction();
           }
         }}
       />

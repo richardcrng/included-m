@@ -55,16 +55,20 @@ export interface LessonPath {
 
 export type ContentPath = CoursePath | TopicPath | ChapterPath | LessonPath;
 
-function isPathToCourse(path: ContentPath): path is CoursePath {
+export function isPathToCourse(path: ContentPath): path is CoursePath {
   return !path.topicId;
 }
 
-function isPathToTopic(path: ContentPath): path is TopicPath {
+export function isPathToTopic(path: ContentPath): path is TopicPath {
   return !!path.topicId && !path.chapterId;
 }
 
-function isPathToChapter(path: ContentPath): path is ChapterPath {
+export function isPathToChapter(path: ContentPath): path is ChapterPath {
   return !!path.chapterId && !path.lessonId;
+}
+
+export function isPathToLesson(path: ContentPath): path is LessonPath {
+  return !!path.lessonId;
 }
 
 export function yamlFileName(path: ContentPath): string {

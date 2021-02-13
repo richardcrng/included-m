@@ -5,6 +5,10 @@ import {
   ContentRoute,
   CoursePath,
   CourseRoute,
+  isPathToChapter,
+  isPathToCourse,
+  isPathToLesson,
+  isPathToTopic,
   LessonPath,
   LessonRoute,
   TopicPath,
@@ -23,6 +27,30 @@ export interface ParsedYaml<T extends ContentYaml = ContentYaml>
   route: ContentRoute;
 }
 export type ContentYaml = CourseYaml | TopicYaml | ChapterYaml | LessonYaml;
+
+export function isCourseYaml(
+  contentYaml: ContentYaml
+): contentYaml is CourseYaml {
+  return isPathToCourse(contentYaml.path);
+}
+
+export function isTopicYaml(
+  contentYaml: ContentYaml
+): contentYaml is TopicYaml {
+  return isPathToTopic(contentYaml.path);
+}
+
+export function isChapterYaml(
+  contentYaml: ContentYaml
+): contentYaml is ChapterYaml {
+  return isPathToChapter(contentYaml.path);
+}
+
+export function isLessonYaml(
+  contentYaml: ContentYaml
+): contentYaml is LessonYaml {
+  return isPathToLesson(contentYaml.path);
+}
 
 export interface ContentCommon {
   id: string;

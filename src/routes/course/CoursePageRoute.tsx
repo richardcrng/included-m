@@ -6,6 +6,7 @@ import { useQuery } from "react-query";
 import { contentStringPath, CoursePath } from "../../api";
 import ErrorPage from "../../pages/ErrorPage";
 import { fetchAndParsePublicCourseDeep } from "../../api/public/getPublicContent";
+import { alertUnderConstruction } from "../../lib/utils";
 
 interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 
@@ -23,7 +24,12 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
       <CoursePageView
         course={data.parsed}
         onTopicStart={(topic) => {
-          history.push(`/learn/${topic.route.join("/")}`);
+          const topicHasChapters = topic.chapterIdsOrdered?.length > 0;
+          if (topicHasChapters) {
+            history.push(`/learn/${topic.route.join("/")}`);
+          } else {
+            alertUnderConstruction();
+          }
         }}
       />
     );
