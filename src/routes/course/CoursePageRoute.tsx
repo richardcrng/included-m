@@ -7,6 +7,7 @@ import { contentStringPath, CoursePath } from "../../api";
 import ErrorPage from "../../pages/ErrorPage";
 import { fetchAndParsePublicCourseDeep } from "../../api/public/getPublicContent";
 import { alertUnderConstruction } from "../../lib/utils";
+import { hasChildContent } from "../../api/content-types";
 
 interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 
@@ -24,8 +25,7 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
       <CoursePageView
         course={data.parsed}
         onTopicStart={(topic) => {
-          const topicHasChapters = topic.chapterIdsOrdered?.length > 0;
-          if (topicHasChapters) {
+          if (hasChildContent(topic)) {
             history.push(`/learn/${topic.route.join("/")}`);
           } else {
             alertUnderConstruction();

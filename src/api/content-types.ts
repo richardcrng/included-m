@@ -52,6 +52,26 @@ export function isLessonYaml(
   return isPathToLesson(contentYaml.path);
 }
 
+function isArrayWithContent<T = unknown>(
+  maybeArray: T[] | undefined | null
+): boolean {
+  return Array.isArray(maybeArray) ? maybeArray.length > 0 : false;
+}
+
+export function hasChildContent(contentYaml: ContentYaml): boolean {
+  let arrToCheck: unknown[] = [];
+  if (isCourseYaml(contentYaml)) {
+    arrToCheck = contentYaml.topicIdsOrdered;
+  } else if (isTopicYaml(contentYaml)) {
+    arrToCheck = contentYaml.chapterIdsOrdered;
+  } else if (isChapterYaml(contentYaml)) {
+    arrToCheck = contentYaml.lessonIdsOrdered;
+  } else if (isLessonYaml(contentYaml)) {
+    arrToCheck = contentYaml.activities;
+  }
+  return isArrayWithContent(arrToCheck);
+}
+
 export interface ContentCommon {
   id: string;
   path: ContentPath;
