@@ -3,17 +3,16 @@ import { IonAlert, IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route, Switch } from "react-router";
 import { version } from "../package.json";
-import HomePage from "./components/routes/HomePage";
-
-import CoursePageRoute from "./components/routes/course/CoursePageRoute";
-import TopicPageRoute from "./components/routes/topic/TopicPageRoute";
-import LessonPageRoute from "./components/routes/lesson/LessonPageRoute";
 import db from "./lib/models/db";
 import SignInPageRoute from "./components/routes/sign-in/SignInPageRoute";
 import withAuth from "./components/modules/auth/withAuth";
 import AccountRecoveryPageRoute from "./components/routes/account-recovery/AccountRecoveryPageRoute";
 import withAuthForward from "./components/modules/auth/withAuthForward";
 import { DEFAULT_COURSE_ID } from "./constants";
+import CoursePageRoute from "./components/routes/course/CoursePageRoute";
+import TopicPageRoute from "./components/routes/topic/TopicPageRoute";
+import LessonPageRoute from "./components/routes/lesson/LessonPageRoute";
+import HomePage from "./components/routes/HomePage";
 
 interface Version {
   versionNumber: string;
