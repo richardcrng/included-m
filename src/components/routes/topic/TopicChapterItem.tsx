@@ -9,6 +9,7 @@ import { capitalCase } from "change-case";
 import styled from "styled-components";
 import {
   ChapterYamlDeep,
+  hasChildContent,
   TopicYamlRecursive,
 } from "../../../content/types/content-yaml.types";
 
@@ -45,11 +46,13 @@ function TopicChapterItem({
           <IonItem
             // in case of duplicate lessons between titles
             key={`${chapter.id}/${lesson.id}`}
+            disabled={!hasChildContent(lesson)}
           >
             <IonLabel>
               <p>Lesson {lessonIdx + 1}</p>
               <h2 className="ion-text-wrap">
                 {lesson.lessonTitle ?? capitalCase(lesson.id)}
+                {!hasChildContent(lesson) && <span> 🚧 </span>}
               </h2>
             </IonLabel>
             <LessonStartButton
