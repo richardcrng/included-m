@@ -44,9 +44,7 @@ function TopicChapterItem({
         {chapter.lessons.map((lesson, lessonIdx) => (
           <IonItem
             // in case of duplicate lessons between titles
-            key={`${chapter.chapterTitle} // ${
-              lesson.lessonTitle ?? lessonIdx
-            }`}
+            key={`${chapter.id}/${lesson.id}`}
           >
             <IonLabel>
               <p>Lesson {lessonIdx + 1}</p>
