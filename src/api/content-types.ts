@@ -3,7 +3,7 @@ interface CourseCommon {
   description: string;
 }
 
-export interface CourseIndex extends CourseCommon {
+export interface CourseYamlParsed extends CourseCommon {
   topicIdsOrdered: string[];
 }
 
@@ -16,7 +16,7 @@ interface TopicCommon {
   description: string;
 }
 
-export interface TopicIndex extends TopicCommon {
+export interface TopicYamlParsed extends TopicCommon {
   chapterIdsOrdered: string[];
 }
 
@@ -28,7 +28,7 @@ interface ChapterCommon {
   chapterTitle: string;
 }
 
-export interface ChapterIndex extends ChapterCommon {
+export interface ChapterYamlParsed extends ChapterCommon {
   lessonIdsOrdered: string[];
 }
 
@@ -40,7 +40,7 @@ interface LessonCommon {
   lessonTitle: string;
 }
 
-export interface LessonIndex extends LessonCommon {
+export interface LessonYamlParsed extends LessonCommon {
   activities: ActivityJSON[];
 }
 

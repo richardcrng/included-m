@@ -1,6 +1,10 @@
 import { safeLoad } from "js-yaml";
 import WhyWhatError from "../lib/why-what-error";
-import { ChapterIndex, CourseIndex, TopicIndex } from "./content-types";
+import {
+  ChapterYamlParsed,
+  CourseYamlParsed,
+  TopicYamlParsed,
+} from "./content-types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23270946";
@@ -67,7 +71,7 @@ function isPathToChapter(path: ContentPath): path is ChapterPath {
   return !!path.chapterId && !path.lessonId;
 }
 
-function yamlFileName(path: ContentPath): string {
+export function yamlFileName(path: ContentPath): string {
   if (isPathToCourse(path)) {
     return "course";
   } else if (isPathToTopic(path)) {
@@ -200,11 +204,11 @@ const getSandboxTree = async (path: ContentPath) => {
   const yamlObj = safeLoad(loaded) as any;
   let subDirs: string[] = [];
   if (isPathToCourse(path)) {
-    subDirs = (yamlObj as CourseIndex).topicIdsOrdered || [];
+    subDirs = (yamlObj as CourseYamlParsed).topicIdsOrdered || [];
   } else if (isPathToTopic(path)) {
-    subDirs = (yamlObj as TopicIndex).chapterIdsOrdered || [];
+    subDirs = (yamlObj as TopicYamlParsed).chapterIdsOrdered || [];
   } else if (isPathToChapter(path)) {
-    subDirs = (yamlObj as ChapterIndex).lessonIdsOrdered || [];
+    subDirs = (yamlObj as ChapterYamlParsed).lessonIdsOrdered || [];
   }
 
   if (subDirs) {
@@ -229,7 +233,7 @@ const getSandboxIndex = async <T = any, P extends ContentPath = ContentPath>(
   const route = contentStringPath(path);
   const loaded = await fetch(
     `/course/${route.join("/")}/${yamlFileName(path)}.yaml`
-  ).then((res) => res.text());
+  ).then(async (res) => res.text());
   const yamlObj = safeLoad(loaded) as any;
   if (yamlObj) {
     return {
