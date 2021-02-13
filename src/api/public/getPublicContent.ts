@@ -1,4 +1,4 @@
-import { safeLoad } from "js-yaml";
+import { safeLoad, dump } from "js-yaml";
 import {
   ChapterYaml,
   ChapterYamlDeep,
@@ -25,13 +25,20 @@ import {
 
 async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
   const route = contentStringPath(path);
+  const navigationFrontMatter = dump({
+    path,
+    route,
+  });
   try {
     const raw = await fetch(
       `/course/${route.join("/")}/${yamlFileName(path)}.yaml`
-    ).then((res) => res.text());
-    return { raw, didFetch: true };
+    )
+      .then((res) => res.text())
+      // remove <!DOCTYPE html> if that's how it's been parsed
+      .then((res) => (res.startsWith("<!DOCTYPE html>") ? "" : res));
+    return { raw: `${navigationFrontMatter}\n${raw}`, didFetch: true };
   } catch (err) {
-    return { raw: "", didFetch: false };
+    return { raw: navigationFrontMatter, didFetch: false };
   }
 }
 

@@ -15,9 +15,8 @@ import {
 import { IoArrowBack } from "react-icons/io5";
 import { useHistory } from "react-router";
 import { DEFAULT_COURSE_ID } from "../../constants";
-import { AsyncReturnType } from "type-fest";
-import { getTopicDeepRecursive } from "../../api/getResource";
 import SignOutIcon from "../../ui/atoms/SignOutIcon";
+import { TopicYamlRecursive } from "../../api/content-types";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -61,7 +60,7 @@ const LessonStartButton = styled(IonButton)`
   height: 100%;
 `;
 
-type TopicData = AsyncReturnType<typeof getTopicDeepRecursive>;
+type TopicData = TopicYamlRecursive;
 type ChapterData = TopicData["chapters"][0];
 type LessonData = ChapterData["lessons"][0];
 

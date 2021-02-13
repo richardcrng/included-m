@@ -10,9 +10,8 @@ import {
 } from "@ionic/react";
 import { IoArrowBack } from "react-icons/io5";
 import { useHistory } from "react-router";
-import { AsyncReturnType } from "type-fest";
-import { getCourseDeep } from "../../api/getResource";
 import SignOutIcon from "../../ui/atoms/SignOutIcon";
+import { CourseYamlDeep } from "../../api/content-types";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;
@@ -40,7 +39,7 @@ const PickCourseButton = styled(IonButton)`
   height: 100%;
 `;
 
-type CourseData = AsyncReturnType<typeof getCourseDeep>;
+type CourseData = CourseYamlDeep;
 
 interface Props {
   course: CourseData;

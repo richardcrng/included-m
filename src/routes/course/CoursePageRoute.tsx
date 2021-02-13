@@ -4,8 +4,8 @@ import CoursePageView from "./CoursePageView";
 import LoadingPage from "../../pages/LoadingPage";
 import { useQuery } from "react-query";
 import { contentStringPath, CoursePath } from "../../api";
-import { getCourseDeep } from "../../api/getResource";
 import ErrorPage from "../../pages/ErrorPage";
+import { fetchAndParsePublicCourseDeep } from "../../api/public/getPublicContent";
 
 interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 
@@ -13,7 +13,7 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
   const { data, isError } = useQuery(
     contentStringPath(match.params),
     async () => {
-      const course = await getCourseDeep(match.params);
+      const course = await fetchAndParsePublicCourseDeep(match.params);
       return course;
     }
   );
@@ -21,7 +21,7 @@ function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
   if (data) {
     return (
       <CoursePageView
-        course={data}
+        course={data.parsed}
         onTopicStart={(topic) => {
           history.push(`/learn/${topic.route.join("/")}`);
         }}
