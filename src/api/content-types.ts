@@ -3,6 +3,12 @@ interface CourseCommon {
   description: string;
 }
 
+export type ContentYamlParsed =
+  | CourseYamlParsed
+  | TopicYamlParsed
+  | ChapterYamlParsed
+  | LessonYamlParsed;
+
 export interface CourseYamlParsed extends CourseCommon {
   topicIdsOrdered: string[];
 }
