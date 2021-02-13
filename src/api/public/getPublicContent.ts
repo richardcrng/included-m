@@ -3,6 +3,7 @@ import {
   ChapterYaml,
   ChapterYamlDeep,
   ContentYaml,
+  ContentCommon,
   CourseYaml,
   CourseYamlDeep,
   CourseYamlRecursive,
@@ -25,10 +26,13 @@ import {
 
 async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
   const route = contentStringPath(path);
-  const navigationFrontMatter = dump({
+  const id = route[route.length - 1];
+  const frontMatter: ContentCommon = {
     path,
     route,
-  });
+    id,
+  };
+  const commonFrontmatter = dump(frontMatter);
   try {
     const raw = await fetch(
       `/course/${route.join("/")}/${yamlFileName(path)}.yaml`
@@ -36,9 +40,9 @@ async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
       .then((res) => res.text())
       // remove <!DOCTYPE html> if that's how it's been parsed
       .then((res) => (res.startsWith("<!DOCTYPE html>") ? "" : res));
-    return { raw: `${navigationFrontMatter}\n${raw}`, didFetch: true };
+    return { raw: `${commonFrontmatter}\n${raw}`, didFetch: true };
   } catch (err) {
-    return { raw: navigationFrontMatter, didFetch: false };
+    return { raw: commonFrontmatter, didFetch: false };
   }
 }
 

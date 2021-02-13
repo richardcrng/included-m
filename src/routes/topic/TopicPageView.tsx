@@ -141,7 +141,12 @@ function TopicPageView({ topic, onLessonSelect }: Props) {
                   <h2>{chapter.chapterTitle}</h2>
                 </IonItem>
                 {chapter.lessons.map((lesson, lessonIdx) => (
-                  <IonItem key={lesson.lessonTitle}>
+                  <IonItem
+                    // in case of duplicate lessons between titles
+                    key={`${chapter.chapterTitle} // ${
+                      lesson.lessonTitle ?? lessonIdx
+                    }`}
+                  >
                     <IonLabel>
                       <p>Lesson {lessonIdx + 1}</p>
                       <h2 className="ion-text-wrap">{lesson.lessonTitle}</h2>

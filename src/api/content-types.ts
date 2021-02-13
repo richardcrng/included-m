@@ -24,7 +24,8 @@ export interface ParsedYaml<T extends ContentYaml = ContentYaml>
 }
 export type ContentYaml = CourseYaml | TopicYaml | ChapterYaml | LessonYaml;
 
-interface ContentCommon {
+export interface ContentCommon {
+  id: string;
   path: ContentPath;
   route: ContentRoute;
 }
