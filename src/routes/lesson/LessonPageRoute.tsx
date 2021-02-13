@@ -5,7 +5,7 @@ import LoadingPage from "../../pages/LoadingPage";
 import { contentStringPath, LessonPath } from "../../api";
 import { useQuery } from "react-query";
 import ErrorPage from "../../pages/ErrorPage";
-import { fetchAndParsePublicLesson } from "../../api/public/getPublicContent";
+import { fetchAndParsePublicLesson } from "../../content/api/public-content";
 
 interface LessonPageRouteProps extends RouteComponentProps<LessonPath> {}
 

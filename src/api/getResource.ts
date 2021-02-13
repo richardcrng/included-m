@@ -3,14 +3,14 @@ import {
   CourseYaml,
   LessonYaml,
   TopicYaml,
-} from "./content-types";
+} from "../content/types/content-yaml.types";
 import {
   ChapterPath,
   CoursePath,
   getContent,
   LessonPath,
   TopicPath,
-} from "./getContent";
+} from "../content/types/content-path.types";
 
 export async function getCourseContents(path: CoursePath) {
   const [{ topicIdsOrdered = [], ...rest }, topicContents] = await Promise.all([

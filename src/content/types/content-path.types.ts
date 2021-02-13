@@ -1,6 +1,6 @@
 import { safeLoad } from "js-yaml";
-import WhyWhatError from "../lib/why-what-error";
-import { ChapterYaml, CourseYaml, TopicYaml } from "./content-types";
+import WhyWhatError from "../../lib/why-what-error";
+import { ChapterYaml, CourseYaml, TopicYaml } from "./content-yaml.types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23270946";

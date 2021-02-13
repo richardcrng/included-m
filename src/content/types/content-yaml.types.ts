@@ -13,7 +13,7 @@ import {
   LessonRoute,
   TopicPath,
   TopicRoute,
-} from "./getContent";
+} from "./content-path.types";
 
 export interface FetchedYaml extends ContentCommon {
   raw: string;

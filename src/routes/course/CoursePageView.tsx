@@ -11,7 +11,7 @@ import {
 import { IoArrowBack } from "react-icons/io5";
 import { useHistory } from "react-router";
 import SignOutIcon from "../../ui/atoms/SignOutIcon";
-import { CourseYamlDeep } from "../../api/content-types";
+import { CourseYamlDeep } from "../../content/types/content-yaml.types";
 
 const Buttons = styled(IonButtons)`
   margin: 0 1rem;

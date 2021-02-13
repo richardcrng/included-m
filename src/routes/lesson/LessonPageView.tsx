@@ -2,7 +2,10 @@ import React, { useReducer } from "react";
 import riduce, { Action, ActionsProxy } from "riduce";
 import LessonActivity from "./components/Activity/LessonActivity";
 import LessonToolbar from "./components/LessonToolbar";
-import { ActivityJSON, LessonYaml } from "../../api/content-types";
+import {
+  ActivityJSON,
+  LessonYaml,
+} from "../../content/types/content-yaml.types";
 
 type LessonCtx = {
   dispatch: React.Dispatch<Action>;

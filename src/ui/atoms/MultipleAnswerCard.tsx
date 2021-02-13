@@ -1,7 +1,7 @@
 import React from "react";
 import Markdown from "markdown-to-jsx";
 import { IonCard, IonCardContent } from "@ionic/react";
-import { AnswerJSON } from "../../api/content-types";
+import { AnswerJSON } from "../../content/types/content-yaml.types";
 
 interface Props {
   answer: AnswerJSON;

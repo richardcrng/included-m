@@ -13,7 +13,7 @@ import {
   TopicYaml,
   TopicYamlDeep,
   TopicYamlRecursive,
-} from "../content-types";
+} from "../types/content-yaml.types";
 import {
   ChapterPath,
   ContentPath,
@@ -22,7 +22,7 @@ import {
   LessonPath,
   TopicPath,
   yamlFileName,
-} from "../getContent";
+} from "../types/content-path.types";
 
 async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
   const route = contentStringPath(path);

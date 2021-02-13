@@ -5,9 +5,9 @@ import LoadingPage from "../../pages/LoadingPage";
 import { useQuery } from "react-query";
 import { contentStringPath, CoursePath } from "../../api";
 import ErrorPage from "../../pages/ErrorPage";
-import { fetchAndParsePublicCourseDeep } from "../../api/public/getPublicContent";
+import { fetchAndParsePublicCourseDeep } from "../../content/api/public-content";
 import { alertUnderConstruction } from "../../lib/utils";
-import { hasChildContent } from "../../api/content-types";
+import { hasChildContent } from "../../content/types/content-yaml.types";
 
 interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 

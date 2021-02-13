@@ -5,9 +5,9 @@ import LoadingPage from "../../pages/LoadingPage";
 import { contentStringPath, TopicPath } from "../../api";
 import { useQuery } from "react-query";
 import ErrorPage from "../../pages/ErrorPage";
-import { fetchAndParsePublicTopicRecursive } from "../../api/public/getPublicContent";
+import { fetchAndParsePublicTopicRecursive } from "../../content/api/public-content";
 import { alertUnderConstruction } from "../../lib/utils";
-import { hasChildContent } from "../../api/content-types";
+import { hasChildContent } from "../../content/types/content-yaml.types";
 
 interface TopicPageRouteIdProps extends RouteComponentProps<TopicPath> {}
 
