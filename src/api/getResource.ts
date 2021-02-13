@@ -1,8 +1,8 @@
 import {
-  ChapterYamlParsed,
-  CourseYamlParsed,
-  LessonYamlParsed,
-  TopicYamlParsed,
+  ChapterYaml,
+  CourseYaml,
+  LessonYaml,
+  TopicYaml,
 } from "./content-types";
 import {
   ChapterPath,
@@ -14,7 +14,7 @@ import {
 
 export async function getCourseContents(path: CoursePath) {
   const [{ topicIdsOrdered = [], ...rest }, topicContents] = await Promise.all([
-    getContent<CourseYamlParsed>(path, "index"),
+    getContent<CourseYaml>(path, "index"),
     getContent(path, "tree"),
   ]);
   const topicIds = topicIdsOrdered.filter((topicId) =>
@@ -27,7 +27,7 @@ export async function getCourseDeep(path: CoursePath) {
   const { topicIds, ...rest } = await getCourseContents(path);
 
   const getTopicIndices = topicIds.map((topicId) =>
-    getContent<TopicYamlParsed>(
+    getContent<TopicYaml>(
       {
         ...path,
         topicId,
@@ -59,7 +59,7 @@ export async function getTopicContents(path: TopicPath) {
     { chapterIdsOrdered = [], ...rest },
     chapterContents,
   ] = await Promise.all([
-    getContent<TopicYamlParsed>(path, "index"),
+    getContent<TopicYaml>(path, "index"),
     getContent(path, "tree"),
   ]);
   const chapterIds = chapterIdsOrdered.filter((chapterId) =>
@@ -72,7 +72,7 @@ export async function getTopicDeep(path: TopicPath) {
   const { chapterIds, ...rest } = await getTopicContents(path);
 
   const getChapterIndices = chapterIds.map((chapterId) =>
-    getContent<ChapterYamlParsed>(
+    getContent<ChapterYaml>(
       {
         ...path,
         chapterId,
@@ -104,7 +104,7 @@ export async function getChapterContents(path: ChapterPath) {
     { lessonIdsOrdered = [], ...rest },
     chapterContents,
   ] = await Promise.all([
-    getContent<ChapterYamlParsed>(path, "index"),
+    getContent<ChapterYaml>(path, "index"),
     getContent(path, "tree"),
   ]);
   const lessonIds = lessonIdsOrdered.filter((lessonId) =>
@@ -117,7 +117,7 @@ export async function getChapterDeep(path: ChapterPath) {
   const { lessonIds, ...rest } = await getChapterContents(path);
 
   const getLessonIndices = lessonIds.map((lessonId) =>
-    getContent<LessonYamlParsed>(
+    getContent<LessonYaml>(
       {
         ...path,
         lessonId,
@@ -131,5 +131,5 @@ export async function getChapterDeep(path: ChapterPath) {
 }
 
 export async function getLesson(path: LessonPath) {
-  return getContent<LessonYamlParsed>(path, "index");
+  return getContent<LessonYaml>(path, "index");
 }

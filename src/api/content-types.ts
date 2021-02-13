@@ -1,16 +1,34 @@
+import { ContentPath, ContentRoute } from "./getContent";
+
+export interface FetchedYaml {
+  raw: string;
+  didFetch: boolean;
+}
+
+export interface ParsedYaml<T extends ContentYaml = ContentYaml>
+  extends FetchedYaml {
+  parsed: T;
+  path: ContentPath;
+  route: ContentRoute;
+}
+
 interface CourseCommon {
   courseTitle: string;
   description: string;
 }
 
-export type ContentYamlParsed =
-  | CourseYamlParsed
-  | TopicYamlParsed
-  | ChapterYamlParsed
-  | LessonYamlParsed;
+export type ContentYaml = CourseYaml | TopicYaml | ChapterYaml | LessonYaml;
 
-export interface CourseYamlParsed extends CourseCommon {
+export interface CourseYaml extends CourseCommon {
   topicIdsOrdered: string[];
+}
+
+export interface CourseYamlDeep extends CourseYaml {
+  topics: TopicYaml[];
+}
+
+export interface CourseYamlRecursive extends CourseYaml {
+  topics: TopicYamlRecursive[];
 }
 
 export interface CourseJSON extends CourseCommon {
@@ -22,8 +40,16 @@ interface TopicCommon {
   description: string;
 }
 
-export interface TopicYamlParsed extends TopicCommon {
+export interface TopicYaml extends TopicCommon {
   chapterIdsOrdered: string[];
+}
+
+export interface TopicYamlDeep extends TopicYaml {
+  chapters: ChapterYaml[];
+}
+
+export interface TopicYamlRecursive extends TopicYaml {
+  chapters: ChapterYamlDeep[];
 }
 
 export interface TopicJSON extends TopicCommon {
@@ -34,8 +60,12 @@ interface ChapterCommon {
   chapterTitle: string;
 }
 
-export interface ChapterYamlParsed extends ChapterCommon {
+export interface ChapterYaml extends ChapterCommon {
   lessonIdsOrdered: string[];
+}
+
+export interface ChapterYamlDeep extends ChapterYaml {
+  lessons: LessonYaml[];
 }
 
 export interface ChapterJSON extends ChapterCommon {
@@ -46,7 +76,7 @@ interface LessonCommon {
   lessonTitle: string;
 }
 
-export interface LessonYamlParsed extends LessonCommon {
+export interface LessonYaml extends LessonCommon {
   activities: ActivityJSON[];
 }
 

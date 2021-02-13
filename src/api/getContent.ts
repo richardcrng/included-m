@@ -1,10 +1,6 @@
 import { safeLoad } from "js-yaml";
 import WhyWhatError from "../lib/why-what-error";
-import {
-  ChapterYamlParsed,
-  CourseYamlParsed,
-  TopicYamlParsed,
-} from "./content-types";
+import { ChapterYaml, CourseYaml, TopicYaml } from "./content-types";
 
 const BRANCH = "main";
 const PROJECT_ID = "23270946";
@@ -12,17 +8,17 @@ const PROJECT_ID = "23270946";
 // const IS_SANDBOX = false;
 const IS_SANDBOX = true;
 
-const coursePath = (route: string[]): string =>
+const coursePath = (route: ContentRoute): string =>
   ["public", "course", ...route].join("/");
 
-const treeUrl = (route: string[]): string =>
+const treeUrl = (route: ContentRoute): string =>
   IS_SANDBOX
     ? `http://localhost:4000/tree/${route.join("/")}`
     : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tree?path=${coursePath(
         route
       )}&ref=${BRANCH}`;
 
-const indexUrl = (route: string[], fileName = "index"): string =>
+const indexUrl = (route: ContentRoute, fileName = "index"): string =>
   IS_SANDBOX
     ? `http://localhost:4000/json/${route.join("/")}`
     : `https://gitlab.com/api/v4/projects/${PROJECT_ID}/
@@ -97,11 +93,11 @@ export async function getContent(
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
   target: "index"
-): Promise<T & { id: string; path: P; route: string[] }>;
+): Promise<T & { id: string; path: P; route: ContentRoute }>;
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
   target: "index"
-): Promise<T & { id: string; path: P; route: string[] }>;
+): Promise<T & { id: string; path: P; route: ContentRoute }>;
 
 export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
@@ -115,7 +111,18 @@ export async function getContent<T = any, P extends ContentPath = ContentPath>(
   }
 }
 
-export const contentStringPath = (path: ContentPath): string[] => {
+export type ContentRoute =
+  | CourseRoute
+  | TopicRoute
+  | TopicRoute
+  | ChapterRoute
+  | LessonRoute;
+export type CourseRoute = [string];
+export type TopicRoute = [string, string];
+export type ChapterRoute = [string, string, string];
+export type LessonRoute = [string, string, string, string];
+
+export const contentStringPath = (path: ContentPath): ContentRoute => {
   const route: string[] = [path["courseId"]];
   if (path["topicId"]) {
     route.push(path["topicId"]);
@@ -126,7 +133,7 @@ export const contentStringPath = (path: ContentPath): string[] => {
       }
     }
   }
-  return route;
+  return route as ContentRoute;
 };
 
 interface GitLabTreeContent {
@@ -204,11 +211,11 @@ const getSandboxTree = async (path: ContentPath) => {
   const yamlObj = safeLoad(loaded) as any;
   let subDirs: string[] = [];
   if (isPathToCourse(path)) {
-    subDirs = (yamlObj as CourseYamlParsed).topicIdsOrdered || [];
+    subDirs = (yamlObj as CourseYaml).topicIdsOrdered || [];
   } else if (isPathToTopic(path)) {
-    subDirs = (yamlObj as TopicYamlParsed).chapterIdsOrdered || [];
+    subDirs = (yamlObj as TopicYaml).chapterIdsOrdered || [];
   } else if (isPathToChapter(path)) {
-    subDirs = (yamlObj as ChapterYamlParsed).lessonIdsOrdered || [];
+    subDirs = (yamlObj as ChapterYaml).lessonIdsOrdered || [];
   }
 
   if (subDirs) {
