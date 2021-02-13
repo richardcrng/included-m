@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { IonButton, IonItem, IonLabel } from "@ionic/react";
-import { TopicYaml } from "../../../content/types/content-yaml.types";
+import {
+  hasChildContent,
+  TopicYaml,
+} from "../../../content/types/content-yaml.types";
 
 const PickCourseButton = styled(IonButton)`
   height: 100%;
@@ -8,15 +11,16 @@ const PickCourseButton = styled(IonButton)`
 
 interface Props {
   topic: TopicYaml;
-  onTopicStart?(topic: TopicYaml): void;
+  onTopicStart(topic: TopicYaml): void;
 }
 
 function CourseTopicItem({ topic, onTopicStart }: Props) {
   return (
-    <IonItem>
+    <IonItem disabled={!hasChildContent(topic)}>
       <IonLabel>
         <h2 className="ion-text-wrap">
           <b>{topic.topicTitle}</b>
+          {!hasChildContent(topic) && <span> 🚧 </span>}
         </h2>
         <p className="ion-text-wrap">{topic.description}</p>
       </IonLabel>
@@ -24,7 +28,7 @@ function CourseTopicItem({ topic, onTopicStart }: Props) {
         slot="end"
         expand="full"
         color="success"
-        onClick={() => onTopicStart && onTopicStart(topic)}
+        onClick={() => onTopicStart(topic)}
       >
         {">"}
       </PickCourseButton>

@@ -33,7 +33,7 @@ type CourseData = CourseYamlDeep;
 
 interface Props {
   course: CourseData;
-  onTopicStart?(topic: CourseData["topics"][0]): void;
+  onTopicStart(topic: CourseData["topics"][0]): void;
 }
 
 function CoursePageView({ course, onTopicStart }: Props) {
@@ -62,7 +62,11 @@ function CoursePageView({ course, onTopicStart }: Props) {
           <h1>{course.courseTitle}</h1>
           <p>{course.description}</p>
           {course.topics.map((topic) => (
-            <CourseTopicItem key={topic.topicTitle} topic={topic} />
+            <CourseTopicItem
+              key={topic.topicTitle}
+              topic={topic}
+              onTopicStart={onTopicStart}
+            />
           ))}
         </Container>
       </IonContent>
