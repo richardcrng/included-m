@@ -2,12 +2,12 @@ lessonTitle: The goals of venture capital
 activities:
   - activityType: read
     blocks:
-      - "# Included M"
+      - "# The goals of venture capital"
       - Welcome to this proof-of-concept for **Included M**!
       - "---"
-      - "### About the demo"
-      - This demo uses some of the content from IVC20's first 101 pack.
-      - It's meant to be more indicative of functionality than of materials.
+      - "### You will learn:"
+      - "- test bullet 1"
+      - "- test bullet 2"
   - activityType: read
     blocks:
       - "# VC Fundamentals: Lesson 1"
