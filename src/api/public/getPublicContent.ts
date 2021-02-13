@@ -40,9 +40,13 @@ async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
       .then((res) => res.text())
       // remove <!DOCTYPE html> if that's how it's been parsed
       .then((res) => (res.startsWith("<!DOCTYPE html>") ? "" : res));
-    return { raw: `${commonFrontmatter}\n${raw}`, didFetch: true };
+    return {
+      raw: `${commonFrontmatter}\n${raw}`,
+      didFetch: true,
+      ...frontMatter,
+    };
   } catch (err) {
-    return { raw: commonFrontmatter, didFetch: false };
+    return { raw: commonFrontmatter, didFetch: false, ...frontMatter };
   }
 }
 

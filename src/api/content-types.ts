@@ -11,7 +11,7 @@ import {
   TopicRoute,
 } from "./getContent";
 
-export interface FetchedYaml {
+export interface FetchedYaml extends ContentCommon {
   raw: string;
   didFetch: boolean;
 }
