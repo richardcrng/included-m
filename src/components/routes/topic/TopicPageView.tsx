@@ -53,10 +53,6 @@ const MainCTAContent = styled(IonCardContent)`
   }
 `;
 
-const LessonStartButton = styled(IonButton)`
-  height: 100%;
-`;
-
 type TopicData = TopicYamlRecursive;
 type ChapterData = TopicData["chapters"][0];
 type LessonData = ChapterData["lessons"][0];
