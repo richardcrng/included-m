@@ -77,6 +77,15 @@ export interface ContentCommon {
   id: string;
   path: ContentPath;
   route: ContentRoute;
+  courseTitle?: string;
+  topicTitle?: string;
+  chapterTitle?: string;
+  lessonTitle?: string;
+  description?: string;
+  topicIdsOrdered?: string[];
+  chapterIdsOrdered?: string[];
+  lessonIdsOrdered?: string[];
+  activities?: ActivityJSON[];
 }
 
 interface CourseCommon extends ContentCommon {
@@ -107,6 +116,8 @@ interface TopicCommon extends ContentCommon {
   description: string;
   path: TopicPath;
   route: TopicRoute;
+  courseTitle?: never;
+  courseIdsOrdered?: never;
 }
 
 export interface TopicYaml extends TopicCommon {
@@ -129,6 +140,8 @@ interface ChapterCommon extends ContentCommon {
   chapterTitle: string;
   path: ChapterPath;
   route: ChapterRoute;
+  courseTitle?: never;
+  courseIdsOrdered?: never;
 }
 
 export interface ChapterYaml extends ChapterCommon {
@@ -147,6 +160,9 @@ interface LessonCommon extends ContentCommon {
   lessonTitle: string;
   path: LessonPath;
   route: LessonRoute;
+  courseTitle?: never;
+  courseIdsOrdered?: never;
+  topicIdsOrdered?: never;
 }
 
 export interface LessonYaml extends LessonCommon {
@@ -157,12 +173,20 @@ export interface LessonJSON extends LessonCommon {
   activities: ActivityJSON[];
 }
 
-export type ActivityType =
-  | "read"
-  | "select-an-answer"
-  | "select-for-each-blank"
-  | "select-multiple"
-  | "swipe-cards";
+export enum ActivityType {
+  READ = "read",
+  SELECT_AN_ANSWER = "select-an-answer",
+  SELECT_FOR_EACH_BLANK = "select-for-each-blank",
+  SELECT_MULTIPLE = "select-multiple",
+  SWIPE_CARDS = "swipe-cards",
+}
+
+// export type ActivityType =
+//   | "read"
+//   | "select-an-answer"
+//   | "select-for-each-blank"
+//   | "select-multiple"
+//   | "swipe-cards";
 
 export interface ActivityJSONCommon {
   activityType: ActivityType;
@@ -201,11 +225,11 @@ export type ContentBlockJSON =
     };
 
 export interface ReadActivityJSON extends ActivityJSONCommon {
-  activityType: "read";
+  activityType: ActivityType.READ;
   blocks: ContentBlockJSON[];
-  answers: never;
-  choices: never;
-  cards: never;
+  answers?: never;
+  choices?: never;
+  cards?: never;
 }
 
 export type AnswerFeedback =
@@ -217,11 +241,11 @@ export type AnswerFeedback =
     };
 
 export interface SelectAnAnswerActivityJSON extends ActivityJSONCommon {
-  activityType: "select-an-answer";
+  activityType: ActivityType.SELECT_AN_ANSWER;
   blocks: ContentBlockJSON[];
   answers: AnswerJSON[];
-  choices: never;
-  cards: never;
+  choices?: never;
+  cards?: never;
 }
 
 export type SelectForEachBlankActivityJSON =
@@ -230,10 +254,10 @@ export type SelectForEachBlankActivityJSON =
 
 export interface SelectForEachBlankSimpleActivityJSON
   extends ActivityJSONCommon {
-  activityType: "select-for-each-blank";
+  activityType: ActivityType.SELECT_FOR_EACH_BLANK;
   blocks: ContentBlockJSON[];
-  answers: never;
-  cards: never;
+  answers?: never;
+  cards?: never;
 }
 
 export interface SelectForEachBlankComplexActivityJSON
@@ -244,11 +268,11 @@ export interface SelectForEachBlankComplexActivityJSON
 }
 
 export interface SelectMultipleActivityJSON extends ActivityJSONCommon {
-  activityType: "select-multiple";
+  activityType: ActivityType.SELECT_MULTIPLE;
   blocks: ContentBlockJSON[];
   answers: AnswerJSON[];
-  cards: never;
-  choices: never;
+  cards?: never;
+  choices?: never;
 }
 
 export interface AnswerJSON {
@@ -259,7 +283,7 @@ export interface AnswerJSON {
 }
 
 export interface SwipeCardsActivityJSON extends ActivityJSONCommon {
-  activityType: "swipe-cards";
+  activityType: ActivityType.SWIPE_CARDS;
   blocks: ContentBlockJSON[];
   cards: CardJSON[];
 }
