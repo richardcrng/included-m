@@ -71,16 +71,36 @@ export function isPathToLesson(path: ContentPath): path is LessonPath {
   return !!path.lessonId;
 }
 
-export function yamlFileName(path: ContentPath): string {
+export function pathToId(path: ContentPath): string {
+  const route = pathToRoute(path);
+  return routeToId(route);
+}
+
+export function routeToId(route: ContentRoute): string {
+  return route[route.length - 1];
+}
+
+export enum ContentType {
+  COURSE = "Course",
+  TOPIC = "Topic",
+  CHAPTER = "Chapter",
+  LESSON = "Lesson",
+}
+
+export function pathToContentType(path: ContentPath): ContentType {
   if (isPathToCourse(path)) {
-    return "course";
+    return ContentType.COURSE;
   } else if (isPathToTopic(path)) {
-    return "topic";
+    return ContentType.TOPIC;
   } else if (isPathToChapter(path)) {
-    return "chapter";
+    return ContentType.CHAPTER;
   } else {
-    return "lesson";
+    return ContentType.LESSON;
   }
+}
+
+export function yamlContentType(path: ContentPath): string {
+  return pathToContentType(path).toLowerCase();
 }
 
 // function isPathToLesson(path: ContentPath): path is LessonPath {
@@ -107,7 +127,7 @@ export async function getContent<T = any, P extends ContentPath = ContentPath>(
   path: P,
   target: "index" | "tree" = "index"
 ) {
-  // const route = contentStringPath(path);
+  // const route = pathToRoute(path);
   if (target === "tree") {
     return getTree(path);
   } else {
@@ -126,7 +146,27 @@ export type TopicRoute = [string, string];
 export type ChapterRoute = [string, string, string];
 export type LessonRoute = [string, string, string, string];
 
-export const contentStringPath = (path: ContentPath): ContentRoute => {
+export function isRouteToCourse(route: ContentRoute): route is CourseRoute {
+  return route.length === 1;
+}
+
+export function isRouteToTopic(route: ContentRoute): route is TopicRoute {
+  return route.length === 2;
+}
+
+export function isRouteToChapter(route: ContentRoute): route is ChapterRoute {
+  return route.length === 3;
+}
+
+export function isRouteToLesson(route: ContentRoute): route is LessonRoute {
+  return route.length === 4;
+}
+
+// export function pathToRoute(path: LessonPath): LessonRoute;
+// export function pathToRoute(path: ChapterPath): ChapterRoute;
+// export function pathToRoute(path: TopicPath): TopicRoute;
+// export function pathToRoute(path: CoursePath): CourseRoute;
+export function pathToRoute(path: ContentPath): ContentRoute {
   const route: string[] = [path["courseId"]];
   if (path["topicId"]) {
     route.push(path["topicId"]);
@@ -138,7 +178,7 @@ export const contentStringPath = (path: ContentPath): ContentRoute => {
     }
   }
   return route as ContentRoute;
-};
+}
 
 interface GitLabTreeContent {
   id: string;
@@ -154,7 +194,7 @@ const getTree = async (
 ): Promise<GitLabTreeContent[]> => {
   if (IS_SANDBOX) return getSandboxTree(path);
 
-  const route = contentStringPath(path);
+  const route = pathToRoute(path);
 
   const json: GitLabTreeContent[] = await fetch(treeUrl(route)).then((res) =>
     res.json()
@@ -180,9 +220,9 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
 > => {
   if (IS_SANDBOX) return getSandboxIndex<T, P>(path);
 
-  const route = contentStringPath(path);
+  const route = pathToRoute(path);
 
-  const json = await fetch(indexUrl(route, yamlFileName(path)))
+  const json = await fetch(indexUrl(route, yamlContentType(path)))
     .then((res) => res.blob())
     .then((res) => res.text())
     .then((yamlAsString): any => safeLoad(yamlAsString));
@@ -207,10 +247,10 @@ const getIndex = async <T = any, P extends ContentPath = ContentPath>(
 };
 
 const getSandboxTree = async (path: ContentPath) => {
-  const route = contentStringPath(path);
+  const route = pathToRoute(path);
 
   const loaded = await fetch(
-    `/course/${route.join("/")}/${yamlFileName(path)}.yaml`
+    `/course/${route.join("/")}/${yamlContentType(path)}.yaml`
   ).then((res) => res.text());
   const yamlObj = safeLoad(loaded) as any;
   let subDirs: string[] = [];
@@ -241,9 +281,9 @@ const getSandboxTree = async (path: ContentPath) => {
 const getSandboxIndex = async <T = any, P extends ContentPath = ContentPath>(
   path: ContentPath
 ) => {
-  const route = contentStringPath(path);
+  const route = pathToRoute(path);
   const loaded = await fetch(
-    `/course/${route.join("/")}/${yamlFileName(path)}.yaml`
+    `/course/${route.join("/")}/${yamlContentType(path)}.yaml`
   ).then(async (res) => res.text());
   const yamlObj = safeLoad(loaded) as any;
   if (yamlObj) {

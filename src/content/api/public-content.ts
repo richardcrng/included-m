@@ -1,5 +1,13 @@
 import { safeLoad, dump } from "js-yaml";
 import {
+  baseYamlValidation,
+  standardiseChapterYaml,
+  standardiseCourseYaml,
+  standardiseLessonYaml,
+  standardiseTopicYaml,
+  StandardiseYaml,
+} from "./validators";
+import {
   ChapterYaml,
   ChapterYamlDeep,
   ContentYaml,
@@ -17,16 +25,17 @@ import {
 import {
   ChapterPath,
   ContentPath,
-  contentStringPath,
+  pathToRoute,
   CoursePath,
   LessonPath,
+  routeToId,
   TopicPath,
-  yamlFileName,
+  yamlContentType,
 } from "../types/content-path.types";
 
 async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
-  const route = contentStringPath(path);
-  const id = route[route.length - 1];
+  const route = pathToRoute(path);
+  const id = routeToId(route);
   const frontMatter: ContentCommon = {
     path,
     route,
@@ -35,7 +44,7 @@ async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
   const commonFrontmatter = dump(frontMatter);
   try {
     const raw = await fetch(
-      `/course/${route.join("/")}/${yamlFileName(path)}.yaml`
+      `/course/${route.join("/")}/${yamlContentType(path)}.yaml`
     )
       .then((res) => res.text())
       // remove <!DOCTYPE html> if that's how it's been parsed
@@ -50,35 +59,46 @@ async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
   }
 }
 
+// function parseYaml<T extends ContentYaml>(
+//   fetchedYaml: FetchedYaml,
+//   standardiseYaml: StandardiseYaml<T>
+// ): T {
+//   const jsYaml = safeLoad(fetchedYaml.raw) as T;
+//   return standardiseYaml(jsYaml);
+// }
+
 async function fetchAndParsePublicYaml<T extends ContentYaml>(
-  path: ContentPath
+  path: ContentPath,
+  standardiseYaml: StandardiseYaml<T>
 ): Promise<ParsedYaml<T>> {
   const fetchedYaml = await fetchPublicYaml(path);
-  const parsed = safeLoad(fetchedYaml.raw) as T;
+  const jsYaml = safeLoad(fetchedYaml.raw);
+  const validatedYaml = baseYamlValidation(jsYaml, path);
+  const parsed = standardiseYaml(validatedYaml, path);
   return {
     ...fetchedYaml,
     parsed,
     path,
-    route: contentStringPath(path),
+    route: pathToRoute(path),
   };
 }
 
 export async function fetchAndParsePublicLesson(
   path: LessonPath
 ): Promise<ParsedYaml<LessonYaml>> {
-  return fetchAndParsePublicYaml<LessonYaml>(path);
+  return fetchAndParsePublicYaml<LessonYaml>(path, standardiseLessonYaml);
 }
 
 export async function fetchAndParsePublicChapter(
   path: ChapterPath
 ): Promise<ParsedYaml<ChapterYaml>> {
-  return fetchAndParsePublicYaml<ChapterYaml>(path);
+  return fetchAndParsePublicYaml<ChapterYaml>(path, standardiseChapterYaml);
 }
 
 export async function fetchAndParsePublicChapterDeep(
   path: ChapterPath
 ): Promise<ParsedYaml<ChapterYamlDeep>> {
-  const chapterYaml = await fetchAndParsePublicYaml<ChapterYaml>(path);
+  const chapterYaml = await fetchAndParsePublicChapter(path);
   const fetchLessons = chapterYaml.parsed.lessonIdsOrdered.map((lessonId) =>
     fetchAndParsePublicLesson({
       ...path,
@@ -98,13 +118,13 @@ export async function fetchAndParsePublicChapterDeep(
 export async function fetchAndParsePublicTopic(
   path: TopicPath
 ): Promise<ParsedYaml<TopicYaml>> {
-  return fetchAndParsePublicYaml<TopicYaml>(path);
+  return fetchAndParsePublicYaml<TopicYaml>(path, standardiseTopicYaml);
 }
 
 export async function fetchAndParsePublicTopicDeep(
   path: TopicPath
 ): Promise<ParsedYaml<TopicYamlDeep>> {
-  const topicYaml = await fetchAndParsePublicYaml<TopicYaml>(path);
+  const topicYaml = await fetchAndParsePublicTopic(path);
   const fetchChapters = topicYaml.parsed.chapterIdsOrdered.map((chapterId) =>
     fetchAndParsePublicChapter({
       ...path,
@@ -124,7 +144,7 @@ export async function fetchAndParsePublicTopicDeep(
 export async function fetchAndParsePublicTopicRecursive(
   path: TopicPath
 ): Promise<ParsedYaml<TopicYamlRecursive>> {
-  const topicYaml = await fetchAndParsePublicYaml<TopicYaml>(path);
+  const topicYaml = await fetchAndParsePublicTopic(path);
   const fetchChapters = topicYaml.parsed.chapterIdsOrdered.map((chapterId) =>
     fetchAndParsePublicChapterDeep({
       ...path,
@@ -144,13 +164,13 @@ export async function fetchAndParsePublicTopicRecursive(
 export async function fetchAndParsePublicCourse(
   path: CoursePath
 ): Promise<ParsedYaml<CourseYaml>> {
-  return fetchAndParsePublicYaml<CourseYaml>(path);
+  return fetchAndParsePublicYaml<CourseYaml>(path, standardiseCourseYaml);
 }
 
 export async function fetchAndParsePublicCourseDeep(
   path: CoursePath
 ): Promise<ParsedYaml<CourseYamlDeep>> {
-  const courseYaml = await fetchAndParsePublicYaml<CourseYaml>(path);
+  const courseYaml = await fetchAndParsePublicCourse(path);
   const fetchTopics = courseYaml.parsed.topicIdsOrdered.map((topicId) =>
     fetchAndParsePublicTopic({
       ...path,
@@ -170,7 +190,7 @@ export async function fetchAndParsePublicCourseDeep(
 export async function fetchAndParsePublicCourseRecursive(
   path: CoursePath
 ): Promise<ParsedYaml<CourseYamlRecursive>> {
-  const courseYaml = await fetchAndParsePublicYaml<CourseYaml>(path);
+  const courseYaml = await fetchAndParsePublicCourse(path);
   const fetchTopics = courseYaml.parsed.topicIdsOrdered.map((topicId) =>
     fetchAndParsePublicTopicRecursive({
       ...path,
