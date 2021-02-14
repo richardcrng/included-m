@@ -1,9 +1,16 @@
 import { isPlainObj } from "ramda-adjunct";
 import {
+  ActivityType,
   ContentBlockJSON,
   ReadActivityJSON,
 } from "../types/content-yaml.types";
 import { hasOwnProperties, hasOwnProperty } from "./utils";
+
+export function isArrayOfContentBlocks(
+  maybeArray: unknown
+): maybeArray is ContentBlockJSON[] {
+  return Array.isArray(maybeArray) && maybeArray.every(isContentBlock);
+}
 
 export function isContentBlock(
   parsedYamlBlock: unknown
@@ -21,12 +28,12 @@ export function isContentBlock(
 export function isReadActivity(
   parsedYaml: object
 ): parsedYaml is ReadActivityJSON {
-  if (!hasOwnProperties(parsedYaml, ["activityType", "blocks"])) {
-    return false;
-  } else {
-    parsedYaml;
+  if (hasOwnProperties(parsedYaml, ["activityType", "blocks"])) {
+    return (
+      parsedYaml.activityType === ActivityType.READ &&
+      isArrayOfContentBlocks(parsedYaml.blocks)
+    );
   }
 
   return false;
-  return true;
 }

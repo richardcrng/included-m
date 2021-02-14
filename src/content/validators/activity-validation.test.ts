@@ -59,7 +59,7 @@ describe("isReadActivity", () => {
       expect(
         isReadActivity({
           activityType: "read",
-          blocks: [],
+          blocks: undefined,
         })
       ).toBe(false);
     });
