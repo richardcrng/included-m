@@ -8,7 +8,10 @@ import {
   ContentType,
   CoursePath,
   CourseRoute,
+  isPathToChapter,
+  isPathToCourse,
   isPathToLesson,
+  isPathToTopic,
   LessonPath,
   LessonRoute,
   pathToContentType,
@@ -17,12 +20,18 @@ import {
   TopicPath,
   TopicRoute,
 } from "../types/content-path.types";
-import { ContentYaml, LessonYaml } from "../types/content-yaml.types";
+import {
+  ChapterYaml,
+  ContentYaml,
+  CourseYaml,
+  LessonYaml,
+  TopicYaml,
+} from "../types/content-yaml.types";
 
 type LoadedJsYaml = ReturnType<typeof safeLoad>;
 
 export type StandardiseYaml<T extends ContentYaml> = (
-  jsYaml: LoadedJsYaml | T,
+  jsYamlObj: object,
   path: ContentPath
 ) => T;
 
@@ -98,11 +107,11 @@ export function baseYamlValidation(
 }
 
 export const standardiseLessonYaml: StandardiseYaml<LessonYaml> = (
-  jsYaml,
+  yamlObj,
   path
 ) => {
   if (!isPathToLesson(path)) {
-    throw new Error("Is not a path to lesson");
+    throw new Error("Is not a path to Lesson");
   } else {
     const { id, route } = contentMetadata(path);
     const defaultYaml: LessonYaml = {
@@ -112,14 +121,79 @@ export const standardiseLessonYaml: StandardiseYaml<LessonYaml> = (
       lessonTitle: capitalCase(id),
       activities: [],
     };
-    try {
-      const yamlObj = baseYamlValidation(jsYaml, path);
-      return {
-        ...defaultYaml,
-        ...yamlObj,
-      };
-    } catch (err) {
-      return defaultYaml;
-    }
+    return {
+      ...defaultYaml,
+      ...yamlObj,
+    };
+  }
+};
+
+export const standardiseChapterYaml: StandardiseYaml<ChapterYaml> = (
+  yamlObj,
+  path
+) => {
+  if (!isPathToChapter(path)) {
+    throw new Error("Is not a path to Chapter");
+  } else {
+    const { id, route } = contentMetadata(path);
+    const defaultYaml: ChapterYaml = {
+      id,
+      path,
+      route,
+      chapterTitle: capitalCase(id),
+      lessonIdsOrdered: [],
+    };
+    return {
+      ...defaultYaml,
+      ...yamlObj,
+    };
+  }
+};
+
+export const standardiseTopicYaml: StandardiseYaml<TopicYaml> = (
+  yamlObj,
+  path
+) => {
+  if (!isPathToTopic(path)) {
+    throw new Error("Is not a path to Topic");
+  } else {
+    const { id, route } = contentMetadata(path);
+    const title = capitalCase(id);
+    const defaultYaml: TopicYaml = {
+      id,
+      path,
+      route,
+      topicTitle: title,
+      description: `Learn about ${title}`,
+      chapterIdsOrdered: [],
+    };
+    return {
+      ...defaultYaml,
+      ...yamlObj,
+    };
+  }
+};
+
+export const standardiseCourseYaml: StandardiseYaml<CourseYaml> = (
+  yamlObj,
+  path
+) => {
+  if (!isPathToCourse(path)) {
+    throw new Error("Is not a path to Course");
+  } else {
+    const { id, route } = contentMetadata(path);
+    const title = capitalCase(id);
+    const defaultYaml: CourseYaml = {
+      id,
+      path,
+      route,
+      courseTitle: title,
+      description: `Learn about ${title}`,
+      topicIdsOrdered: [],
+    };
+    return {
+      ...defaultYaml,
+      ...yamlObj,
+    };
   }
 };

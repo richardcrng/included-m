@@ -1,5 +1,12 @@
 import { safeLoad, dump } from "js-yaml";
-import { baseYamlValidation, StandardiseYaml } from "./validators";
+import {
+  baseYamlValidation,
+  standardiseChapterYaml,
+  standardiseCourseYaml,
+  standardiseLessonYaml,
+  standardiseTopicYaml,
+  StandardiseYaml,
+} from "./validators";
 import {
   ChapterYaml,
   ChapterYamlDeep,
@@ -62,14 +69,12 @@ async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
 
 async function fetchAndParsePublicYaml<T extends ContentYaml>(
   path: ContentPath,
-  standardiseYaml?: StandardiseYaml<T>
+  standardiseYaml: StandardiseYaml<T>
 ): Promise<ParsedYaml<T>> {
   const fetchedYaml = await fetchPublicYaml(path);
   const jsYaml = safeLoad(fetchedYaml.raw);
   const validatedYaml = baseYamlValidation(jsYaml, path);
-  const parsed = standardiseYaml
-    ? standardiseYaml(jsYaml, path)
-    : (validatedYaml as T);
+  const parsed = standardiseYaml(validatedYaml, path);
   return {
     ...fetchedYaml,
     parsed,
@@ -81,19 +86,19 @@ async function fetchAndParsePublicYaml<T extends ContentYaml>(
 export async function fetchAndParsePublicLesson(
   path: LessonPath
 ): Promise<ParsedYaml<LessonYaml>> {
-  return fetchAndParsePublicYaml<LessonYaml>(path);
+  return fetchAndParsePublicYaml<LessonYaml>(path, standardiseLessonYaml);
 }
 
 export async function fetchAndParsePublicChapter(
   path: ChapterPath
 ): Promise<ParsedYaml<ChapterYaml>> {
-  return fetchAndParsePublicYaml<ChapterYaml>(path);
+  return fetchAndParsePublicYaml<ChapterYaml>(path, standardiseChapterYaml);
 }
 
 export async function fetchAndParsePublicChapterDeep(
   path: ChapterPath
 ): Promise<ParsedYaml<ChapterYamlDeep>> {
-  const chapterYaml = await fetchAndParsePublicYaml<ChapterYaml>(path);
+  const chapterYaml = await fetchAndParsePublicChapter(path);
   const fetchLessons = chapterYaml.parsed.lessonIdsOrdered.map((lessonId) =>
     fetchAndParsePublicLesson({
       ...path,
@@ -113,13 +118,13 @@ export async function fetchAndParsePublicChapterDeep(
 export async function fetchAndParsePublicTopic(
   path: TopicPath
 ): Promise<ParsedYaml<TopicYaml>> {
-  return fetchAndParsePublicYaml<TopicYaml>(path);
+  return fetchAndParsePublicYaml<TopicYaml>(path, standardiseTopicYaml);
 }
 
 export async function fetchAndParsePublicTopicDeep(
   path: TopicPath
 ): Promise<ParsedYaml<TopicYamlDeep>> {
-  const topicYaml = await fetchAndParsePublicYaml<TopicYaml>(path);
+  const topicYaml = await fetchAndParsePublicTopic(path);
   const fetchChapters = topicYaml.parsed.chapterIdsOrdered.map((chapterId) =>
     fetchAndParsePublicChapter({
       ...path,
@@ -139,7 +144,7 @@ export async function fetchAndParsePublicTopicDeep(
 export async function fetchAndParsePublicTopicRecursive(
   path: TopicPath
 ): Promise<ParsedYaml<TopicYamlRecursive>> {
-  const topicYaml = await fetchAndParsePublicYaml<TopicYaml>(path);
+  const topicYaml = await fetchAndParsePublicTopic(path);
   const fetchChapters = topicYaml.parsed.chapterIdsOrdered.map((chapterId) =>
     fetchAndParsePublicChapterDeep({
       ...path,
@@ -159,13 +164,13 @@ export async function fetchAndParsePublicTopicRecursive(
 export async function fetchAndParsePublicCourse(
   path: CoursePath
 ): Promise<ParsedYaml<CourseYaml>> {
-  return fetchAndParsePublicYaml<CourseYaml>(path);
+  return fetchAndParsePublicYaml<CourseYaml>(path, standardiseCourseYaml);
 }
 
 export async function fetchAndParsePublicCourseDeep(
   path: CoursePath
 ): Promise<ParsedYaml<CourseYamlDeep>> {
-  const courseYaml = await fetchAndParsePublicYaml<CourseYaml>(path);
+  const courseYaml = await fetchAndParsePublicCourse(path);
   const fetchTopics = courseYaml.parsed.topicIdsOrdered.map((topicId) =>
     fetchAndParsePublicTopic({
       ...path,
@@ -185,7 +190,7 @@ export async function fetchAndParsePublicCourseDeep(
 export async function fetchAndParsePublicCourseRecursive(
   path: CoursePath
 ): Promise<ParsedYaml<CourseYamlRecursive>> {
-  const courseYaml = await fetchAndParsePublicYaml<CourseYaml>(path);
+  const courseYaml = await fetchAndParsePublicCourse(path);
   const fetchTopics = courseYaml.parsed.topicIdsOrdered.map((topicId) =>
     fetchAndParsePublicTopicRecursive({
       ...path,
