@@ -6,7 +6,7 @@ import {
   standardiseLessonYaml,
   standardiseTopicYaml,
   StandardiseYaml,
-} from "./validators";
+} from "../validators/content-validation";
 import {
   ChapterYaml,
   ChapterYamlDeep,
