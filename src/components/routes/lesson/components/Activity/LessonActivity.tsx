@@ -34,7 +34,7 @@ function LessonActivity({ activity }: Props) {
         </LessonContent>
       </>
     );
-  } else if (activity.activityType === "select-an-answer") {
+  } else if (activity.activityType === "select-one") {
     return <LessonActivitySelectMultiple activity={activity} />;
   } else if (activity.activityType === "select-multiple") {
     return <LessonActivitySelectMultiple activity={activity} />;

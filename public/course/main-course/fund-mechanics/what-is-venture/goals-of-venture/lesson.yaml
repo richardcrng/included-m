@@ -57,7 +57,7 @@ activities:
     blocks:
       - As is the case with most high-risk investment vehicles, VC investments experience high rates of failure.
       - A 2012 research project conducted by HBS Professor, Shikhar Ghosh stated that around 75% of all venture-backed start-ups fail, whilst a report by Startup Genome predicted this figure to be as high as 90%.
-  - activityType: select-an-answer
+  - activityType: select-one
     blocks:
       - The best performing funds tend to have a different failure rate in startups that they back to average funds.
       - How do you think it's different?

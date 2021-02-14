@@ -5,7 +5,7 @@ import {
   AnswerJSON,
   ContentBlockJSON,
   ReadActivityJSON,
-  SelectAnAnswerActivityJSON,
+  SelectOneActivityJSON,
 } from "../types/content-yaml.types";
 import { hasArrayProperty, hasOwnProperties, hasOwnProperty } from "./utils";
 
@@ -58,9 +58,9 @@ export function isReadActivity(
   return false;
 }
 
-export function isSelectAnAnswerActivity(
+export function isSelectOneActivity(
   parsedYaml: object
-): parsedYaml is SelectAnAnswerActivityJSON {
+): parsedYaml is SelectOneActivityJSON {
   if (hasOwnProperties(parsedYaml, ["activityType", "blocks", "answers"])) {
     return (
       parsedYaml.activityType === ActivityType.SELECT_AN_ANSWER &&

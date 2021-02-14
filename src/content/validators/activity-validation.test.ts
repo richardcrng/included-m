@@ -1,7 +1,7 @@
 import {
   isContentBlock,
   isReadActivity,
-  isSelectAnAnswerActivity,
+  isSelectOneActivity,
   validateReadActivity,
 } from "./activity-validation";
 import { ActivityType, ReadActivityJSON } from "../types/content-yaml.types";
@@ -75,7 +75,7 @@ describe("type guards", () => {
       it("requires activityType to be read", () => {
         expect(
           isReadActivity({
-            activityType: "select-an-answer",
+            activityType: "select-one",
             blocks: [],
           })
         ).toBe(false);
@@ -109,12 +109,12 @@ describe("type guards", () => {
     });
   });
 
-  describe("isSelectAnAnswerActivity", () => {
+  describe("isSelectOneActivity", () => {
     describe("happy path", () => {
       it("Allows one correct and one incorrect answer", () => {
         expect(
-          isSelectAnAnswerActivity({
-            activityType: "select-an-answer",
+          isSelectOneActivity({
+            activityType: "select-one",
             blocks: ["What is 1 + 1?"],
             answers: [
               { text: "2", isCorrect: true },
@@ -126,8 +126,8 @@ describe("type guards", () => {
 
       it("Allows one correct and multiple incorrect answers", () => {
         expect(
-          isSelectAnAnswerActivity({
-            activityType: "select-an-answer",
+          isSelectOneActivity({
+            activityType: "select-one",
             blocks: ["What is 1 + 1?"],
             answers: [
               { text: "1", isCorrect: false },
@@ -143,8 +143,8 @@ describe("type guards", () => {
     describe("sad path", () => {
       it("requires an answer key", () => {
         expect(
-          isSelectAnAnswerActivity({
-            activityType: "select-an-answer",
+          isSelectOneActivity({
+            activityType: "select-one",
             blocks: ["test"],
           })
         ).toBe(false);
@@ -152,8 +152,8 @@ describe("type guards", () => {
 
       it("requires answers to be formatted correctly", () => {
         expect(
-          isSelectAnAnswerActivity({
-            activityType: "select-an-answer",
+          isSelectOneActivity({
+            activityType: "select-one",
             blocks: ["test"],
             answers: ["not an answer"],
           })

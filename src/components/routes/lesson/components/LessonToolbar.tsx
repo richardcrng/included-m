@@ -41,7 +41,7 @@ function LessonToolbar({ message }: Props) {
     if (!activities || !activities[currentIdx]) return "Included M";
 
     switch (activities[currentIdx].activityType) {
-      case "select-an-answer":
+      case "select-one":
         return "Select an answer";
 
       case "select-for-each-blank":

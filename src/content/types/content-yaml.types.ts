@@ -175,15 +175,16 @@ export interface LessonJSON extends LessonCommon {
 
 export enum ActivityType {
   READ = "read",
-  SELECT_AN_ANSWER = "select-an-answer",
+  SELECT_AN_ANSWER = "select-one",
   SELECT_FOR_EACH_BLANK = "select-for-each-blank",
   SELECT_MULTIPLE = "select-multiple",
+  SEQUENCE = "sequence",
   SWIPE_CARDS = "swipe-cards",
 }
 
 // export type ActivityType =
 //   | "read"
-//   | "select-an-answer"
+//   | "select-one"
 //   | "select-for-each-blank"
 //   | "select-multiple"
 //   | "swipe-cards";
@@ -196,6 +197,7 @@ export interface ActivityJSONCommon {
     [blankKey: string]: AnswerJSON[];
   };
   cards?: CardJSON[];
+  sequence?: SequenceItemJSON[];
 }
 
 export interface ChoicesJSON {
@@ -213,9 +215,10 @@ export interface CardJSON {
 
 export type ActivityJSON =
   | ReadActivityJSON
-  | SelectAnAnswerActivityJSON
+  | SelectOneActivityJSON
   | SelectForEachBlankActivityJSON
   | SelectMultipleActivityJSON
+  | SequenceActivityJSON
   | SwipeCardsActivityJSON;
 
 export type ContentBlockJSON =
@@ -230,6 +233,7 @@ export interface ReadActivityJSON extends ActivityJSONCommon {
   answers?: never;
   choices?: never;
   cards?: never;
+  sequence?: never;
 }
 
 export type AnswerFeedback =
@@ -240,12 +244,13 @@ export type AnswerFeedback =
       buttonText?: string;
     };
 
-export interface SelectAnAnswerActivityJSON extends ActivityJSONCommon {
+export interface SelectOneActivityJSON extends ActivityJSONCommon {
   activityType: ActivityType.SELECT_AN_ANSWER;
   blocks: ContentBlockJSON[];
   answers: AnswerJSON[];
   choices?: never;
   cards?: never;
+  sequence?: never;
 }
 
 export type SelectForEachBlankActivityJSON =
@@ -258,6 +263,7 @@ export interface SelectForEachBlankSimpleActivityJSON
   blocks: ContentBlockJSON[];
   answers?: never;
   cards?: never;
+  sequence?: never;
 }
 
 export interface SelectForEachBlankComplexActivityJSON
@@ -273,6 +279,15 @@ export interface SelectMultipleActivityJSON extends ActivityJSONCommon {
   answers: AnswerJSON[];
   cards?: never;
   choices?: never;
+  sequence?: never;
+}
+
+export interface SequenceActivityJSON extends ActivityJSONCommon {
+  activityType: ActivityType.SEQUENCE;
+  blocks: ContentBlockJSON[];
+  sequence: SequenceItemJSON[];
+  cards?: never;
+  choices?: never;
 }
 
 export interface AnswerJSON {
@@ -286,6 +301,14 @@ export interface SwipeCardsActivityJSON extends ActivityJSONCommon {
   activityType: ActivityType.SWIPE_CARDS;
   blocks: ContentBlockJSON[];
   cards: CardJSON[];
+}
+
+export interface SequenceItemJSON {
+  text: string;
+  feedback: {
+    whenCorrect: string;
+    whenMisordered: string[];
+  };
 }
 
 // export type SwipeCard = {
