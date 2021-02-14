@@ -227,9 +227,9 @@ export type ContentBlockJSON =
 export interface ReadActivityJSON extends ActivityJSONCommon {
   activityType: ActivityType.READ;
   blocks: ContentBlockJSON[];
-  answers: never;
-  choices: never;
-  cards: never;
+  answers?: never;
+  choices?: never;
+  cards?: never;
 }
 
 export type AnswerFeedback =
@@ -244,8 +244,8 @@ export interface SelectAnAnswerActivityJSON extends ActivityJSONCommon {
   activityType: ActivityType.SELECT_AN_ANSWER;
   blocks: ContentBlockJSON[];
   answers: AnswerJSON[];
-  choices: never;
-  cards: never;
+  choices?: never;
+  cards?: never;
 }
 
 export type SelectForEachBlankActivityJSON =
@@ -256,8 +256,8 @@ export interface SelectForEachBlankSimpleActivityJSON
   extends ActivityJSONCommon {
   activityType: ActivityType.SELECT_FOR_EACH_BLANK;
   blocks: ContentBlockJSON[];
-  answers: never;
-  cards: never;
+  answers?: never;
+  cards?: never;
 }
 
 export interface SelectForEachBlankComplexActivityJSON
@@ -271,8 +271,8 @@ export interface SelectMultipleActivityJSON extends ActivityJSONCommon {
   activityType: ActivityType.SELECT_MULTIPLE;
   blocks: ContentBlockJSON[];
   answers: AnswerJSON[];
-  cards: never;
-  choices: never;
+  cards?: never;
+  choices?: never;
 }
 
 export interface AnswerJSON {

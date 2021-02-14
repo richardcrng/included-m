@@ -1,12 +1,13 @@
 import { isPlainObj } from "ramda-adjunct";
 import {
+  ActivityJSONCommon,
   ActivityType,
   AnswerJSON,
   ContentBlockJSON,
   ReadActivityJSON,
   SelectAnAnswerActivityJSON,
 } from "../types/content-yaml.types";
-import { hasOwnProperties, hasOwnProperty } from "./utils";
+import { hasArrayProperty, hasOwnProperties, hasOwnProperty } from "./utils";
 
 export function isAnswerBlock(
   parsedYamlBlock: unknown
@@ -69,4 +70,25 @@ export function isSelectAnAnswerActivity(
   }
 
   return false;
+}
+
+interface ActivityValidation {
+  severity: "warning" | "error";
+  property: keyof ActivityJSONCommon;
+  path: string[];
+  message: string;
+}
+
+export function validateReadActivity(activity: object): ActivityValidation[] {
+  const errors: ActivityValidation[] = [];
+  if (!hasArrayProperty(activity, "blocks") || activity.blocks.length < 1) {
+    errors.push({
+      severity: "warning",
+      property: "blocks",
+      path: ["blocks"],
+      message:
+        "This read activity has no content blocks. You probably want to add at least one.",
+    });
+  }
+  return errors;
 }
