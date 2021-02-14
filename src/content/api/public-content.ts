@@ -1,4 +1,5 @@
 import { safeLoad, dump } from "js-yaml";
+import { baseYamlValidation, StandardiseYaml } from "./validators";
 import {
   ChapterYaml,
   ChapterYamlDeep,
@@ -17,16 +18,17 @@ import {
 import {
   ChapterPath,
   ContentPath,
-  contentStringPath,
+  pathToRoute,
   CoursePath,
   LessonPath,
+  routeToId,
   TopicPath,
-  yamlFileName,
+  yamlContentType,
 } from "../types/content-path.types";
 
 async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
-  const route = contentStringPath(path);
-  const id = route[route.length - 1];
+  const route = pathToRoute(path);
+  const id = routeToId(route);
   const frontMatter: ContentCommon = {
     path,
     route,
@@ -35,7 +37,7 @@ async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
   const commonFrontmatter = dump(frontMatter);
   try {
     const raw = await fetch(
-      `/course/${route.join("/")}/${yamlFileName(path)}.yaml`
+      `/course/${route.join("/")}/${yamlContentType(path)}.yaml`
     )
       .then((res) => res.text())
       // remove <!DOCTYPE html> if that's how it's been parsed
@@ -50,10 +52,6 @@ async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
   }
 }
 
-type StandardiseYaml<T extends ContentYaml> = (
-  jsYaml: ReturnType<typeof safeLoad> | T
-) => T;
-
 // function parseYaml<T extends ContentYaml>(
 //   fetchedYaml: FetchedYaml,
 //   standardiseYaml: StandardiseYaml<T>
@@ -67,13 +65,16 @@ async function fetchAndParsePublicYaml<T extends ContentYaml>(
   standardiseYaml?: StandardiseYaml<T>
 ): Promise<ParsedYaml<T>> {
   const fetchedYaml = await fetchPublicYaml(path);
-  const jsYaml = safeLoad(fetchedYaml.raw) as T;
-  const parsed = standardiseYaml ? standardiseYaml(jsYaml) : jsYaml;
+  const jsYaml = safeLoad(fetchedYaml.raw);
+  const validatedYaml = baseYamlValidation(jsYaml, path);
+  const parsed = standardiseYaml
+    ? standardiseYaml(jsYaml, path)
+    : (validatedYaml as T);
   return {
     ...fetchedYaml,
     parsed,
     path,
-    route: contentStringPath(path),
+    route: pathToRoute(path),
   };
 }
 

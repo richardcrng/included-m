@@ -8,20 +8,17 @@ import { fetchAndParsePublicTopicRecursive } from "../../../content/api/public-c
 import { alertUnderConstruction } from "../../../lib/utils";
 import { hasChildContent } from "../../../content/types/content-yaml.types";
 import {
-  contentStringPath,
+  pathToRoute,
   TopicPath,
 } from "../../../content/types/content-path.types";
 
 interface TopicPageRouteIdProps extends RouteComponentProps<TopicPath> {}
 
 function TopicPageRouteQuery({ history, match }: TopicPageRouteIdProps) {
-  const { data, isError } = useQuery(
-    contentStringPath(match.params),
-    async () => {
-      const res = await fetchAndParsePublicTopicRecursive(match.params);
-      return res;
-    }
-  );
+  const { data, isError } = useQuery(pathToRoute(match.params), async () => {
+    const res = await fetchAndParsePublicTopicRecursive(match.params);
+    return res;
+  });
 
   if (data) {
     return (

@@ -8,20 +8,17 @@ import { fetchAndParsePublicCourseDeep } from "../../../content/api/public-conte
 import { alertUnderConstruction } from "../../../lib/utils";
 import { hasChildContent } from "../../../content/types/content-yaml.types";
 import {
-  contentStringPath,
+  pathToRoute,
   CoursePath,
 } from "../../../content/types/content-path.types";
 
 interface CoursePageRouteProps extends RouteComponentProps<CoursePath> {}
 
 function CoursePageRouteQuery({ history, match }: CoursePageRouteProps) {
-  const { data, isError } = useQuery(
-    contentStringPath(match.params),
-    async () => {
-      const course = await fetchAndParsePublicCourseDeep(match.params);
-      return course;
-    }
-  );
+  const { data, isError } = useQuery(pathToRoute(match.params), async () => {
+    const course = await fetchAndParsePublicCourseDeep(match.params);
+    return course;
+  });
 
   if (data) {
     return (

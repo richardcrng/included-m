@@ -26,6 +26,7 @@ export interface ParsedYaml<T extends ContentYaml = ContentYaml>
   path: ContentPath;
   route: ContentRoute;
 }
+
 export type ContentYaml = CourseYaml | TopicYaml | ChapterYaml | LessonYaml;
 
 export function isCourseYaml(

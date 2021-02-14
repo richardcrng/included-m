@@ -6,20 +6,17 @@ import { useQuery } from "react-query";
 import ErrorPage from "../../pages/ErrorPage";
 import { fetchAndParsePublicLesson } from "../../../content/api/public-content";
 import {
-  contentStringPath,
+  pathToRoute,
   LessonPath,
 } from "../../../content/types/content-path.types";
 
 interface LessonPageRouteProps extends RouteComponentProps<LessonPath> {}
 
 function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
-  const { data, isError } = useQuery(
-    contentStringPath(match.params),
-    async () => {
-      const res = await fetchAndParsePublicLesson(match.params);
-      return res;
-    }
-  );
+  const { data, isError } = useQuery(pathToRoute(match.params), async () => {
+    const res = await fetchAndParsePublicLesson(match.params);
+    return res;
+  });
 
   if (data) {
     return <LessonPageView lesson={data.parsed} />;
