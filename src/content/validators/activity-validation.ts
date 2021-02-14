@@ -3,7 +3,7 @@ import {
   ContentBlockJSON,
   ReadActivityJSON,
 } from "../types/content-yaml.types";
-import { hasOwnProperty } from "./utils";
+import { hasOwnProperties, hasOwnProperty } from "./utils";
 
 export function isContentBlock(
   parsedYamlBlock: unknown
@@ -21,5 +21,12 @@ export function isContentBlock(
 export function isReadActivity(
   parsedYaml: object
 ): parsedYaml is ReadActivityJSON {
+  if (!hasOwnProperties(parsedYaml, ["activityType", "blocks"])) {
+    return false;
+  } else {
+    parsedYaml;
+  }
+
+  return false;
   return true;
 }

@@ -190,12 +190,20 @@ export interface LessonJSON extends LessonCommon {
   activities: ActivityJSON[];
 }
 
-export type ActivityType =
-  | "read"
-  | "select-an-answer"
-  | "select-for-each-blank"
-  | "select-multiple"
-  | "swipe-cards";
+export enum ActivityType {
+  READ = "read",
+  SELECT_AN_ANSWER = "select-an-answer",
+  SELECT_FOR_EACH_BLANK = "select-for-each-blank",
+  SELECT_MULTIPLE = "select-multiple",
+  SWIPE_CARDS = "swipe-cards",
+}
+
+// export type ActivityType =
+//   | "read"
+//   | "select-an-answer"
+//   | "select-for-each-blank"
+//   | "select-multiple"
+//   | "swipe-cards";
 
 export interface ActivityJSONCommon {
   activityType: ActivityType;
@@ -234,7 +242,7 @@ export type ContentBlockJSON =
     };
 
 export interface ReadActivityJSON extends ActivityJSONCommon {
-  activityType: "read";
+  activityType: ActivityType.READ;
   blocks: ContentBlockJSON[];
   answers: never;
   choices: never;
@@ -250,7 +258,7 @@ export type AnswerFeedback =
     };
 
 export interface SelectAnAnswerActivityJSON extends ActivityJSONCommon {
-  activityType: "select-an-answer";
+  activityType: ActivityType.SELECT_AN_ANSWER;
   blocks: ContentBlockJSON[];
   answers: AnswerJSON[];
   choices: never;
@@ -263,7 +271,7 @@ export type SelectForEachBlankActivityJSON =
 
 export interface SelectForEachBlankSimpleActivityJSON
   extends ActivityJSONCommon {
-  activityType: "select-for-each-blank";
+  activityType: ActivityType.SELECT_FOR_EACH_BLANK;
   blocks: ContentBlockJSON[];
   answers: never;
   cards: never;
@@ -277,7 +285,7 @@ export interface SelectForEachBlankComplexActivityJSON
 }
 
 export interface SelectMultipleActivityJSON extends ActivityJSONCommon {
-  activityType: "select-multiple";
+  activityType: ActivityType.SELECT_MULTIPLE;
   blocks: ContentBlockJSON[];
   answers: AnswerJSON[];
   cards: never;
@@ -292,7 +300,7 @@ export interface AnswerJSON {
 }
 
 export interface SwipeCardsActivityJSON extends ActivityJSONCommon {
-  activityType: "swipe-cards";
+  activityType: ActivityType.SWIPE_CARDS;
   blocks: ContentBlockJSON[];
   cards: CardJSON[];
 }
