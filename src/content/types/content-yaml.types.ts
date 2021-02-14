@@ -77,6 +77,15 @@ export interface ContentCommon {
   id: string;
   path: ContentPath;
   route: ContentRoute;
+  courseTitle?: string;
+  topicTitle?: string;
+  chapterTitle?: string;
+  lessonTitle?: string;
+  description?: string;
+  topicIdsOrdered?: string[];
+  chapterIdsOrdered?: string[];
+  lessonIdsOrdered?: string[];
+  activities?: ActivityJSON[];
 }
 
 interface CourseCommon extends ContentCommon {
@@ -84,6 +93,12 @@ interface CourseCommon extends ContentCommon {
   description: string;
   path: CoursePath;
   route: CourseRoute;
+  topicTitle: never;
+  chapterTitle: never;
+  lessonTitle: never;
+  chapterIdsOrdered: never;
+  lessonIdsOrdered: never;
+  activities: never;
 }
 
 export interface CourseYaml extends CourseCommon {
@@ -107,6 +122,12 @@ interface TopicCommon extends ContentCommon {
   description: string;
   path: TopicPath;
   route: TopicRoute;
+  courseTitle: never;
+  chapterTitle: never;
+  lessonTitle: never;
+  courseIdsOrdered: never;
+  lessonIdsOrdered: never;
+  activities: never;
 }
 
 export interface TopicYaml extends TopicCommon {
@@ -129,6 +150,12 @@ interface ChapterCommon extends ContentCommon {
   chapterTitle: string;
   path: ChapterPath;
   route: ChapterRoute;
+  courseTitle: never;
+  topicTitle: never;
+  lessonTitle: never;
+  courseIdsOrdered: never;
+  chapterIdsOrdered: never;
+  activities: never;
 }
 
 export interface ChapterYaml extends ChapterCommon {
@@ -147,6 +174,12 @@ interface LessonCommon extends ContentCommon {
   lessonTitle: string;
   path: LessonPath;
   route: LessonRoute;
+  courseTitle: never;
+  topicTitle: never;
+  chapterTitle: never;
+  courseIdsOrdered: never;
+  topicIdsOrdered: never;
+  chapterIdsOrdered: never;
 }
 
 export interface LessonYaml extends LessonCommon {
