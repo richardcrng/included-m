@@ -35,6 +35,13 @@ function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
 
   const [activityState, dispatch] = useReducer(reducer, initialState);
 
+  const orderedIncompleteAnswers = orderedAnswers.filter((answer, index) => {
+    const currentAnswerState = activityState.answers.find(
+      (answerState) => answerState.textMatch === answer.textMatch
+    );
+    return !currentAnswerState?.isLocked;
+  });
+
   const answerMatchesInput = (answer: ChoiceAnswerState) => {
     return activityState.selectedInput === answer.textMatch;
   };
@@ -57,12 +64,14 @@ function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
       dispatch(
         bundle([
           actions.answers[idx].isLocked.create.on(),
-          // move onto next input
+          // move onto next incomplete input
           actions.selectedInput.create.do(() => {
-            const currIndex = orderedAnswers.findIndex(answerMatchesInput);
-            return currIndex < orderedAnswers.length - 1
-              ? orderedAnswers[currIndex + 1].textMatch
-              : orderedAnswers[0].textMatch;
+            const currIndex = orderedIncompleteAnswers.findIndex(
+              answerMatchesInput
+            );
+            return currIndex < orderedIncompleteAnswers.length - 1
+              ? orderedIncompleteAnswers[currIndex + 1].textMatch
+              : orderedIncompleteAnswers[0].textMatch;
           }),
         ])
       );
