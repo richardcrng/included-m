@@ -24,6 +24,7 @@ function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
   });
 
   const answers = answersFromBlocks(blocks);
+  const orderedAnswers = Object.values(answers);
 
   const initialState = {
     answers: shuffle(answers),
@@ -56,12 +57,12 @@ function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
       dispatch(
         bundle([
           actions.answers[idx].isLocked.create.on(),
+          // move onto next input
           actions.selectedInput.create.do(() => {
-            const answersArr = Object.values(activityState.answers);
-            const currIndex = answersArr.findIndex(answerMatchesInput);
-            return currIndex < answersArr.length - 1
-              ? answersArr[currIndex + 1].textMatch
-              : answersArr[0].textMatch;
+            const currIndex = orderedAnswers.findIndex(answerMatchesInput);
+            return currIndex < orderedAnswers.length - 1
+              ? orderedAnswers[currIndex + 1].textMatch
+              : orderedAnswers[0].textMatch;
           }),
         ])
       );
