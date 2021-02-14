@@ -202,5 +202,26 @@ describe("validators", () => {
         message: `This read activity has an invalid content block, ${42}, at index 1. Content blocks are typically normally text (strings).`,
       });
     });
+
+    it("captures warnings for all invalid blocks", () => {
+      const activity = {
+        activityType: ActivityType.READ,
+        blocks: [true, "hello there", 42],
+      };
+      const result = validateReadActivity(activity);
+      expect(result).toHaveLength(2);
+      expect(result[0]).toMatchObject({
+        severity: "error",
+        property: "blocks",
+        path: ["blocks", "0"],
+        message: `This read activity has an invalid content block, true, at index 0. Content blocks are typically normally text (strings).`,
+      });
+      expect(result[1]).toMatchObject({
+        severity: "error",
+        property: "blocks",
+        path: ["blocks", "2"],
+        message: `This read activity has an invalid content block, 42, at index 2. Content blocks are typically normally text (strings).`,
+      });
+    });
   });
 });
