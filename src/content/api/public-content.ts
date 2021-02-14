@@ -50,11 +50,25 @@ async function fetchPublicYaml(path: ContentPath): Promise<FetchedYaml> {
   }
 }
 
+type StandardiseYaml<T extends ContentYaml> = (
+  jsYaml: ReturnType<typeof safeLoad> | T
+) => T;
+
+// function parseYaml<T extends ContentYaml>(
+//   fetchedYaml: FetchedYaml,
+//   standardiseYaml: StandardiseYaml<T>
+// ): T {
+//   const jsYaml = safeLoad(fetchedYaml.raw) as T;
+//   return standardiseYaml(jsYaml);
+// }
+
 async function fetchAndParsePublicYaml<T extends ContentYaml>(
-  path: ContentPath
+  path: ContentPath,
+  standardiseYaml?: StandardiseYaml<T>
 ): Promise<ParsedYaml<T>> {
   const fetchedYaml = await fetchPublicYaml(path);
-  const parsed = safeLoad(fetchedYaml.raw) as T;
+  const jsYaml = safeLoad(fetchedYaml.raw) as T;
+  const parsed = standardiseYaml ? standardiseYaml(jsYaml) : jsYaml;
   return {
     ...fetchedYaml,
     parsed,
