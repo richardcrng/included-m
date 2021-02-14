@@ -81,6 +81,7 @@ interface ActivityValidation {
 
 export function validateReadActivity(activity: object): ActivityValidation[] {
   const errors: ActivityValidation[] = [];
+
   if (!hasArrayProperty(activity, "blocks") || activity.blocks.length < 1) {
     errors.push({
       severity: "warning",
@@ -89,6 +90,18 @@ export function validateReadActivity(activity: object): ActivityValidation[] {
       message:
         "This read activity has no content blocks. You probably want to add at least one.",
     });
+  } else {
+    for (let [index, block] of Object.entries(activity.blocks)) {
+      if (!isContentBlock(block)) {
+        errors.push({
+          severity: "error",
+          property: "blocks",
+          path: ["blocks", index],
+          message: `This read activity has an invalid content block, ${block}, at index ${index}. Content blocks are typically normally text (strings).`,
+        });
+      }
+    }
   }
+
   return errors;
 }
