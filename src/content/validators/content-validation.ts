@@ -21,7 +21,6 @@ import {
   TopicRoute,
 } from "../types/content-path.types";
 import {
-  ActivityJSON,
   ChapterYaml,
   ContentYaml,
   CourseYaml,
