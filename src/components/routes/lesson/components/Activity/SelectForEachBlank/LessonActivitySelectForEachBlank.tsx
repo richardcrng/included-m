@@ -1,5 +1,6 @@
 import React, { useReducer, useState } from "react";
 import { shuffle } from "lodash";
+import Markdown from "markdown-to-jsx";
 import riduce, { bundle } from "riduce";
 import { answersFromBlocks, BlankOrText, hasBlanks } from "./utils";
 import LessonContent from "../../LessonContent";
@@ -113,7 +114,9 @@ function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
 
                 const nodes = [
                   ...acc.nodes,
-                  <span key={before}>{before}</span>,
+                  <Markdown key={before} options={{ forceInline: true }}>
+                    {before}
+                  </Markdown>,
                   <BlankOrText
                     key={match}
                     matchingAnswer={matchingAnswer}
