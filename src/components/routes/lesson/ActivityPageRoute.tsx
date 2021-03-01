@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
 import LoadingPage from "../../pages/LoadingPage";
 import { useQuery } from "react-query";
@@ -6,19 +6,25 @@ import ErrorPage from "../../pages/ErrorPage";
 import { fetchAndParsePublicLesson } from "../../../content/api/public-content";
 import {
   pathToRoute,
-  LessonPath,
+  ActivityPath,
 } from "../../../content/types/content-path.types";
 import ActivityPageView from "./ActivityPageView";
 
-interface LessonPageRouteProps extends RouteComponentProps<LessonPath> {}
+interface ActivityPageRouteProps extends RouteComponentProps<ActivityPath> {}
 
-function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
+function ActivityPageRouteQuery({ history, match }: ActivityPageRouteProps) {
   const { data, isError } = useQuery(pathToRoute(match.params), async () => {
-    const res = await fetchAndParsePublicLesson(match.params);
+    const { courseId, chapterId, topicId, lessonId } = match.params;
+    const res = await fetchAndParsePublicLesson({
+      courseId,
+      chapterId,
+      topicId,
+      lessonId,
+    });
     return res;
   });
 
-  const [currentPage, setCurrentPage] = useState(0);
+  const currentPage = parseInt(match.params.activityIdx);
 
   if (data) {
     const totalPages = data.parsed.activities.length;
@@ -28,14 +34,23 @@ function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
 
     const handleContinue = () => {
       if (currentPage < totalPages - 1) {
-        setCurrentPage((prev) => prev + 1);
+        const route = `/learn/${pathToRoute({
+          ...match.params,
+          activityIdx: `${currentPage + 1}`,
+        }).join("/")}`;
+        history.push(route);
       } else {
         window.alert("End of lesson!");
       }
     };
 
     const handleExit = () => {
-      history.push(`/${match.params.courseId}/${match.params.topicId}`);
+      history.push(
+        pathToRoute({
+          ...match.params,
+          activityIdx: undefined,
+        }).join("/")
+      );
     };
 
     return (
@@ -58,9 +73,9 @@ function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
   }
 }
 
-const LessonPageRoute = {
-  // Firebase: LessonPageRouteFirebase,
-  Query: LessonPageRouteQuery,
+const ActivityPageRoute = {
+  // Firebase: ActivityPageRouteFirebase,
+  Query: ActivityPageRouteQuery,
 };
 
-export default LessonPageRoute;
+export default ActivityPageRoute;

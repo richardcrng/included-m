@@ -1,18 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import { IonButton, IonFooter } from "@ionic/react";
-import { LessonContext } from "../LessonPageView";
 
 interface Props {
   disabled?: boolean;
+  handleContinue(): void;
 }
 
-function LessonContinueButton({ disabled }: Props) {
-  const {
-    dispatch,
-    actions,
-    state: { activities, currentIdx },
-  } = useContext(LessonContext);
-
+function LessonContinueButton({ disabled, handleContinue }: Props) {
   return (
     <IonFooter style={{ backgroundColor: "white" }}>
       <IonButton
@@ -20,13 +14,7 @@ function LessonContinueButton({ disabled }: Props) {
         disabled={disabled}
         expand="full"
         size="large"
-        onClick={() => {
-          if (currentIdx < activities.length - 1) {
-            dispatch(actions.currentIdx.create.increment());
-          } else {
-            window.alert("You've reached the end of the demo!");
-          }
-        }}
+        onClick={handleContinue}
       >
         Continue
       </IonButton>

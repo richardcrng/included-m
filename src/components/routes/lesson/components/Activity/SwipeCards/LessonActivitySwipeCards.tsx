@@ -20,9 +20,10 @@ import { SwipeCardsActivityJSON } from "../../../../../../content/types/content-
 
 interface Props {
   activity: SwipeCardsActivityJSON;
+  handleContinue(): void;
 }
 
-function LessonActivitySwipeCards({ activity }: Props) {
+function LessonActivitySwipeCards({ activity, handleContinue }: Props) {
   const [notificationState, setNotificationState] = useState<NotificationProps>(
     { message: "", isShowing: false }
   );
@@ -136,7 +137,9 @@ function LessonActivitySwipeCards({ activity }: Props) {
                     </IonButton>
                   </>
                 )}
-                {cardsState.length === 0 && <LessonContinueButton />}
+                {cardsState.length === 0 && (
+                  <LessonContinueButton handleContinue={handleContinue} />
+                )}
               </IonFooter>
             </>
           );
