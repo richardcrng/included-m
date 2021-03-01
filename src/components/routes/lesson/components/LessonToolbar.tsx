@@ -42,13 +42,8 @@ function LessonToolbar({
   const getCurrentActivityType = () => {
     if (!activityType) return "Included M";
 
-<<<<<<< HEAD
-    switch (activities[currentIdx].activityType) {
-      case "select-one":
-=======
     switch (activityType) {
-      case "select-an-answer":
->>>>>>> main
+      case "select-one":
         return "Select an answer";
 
       case "select-for-each-blank":

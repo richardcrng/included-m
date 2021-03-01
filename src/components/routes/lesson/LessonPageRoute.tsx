@@ -27,7 +27,7 @@ function LessonPageRouteQuery({ history, match }: LessonPageRouteProps) {
     const handleBack = () => history.goBack();
 
     const handleContinue = () => {
-      if (currentPage < totalPages - 1) {
+      if (currentPage + 1 < totalPages - 1) {
         setCurrentPage((prev) => prev + 1);
       } else {
         window.alert("End of lesson!");
