@@ -6,9 +6,10 @@ import { ReadActivityJSON } from "../../../../../content/types/content-yaml.type
 
 interface Props {
   activity: ReadActivityJSON;
+  handleContinue(): void;
 }
 
-function LessonActivityRead({ activity }: Props) {
+function LessonActivityRead({ activity, handleContinue }: Props) {
   return (
     <>
       <LessonContent>
@@ -16,7 +17,7 @@ function LessonActivityRead({ activity }: Props) {
           <LessonContentBlock key={JSON.stringify(block)} block={block} />
         ))}
       </LessonContent>
-      <LessonContinueButton />
+      <LessonContinueButton handleContinue={handleContinue} />
     </>
   );
 }

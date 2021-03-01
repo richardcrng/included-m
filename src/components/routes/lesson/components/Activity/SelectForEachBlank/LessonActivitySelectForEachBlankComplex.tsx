@@ -15,6 +15,7 @@ import { SelectForEachBlankActivityJSON } from "../../../../../../content/types/
 
 interface Props {
   activity: SelectForEachBlankActivityJSON;
+  handleContinue(): void;
 }
 
 export interface ChoiceAnswerState extends AnswerBase {
@@ -25,6 +26,7 @@ export interface ChoiceAnswerState extends AnswerBase {
 
 function LessonActivitySelectForEachBlankComplex({
   activity: { blocks, choices = {} },
+  handleContinue,
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({
     message: "",
@@ -196,7 +198,10 @@ function LessonActivitySelectForEachBlankComplex({
             />
           ))}
       </LessonContent>
-      <LessonContinueButton disabled={!allChoicesLocked} />
+      <LessonContinueButton
+        disabled={!allChoicesLocked}
+        handleContinue={handleContinue}
+      />
     </>
   );
 }

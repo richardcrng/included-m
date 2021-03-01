@@ -13,6 +13,7 @@ import CoursePageRoute from "./components/routes/course/CoursePageRoute";
 import TopicPageRoute from "./components/routes/topic/TopicPageRoute";
 import LessonPageRoute from "./components/routes/lesson/LessonPageRoute";
 import HomePage from "./components/routes/HomePage";
+import ActivityPageRoute from "./components/routes/lesson/ActivityPageRoute";
 
 interface Version {
   versionNumber: string;
@@ -120,6 +121,11 @@ const App: React.FC = () => {
             exact
             path="/learn/:courseId/:topicId/:chapterId/:lessonId"
             component={withAuth(LessonPageRoute.Query)}
+          />
+          <Route
+            exact
+            path="/learn/:courseId/:topicId/:chapterId/:lessonId/:activityIdx"
+            component={withAuth(ActivityPageRoute.Query)}
           />
           <Route exact path="/" component={HomePage} />
           <Redirect to="/" />

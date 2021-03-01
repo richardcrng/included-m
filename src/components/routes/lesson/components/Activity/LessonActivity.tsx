@@ -1,6 +1,5 @@
 import { IonButton } from "@ionic/react";
 import React from "react";
-import { useHistory } from "react-router";
 import { ActivityJSON } from "../../../../../content/types/content-yaml.types";
 import LessonContent from "../LessonContent";
 import LessonActivityRead from "./LessonActivityRead";
@@ -11,11 +10,11 @@ import LessonActivitySwipeCards from "./SwipeCards";
 
 interface Props {
   activity: ActivityJSON;
+  handleBack?(): void;
+  handleContinue(): void;
 }
 
-function LessonActivity({ activity }: Props) {
-  const history = useHistory();
-
+function LessonActivity({ activity, handleBack, handleContinue }: Props) {
   if (!activity) {
     return (
       <>
@@ -23,31 +22,53 @@ function LessonActivity({ activity }: Props) {
           <h1>Under construction...!</h1>
           <p>This lesson is still under construction.</p>
           <p>Why don't you try another?</p>
-          <IonButton
-            onClick={() => {
-              history.goBack();
-            }}
-            expand="full"
-          >
+          <IonButton onClick={handleBack} expand="full">
             Go back
           </IonButton>
         </LessonContent>
       </>
     );
   } else if (activity.activityType === "select-one") {
-    return <LessonActivitySelectMultiple activity={activity} />;
+    return (
+      <LessonActivitySelectMultiple
+        activity={activity}
+        handleContinue={handleContinue}
+      />
+    );
   } else if (activity.activityType === "select-multiple") {
-    return <LessonActivitySelectMultiple activity={activity} />;
+    return (
+      <LessonActivitySelectMultiple
+        activity={activity}
+        handleContinue={handleContinue}
+      />
+    );
   } else if (activity.activityType === "select-for-each-blank") {
     if (Object.keys(activity.choices || {}).length > 0) {
-      return <LessonActivitySelectForEachBlankComplex activity={activity} />;
+      return (
+        <LessonActivitySelectForEachBlankComplex
+          activity={activity}
+          handleContinue={handleContinue}
+        />
+      );
     } else {
-      return <LessonActivitySelectForEachBlank activity={activity} />;
+      return (
+        <LessonActivitySelectForEachBlank
+          activity={activity}
+          handleContinue={handleContinue}
+        />
+      );
     }
   } else if (activity.activityType === "swipe-cards") {
-    return <LessonActivitySwipeCards activity={activity} />;
+    return (
+      <LessonActivitySwipeCards
+        activity={activity}
+        handleContinue={handleContinue}
+      />
+    );
   } else if (activity.activityType === "read") {
-    return <LessonActivityRead activity={activity} />;
+    return (
+      <LessonActivityRead activity={activity} handleContinue={handleContinue} />
+    );
   } else {
     return null;
   }

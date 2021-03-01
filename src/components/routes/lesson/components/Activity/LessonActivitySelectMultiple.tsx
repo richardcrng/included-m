@@ -12,10 +12,12 @@ import { ActivityJSON } from "../../../../../content/types/content-yaml.types";
 
 interface Props {
   activity: ActivityJSON;
+  handleContinue(): void;
 }
 
 function LessonActivitySelectMultiple({
   activity: { blocks, answers = [] },
+  handleContinue,
 }: Props) {
   const [notification, setNotification] = useState<NotificationProps>({
     message: "",
@@ -118,7 +120,10 @@ function LessonActivitySelectMultiple({
           />
         ))}
       </LessonContent>
-      <LessonContinueButton disabled={!allCorrectAnswersSelected} />
+      <LessonContinueButton
+        disabled={!allCorrectAnswersSelected}
+        handleContinue={handleContinue}
+      />
     </>
   );
 }

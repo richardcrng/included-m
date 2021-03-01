@@ -1,21 +1,33 @@
-import { IonHeader } from '@ionic/react'
-import React from 'react'
-import LessonToolbar from './LessonToolbar'
+import { IonHeader } from "@ionic/react";
+import React from "react";
+import LessonToolbar from "./LessonToolbar";
 
 interface Props {
-  message?: string
+  currentPage: number;
+  totalPages: number;
+  handleBack(): void;
+  handleExit(): void;
+  message?: string;
 }
 
 export default function LessonHeader({
-  message
+  currentPage,
+  totalPages,
+  handleBack,
+  handleExit,
+  message,
 }: Props) {
   return (
     <IonHeader>
       <LessonToolbar
         {...{
-          message
+          currentPage,
+          totalPages,
+          handleBack,
+          handleExit,
+          message,
         }}
       />
     </IonHeader>
-  )
+  );
 }
