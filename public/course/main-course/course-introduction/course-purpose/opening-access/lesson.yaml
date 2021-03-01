@@ -4,27 +4,46 @@ activities:
     blocks:
       - "# Opening access to VC"
       - _In this lesson, you will learn:_
-      - "- How reliance on signalling leads to gatekeeping in venture capital"
-      - "- How Included M aims to increase access to venture capital for all backgrounds"
       - "- Why we've chosen to make this an open-access, entirely free course"
+      - "- How Included M aims to increase access to venture capital for all backgrounds"
+      - "- How reliance on signalling leads to gatekeeping in venture capital"
   - activityType: read
     blocks:
       - Included M has been built to provide a **fully open-source** learning pathway in venture capital.
       - But why is this needed?
-  - activityType: select-multiple
-    blocks:
-      - At Included VC, we believe that talent is equally distributed - but opportunity is not.
-      - If you have a certain background, you're more likely to be represented in venture capital.
-      - Here's a non-exhaustive list... which of them do you think apply?
-    answers:
-      - text: Male
-        isCorrect: true
-      - text: White
-        isCorrect: true
-      - text: "'Elite' university"
-        isCorrect: true
   - activityType: select-for-each-blank
     blocks:
+      - At Included VC, we believe that talent is equally distributed - but opportunity is not.
+      - For example, a study of almost 5,000 VC-funded startups found that a very clear 'typical team' emerged.
+      - "To quote the report:"
+      - The typical founding team across these 4,475 companies was a two person, "{{all male}}," "{{all white}}," U.S. {{university-educated}} team residing in {{Silicon Valley}}.
+    choices:
+      "{{all male}}":
+        - text: all male
+          isCorrect: true
+        - text: mixed gender
+          isCorrect: false
+      # prettier-ignore
+      "{{all white}}":
+        - text: all white
+          isCorrect: true
+        - text: mixed ethnicity
+          isCorrect: false
+      # prettier-ignore
+      "{{university-educated}}":
+        - text: university-educated
+          isCorrect: true
+        - text: educationally diverse
+          isCorrect: false
+      # prettier-ignore
+      "{{Silicon Valley}}":
+        - text: Silicon Valley
+          isCorrect: true
+        - text: varied communities
+          isCorrect: false
+  - activityType: select-for-each-blank
+    blocks:
+      - It's not just the US either.
       - Let's look at an indicative example from the UK.
       - Less than {{1%}} of the UK population have degrees from the universities of Oxford and Cambridge.
       - "But, in *ascending order*, it's:"
@@ -48,3 +67,17 @@ activities:
       - text: 13%
         isCorrect: false
         feedback: As it happens, this is the % of senior investment roles that are held by women, where the diversity problem is worst.
+  - activityType: select-one
+    blocks:
+      - When so few VC investment roles are held by women, it's no surprise that startup founding teams are predominantly male.
+      - What proportion of UK VC deals do you think are made with _all-male_ founding teams?
+    answers:
+      - text: 89%
+        isCorrect: false
+        feedback: Close - this turns out to be the % of funding _value_ that goes to all-male teams, rather than the number of deals.
+      - text: 83%
+        isCorrect: true
+        feedback: That's right - 83% of funded founding teams are _all-male_.
+      - text: 17%
+        isCorrect: false
+        feedback: This is the proportion of _mixed_ teams. Yes, only 17% of founding teams are mixed...
