@@ -43,7 +43,7 @@ function LessonToolbar({
     if (!activityType) return "Included M";
 
     switch (activityType) {
-      case "select-an-answer":
+      case "select-one":
         return "Select an answer";
 
       case "select-for-each-blank":

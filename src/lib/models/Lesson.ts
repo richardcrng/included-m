@@ -5,7 +5,7 @@ import { AsyncReturnType } from "type-fest";
 
 export type LessonType =
   | "read"
-  | "select-an-answer"
+  | "select-one"
   | "select-for-each-blank"
   | "select-multiple"
   | "swipe-cards";

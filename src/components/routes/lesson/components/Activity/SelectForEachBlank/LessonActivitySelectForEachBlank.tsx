@@ -1,5 +1,6 @@
 import React, { useReducer, useState } from "react";
 import { shuffle } from "lodash";
+import Markdown from "markdown-to-jsx";
 import riduce, { bundle } from "riduce";
 import { answersFromBlocks, BlankOrText, hasBlanks } from "./utils";
 import LessonContent from "../../LessonContent";
@@ -27,6 +28,7 @@ function LessonActivitySelectForEachBlank({
   });
 
   const answers = answersFromBlocks(blocks);
+  const orderedAnswers = Object.values(answers);
 
   const initialState = {
     answers: shuffle(answers),
@@ -36,6 +38,13 @@ function LessonActivitySelectForEachBlank({
   const [reducer, actions] = riduce(initialState);
 
   const [activityState, dispatch] = useReducer(reducer, initialState);
+
+  const orderedIncompleteAnswers = orderedAnswers.filter((answer, index) => {
+    const currentAnswerState = activityState.answers.find(
+      (answerState) => answerState.textMatch === answer.textMatch
+    );
+    return !currentAnswerState?.isLocked;
+  });
 
   const answerMatchesInput = (answer: ChoiceAnswerState) => {
     return activityState.selectedInput === answer.textMatch;
@@ -59,12 +68,14 @@ function LessonActivitySelectForEachBlank({
       dispatch(
         bundle([
           actions.answers[idx].isLocked.create.on(),
+          // move onto next incomplete input
           actions.selectedInput.create.do(() => {
-            const answersArr = Object.values(activityState.answers);
-            const currIndex = answersArr.findIndex(answerMatchesInput);
-            return currIndex < answersArr.length - 1
-              ? answersArr[currIndex + 1].textMatch
-              : answersArr[0].textMatch;
+            const currIndex = orderedIncompleteAnswers.findIndex(
+              answerMatchesInput
+            );
+            return currIndex < orderedIncompleteAnswers.length - 1
+              ? orderedIncompleteAnswers[currIndex + 1].textMatch
+              : orderedIncompleteAnswers[0].textMatch;
           }),
         ])
       );
@@ -117,7 +128,9 @@ function LessonActivitySelectForEachBlank({
 
                 const nodes = [
                   ...acc.nodes,
-                  <span key={before}>{before}</span>,
+                  <Markdown key={before} options={{ forceInline: true }}>
+                    {before}
+                  </Markdown>,
                   <BlankOrText
                     key={match}
                     matchingAnswer={matchingAnswer}
