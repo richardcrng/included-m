@@ -1,7 +1,6 @@
 import React from "react";
 import LessonActivity from "./components/Activity/LessonActivity";
 import LessonToolbar from "./components/LessonToolbar";
-import ActivityPageView from "./ActivityPageView";
 import {
   ActivityJSON,
   LessonYaml,
@@ -19,7 +18,7 @@ interface Props {
   totalPages: number;
 }
 
-function LessonPageView({
+function ActivityPageView({
   activity,
   currentPage,
   handleBack,
@@ -27,7 +26,14 @@ function LessonPageView({
   handleExit,
   totalPages,
 }: Props) {
-  return null;
+  return (
+    <>
+      <LessonToolbar
+        {...{ handleBack, handleContinue, handleExit, currentPage, totalPages }}
+      />
+      <LessonActivity activity={activity} handleContinue={handleContinue} />
+    </>
+  );
 }
 
-export default LessonPageView;
+export default ActivityPageView;

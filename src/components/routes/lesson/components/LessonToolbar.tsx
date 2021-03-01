@@ -1,9 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { IonButtons, IonToolbar } from "@ionic/react";
 import { IoArrowBack, IoClose } from "react-icons/io5";
-import { LessonContext } from "../LessonPageView";
-import { useHistory } from "react-router";
 import ProgressBoxes from "../../../ui/atoms/ProgressBoxes";
 
 const Buttons = styled(IonButtons)`
@@ -25,22 +23,26 @@ const Message = styled.p`
 `;
 
 interface Props {
+  activityType?: string;
+  currentPage: number;
+  totalPages: number;
+  handleBack(): void;
+  handleExit(): void;
   message?: string;
 }
 
-function LessonToolbar({ message }: Props) {
-  const history = useHistory();
-
-  const {
-    dispatch,
-    actions,
-    state: { activities, currentIdx },
-  } = useContext(LessonContext);
-
+function LessonToolbar({
+  activityType,
+  currentPage,
+  handleBack,
+  handleExit,
+  message,
+  totalPages,
+}: Props) {
   const getCurrentActivityType = () => {
-    if (!activities || !activities[currentIdx]) return "Included M";
+    if (!activityType) return "Included M";
 
-    switch (activities[currentIdx].activityType) {
+    switch (activityType) {
       case "select-an-answer":
         return "Select an answer";
 
@@ -61,32 +63,13 @@ function LessonToolbar({ message }: Props) {
   return (
     <IonToolbar>
       <Buttons slot="start">
-        <IoArrowBack
-          onClick={() => {
-            if (currentIdx === 0) {
-              history.goBack();
-            } else {
-              dispatch(
-                actions.currentIdx.create.do((n: number) => Math.max(0, n - 1))
-              );
-            }
-          }}
-          size={24}
-        />
+        <IoArrowBack onClick={handleBack} size={24} />
       </Buttons>
       <Buttons slot="end">
-        <IoClose
-          size={24}
-          onClick={() => {
-            history.goBack();
-          }}
-        />
+        <IoClose size={24} onClick={handleExit} />
       </Buttons>
       <Title>
-        <ProgressBoxes
-          currentPage={currentIdx}
-          totalPages={activities.length}
-        />
+        <ProgressBoxes currentPage={currentPage} totalPages={totalPages} />
         <Message>{message || getCurrentActivityType()}</Message>
       </Title>
     </IonToolbar>

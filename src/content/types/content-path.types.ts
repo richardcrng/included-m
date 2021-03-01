@@ -31,12 +31,14 @@ export interface CoursePath {
   topicId?: never;
   chapterId?: never;
   lessonId?: never;
+  activityIdx?: never;
 }
 export interface TopicPath {
   courseId: string;
   topicId: string;
   chapterId?: never;
   lessonId?: never;
+  activityIdx?: never;
 }
 
 export interface ChapterPath {
@@ -44,6 +46,7 @@ export interface ChapterPath {
   topicId: string;
   chapterId: string;
   lessonId?: never;
+  activityIdx?: never;
 }
 
 export interface LessonPath {
@@ -51,9 +54,23 @@ export interface LessonPath {
   topicId: string;
   chapterId: string;
   lessonId: string;
+  activityIdx?: never;
 }
 
-export type ContentPath = CoursePath | TopicPath | ChapterPath | LessonPath;
+export interface ActivityPath {
+  courseId: string;
+  topicId: string;
+  chapterId: string;
+  lessonId: string;
+  activityIdx: string;
+}
+
+export type ContentPath =
+  | CoursePath
+  | TopicPath
+  | ChapterPath
+  | LessonPath
+  | ActivityPath;
 
 export function isPathToCourse(path: ContentPath): path is CoursePath {
   return !path.topicId;
@@ -68,7 +85,11 @@ export function isPathToChapter(path: ContentPath): path is ChapterPath {
 }
 
 export function isPathToLesson(path: ContentPath): path is LessonPath {
-  return !!path.lessonId;
+  return !!path.lessonId && !path.activityIdx;
+}
+
+export function isPathToActivity(path: ContentPath): path is LessonPath {
+  return !!path.activityIdx;
 }
 
 export function pathToId(path: ContentPath): string {
@@ -140,11 +161,14 @@ export type ContentRoute =
   | TopicRoute
   | TopicRoute
   | ChapterRoute
-  | LessonRoute;
+  | LessonRoute
+  | ActivityRoute;
+
 export type CourseRoute = [string];
 export type TopicRoute = [string, string];
 export type ChapterRoute = [string, string, string];
 export type LessonRoute = [string, string, string, string];
+export type ActivityRoute = [string, string, string, string, string];
 
 export function isRouteToCourse(route: ContentRoute): route is CourseRoute {
   return route.length === 1;
@@ -174,6 +198,9 @@ export function pathToRoute(path: ContentPath): ContentRoute {
       route.push(path["chapterId"]);
       if (path["lessonId"]) {
         route.push(path["lessonId"]);
+        if (path["activityIdx"]) {
+          route.push(path["activityIdx"]);
+        }
       }
     }
   }

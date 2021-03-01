@@ -14,9 +14,13 @@ import { SelectForEachBlankSimpleActivityJSON } from "../../../../../../content/
 
 interface Props {
   activity: SelectForEachBlankSimpleActivityJSON;
+  handleContinue(): void;
 }
 
-function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
+function LessonActivitySelectForEachBlank({
+  activity: { blocks },
+  handleContinue,
+}: Props) {
   const [notification, setNotification] = useState<NotificationProps>({
     message: "",
     isShowing: false,
@@ -162,7 +166,10 @@ function LessonActivitySelectForEachBlank({ activity: { blocks } }: Props) {
           />
         ))}
       </LessonContent>
-      <LessonContinueButton disabled={!allAnswersLocked} />
+      <LessonContinueButton
+        disabled={!allAnswersLocked}
+        handleContinue={handleContinue}
+      />
     </>
   );
 }
