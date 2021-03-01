@@ -6,4 +6,80 @@ activities:
       - _What you'll learn in this lesson_
       - "- What are the demographics of founders who receive VC investment?"
       - "- What are the demographics of the VCs who make investment decisions?"
-  - activityType:
+  - activityType: read
+    blocks:
+      - At Included VC, we believe that talent is equally distributed - but opportunity is not.
+      - In this lesson, we'll look at some of the stats which demonstrate this in VC and startups.
+  - activityType: select-for-each-blank
+    blocks:
+      - For example, a study of almost 5,000 VC-funded startups found that a very clear 'typical team' emerged.
+      - "To quote the report:"
+      - The typical founding team across these 4,475 companies was a two person, "{{all male}}," "{{all white}}," U.S. {{university-educated}} team residing in {{Silicon Valley}}.
+    choices:
+      "{{all male}}":
+        - text: all male
+          isCorrect: true
+        - text: mixed gender
+          isCorrect: false
+      # prettier-ignore
+      "{{all white}}":
+        - text: all white
+          isCorrect: true
+        - text: mixed ethnicity
+          isCorrect: false
+      # prettier-ignore
+      "{{university-educated}}":
+        - text: university-educated
+          isCorrect: true
+        - text: educationally diverse
+          isCorrect: false
+      # prettier-ignore
+      "{{Silicon Valley}}":
+        - text: Silicon Valley
+          isCorrect: true
+        - text: varied communities
+          isCorrect: false
+  - activityType: select-for-each-blank
+    blocks:
+      - It's not just the US either.
+      - Let's look at an indicative example from the UK.
+      - Less than {{1%}} of the UK population have degrees from the universities of Oxford and Cambridge.
+      - "But, in *ascending order*, it's:"
+      - "{{9%}} of founders"
+      - "{{12%}} of tech firm CEOs"
+      - "{{16%}} of VCs."
+  - activityType: select-one
+    blocks:
+      - It goes far beyond university education too - to things which are so much more pervasive.
+      - What proportion of UK investment roles in VC do you think are held by women?
+    answers:
+      - text: 50%
+        isCorrect: false
+        feedback: Well. No. Not really.
+      - text: 30%
+        isCorrect: false
+        feedback: This is the proportion of women in VC across all roles - it's even smaller in investment roles specifically, though
+      - text: 20%
+        isCorrect: true
+        feedback: That's right - just 20% of VC investment roles are held by women in the UK.
+      - text: 13%
+        isCorrect: false
+        feedback: As it happens, this is the % of senior investment roles that are held by women, where the diversity problem is worst.
+  - activityType: select-one
+    blocks:
+      - When so few VC investment roles are held by women, it's no surprise that startup founding teams are predominantly male.
+      - What proportion of UK VC deals do you think are made with _all-male_ founding teams?
+    answers:
+      - text: 89%
+        isCorrect: false
+        feedback: Close - this turns out to be the % of funding _value_ that goes to all-male teams, rather than the number of deals.
+      - text: 83%
+        isCorrect: true
+        feedback: That's right - 83% of funded founding teams are _all-male_.
+      - text: 17%
+        isCorrect: false
+        feedback: This is the proportion of _mixed_ teams. Yes, only 17% of founding teams are mixed...
+  - activityType: read
+    blocks:
+      - So, as you can see, venture capital and startups are both ecosystems which have very little diversity.
+      - That's one of the things which we hope we can change through Included VC!

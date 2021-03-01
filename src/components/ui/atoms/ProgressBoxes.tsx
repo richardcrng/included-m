@@ -28,7 +28,7 @@ let memoIconSize = defaultWidth;
 let memoShouldDivide = false;
 
 function ProgressBoxes({ className, currentPage, totalPages }: Props) {
-  const maxIndex = totalPages - 1;
+  const maxIndex = totalPages;
 
   const [iconSize, setIconSize] = useState(memoIconSize);
   const [shouldDivide, setShouldDivide] = useState(memoShouldDivide);
