@@ -28,7 +28,7 @@ function LessonActivity({ activity, handleBack, handleContinue }: Props) {
         </LessonContent>
       </>
     );
-  } else if (activity.activityType === "select-an-answer") {
+  } else if (activity.activityType === "select-one") {
     return (
       <LessonActivitySelectMultiple
         activity={activity}

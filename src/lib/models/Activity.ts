@@ -2,7 +2,7 @@ import FirestoreModel from "./FirestoreModel";
 
 export type ActivityType =
   | "read"
-  | "select-an-answer"
+  | "select-one"
   | "select-for-each-blank"
   | "select-multiple"
   | "swipe-cards";
