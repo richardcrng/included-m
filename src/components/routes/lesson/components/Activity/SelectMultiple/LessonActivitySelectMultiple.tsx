@@ -1,14 +1,14 @@
 import React, { useMemo, useReducer, useState } from "react";
 import { shuffle } from "lodash";
 import riduce from "riduce";
-import LessonContent from "../LessonContent";
-import LessonContentBlock from "../LessonContentBlock";
-import MultipleAnswerCard from "../../../../ui/atoms/MultipleAnswerCard";
-import LessonContinueButton from "../LessonContinueButton";
+import LessonContent from "../../LessonContent";
+import LessonContentBlock from "../../LessonContentBlock";
+import MultipleAnswerCard from "../../../../../ui/atoms/MultipleAnswerCard";
+import LessonContinueButton from "../../LessonContinueButton";
 import Notification, {
   NotificationProps,
-} from "../../../../ui/atoms/Notification";
-import { ActivityJSON } from "../../../../../content/types/content-yaml.types";
+} from "../../../../../ui/atoms/Notification";
+import { ActivityJSON } from "../../../../../../content/types/content-yaml.types";
 
 interface Props {
   activity: ActivityJSON;
