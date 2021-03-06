@@ -1,7 +1,7 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import { shuffle } from "lodash";
 import Markdown from "markdown-to-jsx";
-import riduce, { bundle } from "riduce";
+import { bundle, useRiducer } from "riduce";
 import { answersFromBlocks, BlankOrText, hasBlanks } from "./utils";
 import LessonContent from "../../LessonContent";
 import LessonContentBlock from "../../LessonContentBlock";
@@ -35,24 +35,20 @@ function LessonActivitySelectForEachBlank({
     selectedInput: Object.keys(answers)[0],
   };
 
-  const [reducer, actions] = riduce(initialState);
-
-  const [activityState, dispatch] = useReducer(reducer, initialState);
+  const { state, actions, dispatch } = useRiducer(initialState);
 
   const orderedIncompleteAnswers = orderedAnswers.filter((answer, index) => {
-    const currentAnswerState = activityState.answers.find(
+    const currentAnswerState = state.answers.find(
       (answerState) => answerState.textMatch === answer.textMatch
     );
     return !currentAnswerState?.isLocked;
   });
 
   const answerMatchesInput = (answer: ChoiceAnswerState) => {
-    return activityState.selectedInput === answer.textMatch;
+    return state.selectedInput === answer.textMatch;
   };
 
-  const allAnswersLocked = activityState.answers.every(
-    (answer) => answer.isLocked
-  );
+  const allAnswersLocked = state.answers.every((answer) => answer.isLocked);
 
   const makeClickHandler = (answer: typeof answers[0], idx: number) => () => {
     if (answer.isSelected || answer.isLocked) return;
@@ -122,7 +118,7 @@ function LessonActivitySelectForEachBlank({
               (acc, match) => {
                 const [before, remaining] = acc.remaining.split(match);
 
-                const matchingAnswer = activityState.answers.find(
+                const matchingAnswer = state.answers.find(
                   (answer) => answer.textMatch === match
                 );
 
@@ -166,7 +162,7 @@ function LessonActivitySelectForEachBlank({
             );
           }
         })}
-        {activityState.answers.map((answer, idx) => (
+        {state.answers.map((answer, idx) => (
           <MultipleAnswerCard
             key={answer.text}
             answer={{

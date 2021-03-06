@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from "react";
 import { shuffle } from "lodash";
-import riduce from "riduce";
+import riduce, { useRiducer } from "riduce";
 import Markdown from "markdown-to-jsx";
 import { allBlanks, BlankOrText, hasBlanks } from "./utils";
 import LessonContent from "../../LessonContent";
@@ -58,23 +58,21 @@ function LessonActivitySelectForEachBlankComplex({
     selectedInput: shownBlanks[0],
   };
 
-  const [reducer, actions] = riduce(initialState);
+  const { state, actions, dispatch } = useRiducer(initialState);
 
-  const [activityState, dispatch] = useReducer(reducer, initialState);
-
-  const activeChoices = activityState.choices[activityState.selectedInput];
+  const activeChoices = state.choices[state.selectedInput];
 
   type Answer = typeof activeChoices[0];
 
-  const allChoicesLocked = Object.values(
-    activityState.choices
-  ).every((answers) => answers.some((answer) => answer.isLocked));
+  const allChoicesLocked = Object.values(state.choices).every((answers) =>
+    answers.some((answer) => answer.isLocked)
+  );
 
   const makeClickHandler = (answer: Answer, idx: number) => () => {
     if (answer.isSelected || answer.isLocked || allChoicesLocked) return;
 
     dispatch(
-      actions.choices[activityState.selectedInput][idx].create.assign({
+      actions.choices[state.selectedInput][idx].create.assign({
         isSelected: true,
       })
     );
@@ -98,7 +96,7 @@ function LessonActivitySelectForEachBlankComplex({
         (choice) => choice[0] === answer.textMatch
       );
       dispatch(
-        actions.choices[activityState.selectedInput][idx].create.assign({
+        actions.choices[state.selectedInput][idx].create.assign({
           isLocked: true,
         })
       );
@@ -127,7 +125,7 @@ function LessonActivitySelectForEachBlankComplex({
                 Object.entries(choices).map(([key, answers]) => [
                   key,
                   answers.map((answer) =>
-                    key === activityState.selectedInput &&
+                    key === state.selectedInput &&
                     answer.isSelected &&
                     !answer.isCorrect &&
                     !answer.isLocked
@@ -154,7 +152,7 @@ function LessonActivitySelectForEachBlankComplex({
 
                 const matchingAnswer:
                   | ChoiceAnswerState
-                  | undefined = activityState.choices[match].find(
+                  | undefined = state.choices[match].find(
                   (answer) => answer.isCorrect
                 );
 
@@ -167,7 +165,7 @@ function LessonActivitySelectForEachBlankComplex({
                     onInputClick={() => {
                       dispatch(actions.selectedInput.create.update(match));
                     }}
-                    showFocus={activityState.selectedInput === match}
+                    showFocus={state.selectedInput === match}
                   />,
                 ];
                 return { remaining, nodes };
