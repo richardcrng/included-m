@@ -1,5 +1,5 @@
 import React from "react";
-import LessonActivity from "./components/Activity/LessonActivity";
+import LessonActivity from "./components/LessonActivity";
 import LessonToolbar from "./components/LessonToolbar";
 import {
   ActivityJSON,

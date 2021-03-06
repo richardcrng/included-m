@@ -1,12 +1,12 @@
 import { IonButton } from "@ionic/react";
 import React from "react";
-import { ActivityJSON } from "../../../../../content/types/content-yaml.types";
-import LessonContent from "../LessonContent";
-import LessonActivityRead from "./LessonActivityRead";
-import LessonActivitySelectMultiple from "./LessonActivitySelectMultiple";
-import LessonActivitySelectForEachBlank from "./SelectForEachBlank";
-import LessonActivitySelectForEachBlankComplex from "./SelectForEachBlank/LessonActivitySelectForEachBlankComplex";
-import LessonActivitySwipeCards from "./SwipeCards";
+import { ActivityJSON } from "../../../../content/types/content-yaml.types";
+import LessonContent from "./LessonContent";
+import LessonActivityRead from "./Activity/LessonActivityRead";
+import LessonActivitySelectMultiple from "./Activity/LessonActivitySelectMultiple";
+import LessonActivitySelectForEachBlank from "./Activity/SelectForEachBlank";
+import LessonActivitySelectForEachBlankComplex from "./Activity/SelectForEachBlank/LessonActivitySelectForEachBlankComplex";
+import LessonActivitySwipeCards from "./Activity/SwipeCards";
 
 interface Props {
   activity: ActivityJSON;
@@ -28,7 +28,7 @@ function LessonActivity({ activity, handleBack, handleContinue }: Props) {
         </LessonContent>
       </>
     );
-  } else if (activity.activityType === "select-an-answer") {
+  } else if (activity.activityType === "select-one") {
     return (
       <LessonActivitySelectMultiple
         activity={activity}
