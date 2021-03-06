@@ -1,14 +1,14 @@
-import React, { useMemo, useReducer, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { shuffle } from "lodash";
-import riduce from "riduce";
-import LessonContent from "../LessonContent";
-import LessonContentBlock from "../LessonContentBlock";
-import MultipleAnswerCard from "../../../../ui/atoms/MultipleAnswerCard";
-import LessonContinueButton from "../LessonContinueButton";
+import { useRiducer } from "riduce";
+import LessonContent from "../../LessonContent";
+import LessonContentBlock from "../../LessonContentBlock";
+import MultipleAnswerCard from "../../../../../ui/atoms/MultipleAnswerCard";
+import LessonContinueButton from "../../LessonContinueButton";
 import Notification, {
   NotificationProps,
-} from "../../../../ui/atoms/Notification";
-import { ActivityJSON } from "../../../../../content/types/content-yaml.types";
+} from "../../../../../ui/atoms/Notification";
+import { ActivityJSON } from "../../../../../../content/types/content-yaml.types";
 
 interface Props {
   activity: ActivityJSON;
@@ -35,20 +35,13 @@ function LessonActivitySelectMultiple({
     [answers]
   );
 
-  const [reducer, actions] = useMemo(() => riduce(shuffledAnswers), [
-    shuffledAnswers,
-  ]);
+  const { state, actions, dispatch } = useRiducer(shuffledAnswers);
 
-  const [answersState, dispatch] = useReducer(reducer, shuffledAnswers);
-
-  const allCorrectAnswersSelected = answersState.every(
+  const allCorrectAnswersSelected = state.every(
     (answer) => !answer.isCorrect || answer.isSelected
   );
 
-  const makeClickHandler = (
-    answer: typeof answersState[0],
-    idx: number
-  ) => () => {
+  const makeClickHandler = (answer: typeof state[0], idx: number) => () => {
     if (answer.isSelected) return;
 
     dispatch(
@@ -111,7 +104,7 @@ function LessonActivitySelectMultiple({
         {blocks.map((block) => (
           <LessonContentBlock key={JSON.stringify(block)} block={block} />
         ))}
-        {answersState.map((answer, idx) => (
+        {state.map((answer, idx) => (
           <MultipleAnswerCard
             key={answer.text}
             answer={answer}

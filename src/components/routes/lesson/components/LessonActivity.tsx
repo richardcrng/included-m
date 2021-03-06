@@ -1,12 +1,12 @@
 import { IonButton } from "@ionic/react";
 import React from "react";
-import { ActivityJSON } from "../../../../../content/types/content-yaml.types";
-import LessonContent from "../LessonContent";
-import LessonActivityRead from "./LessonActivityRead";
-import LessonActivitySelectMultiple from "./LessonActivitySelectMultiple";
-import LessonActivitySelectForEachBlank from "./SelectForEachBlank";
-import LessonActivitySelectForEachBlankComplex from "./SelectForEachBlank/LessonActivitySelectForEachBlankComplex";
-import LessonActivitySwipeCards from "./SwipeCards";
+import { ActivityJSON } from "../../../../content/types/content-yaml.types";
+import LessonContent from "./LessonContent";
+import LessonActivityRead from "./Activity/Read/LessonActivityRead";
+import LessonActivitySelectMultiple from "./Activity/SelectMultiple";
+import LessonActivitySelectForEachBlank from "./Activity/SelectForEachBlank";
+import LessonActivitySelectForEachBlankComplex from "./Activity/SelectForEachBlank";
+import LessonActivitySwipeCards from "./Activity/SwipeCards";
 
 interface Props {
   activity: ActivityJSON;
