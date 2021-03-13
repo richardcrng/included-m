@@ -3,17 +3,11 @@ import { IonAlert, IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route, Switch } from "react-router";
 import { version } from "../package.json";
-
-import CoursePageRoute from "./routes/course/CoursePageRoute";
-import TopicPageRoute from "./routes/topic/TopicPageRoute";
-import LessonPageRoute from "./routes/lesson/LessonPageRoute";
-import { JSendBase } from "./lib/jsend";
-import db from "./models/db";
+import db from "./lib/models/db";
 import { DEFAULT_COURSE_ID } from "./constants";
-
-export type PingSuccessVersionNumber = JSendBase<{
-  deployedVersion: string;
-}>;
+import CoursePageRoute from "./components/routes/course/CoursePageRoute";
+import TopicPageRoute from "./components/routes/topic/TopicPageRoute";
+import LessonPageRoute from "./components/routes/lesson/LessonPageRoute";
 
 interface Version {
   versionNumber: string;
@@ -29,9 +23,6 @@ function isNewVersionAvailable(versionToCheck: Version) {
 const App: React.FC = () => {
   const [hideModal, setHideModal] = React.useState(false);
 
-  // const [alert, setAlert] = React.useState({
-  //   versionNumber: version
-  // })
   const [state, setState] = React.useState<Version[]>();
 
   React.useEffect(() => {
@@ -64,7 +55,6 @@ const App: React.FC = () => {
 
   const latestVersion = state && state[0];
 
-  // const newVersionAvailable = !!(data && data !== version);
   const newVersionAvailable: boolean = !!(
     latestVersion && isNewVersionAvailable(latestVersion)
   );

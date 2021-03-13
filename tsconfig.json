@@ -1,17 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es6",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "es6", "esnext"],
     "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -21,10 +11,7 @@
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src",
-    "server"
-  ],
+  "include": ["src", "server"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
