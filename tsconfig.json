@@ -9,9 +9,14 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "target": "es5",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true
   },
-  "include": ["src", "server"],
+  "include": ["src"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
