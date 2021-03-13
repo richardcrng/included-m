@@ -6,7 +6,6 @@ import {
   IonLoading,
   IonProgressBar,
   IonSkeletonText,
-  IonSpinner,
   IonToolbar,
 } from "@ionic/react";
 import { IoArrowBack } from "react-icons/io5";
@@ -47,9 +46,6 @@ function LoadingPage() {
             }}
             size={24}
           />
-        </Buttons>
-        <Buttons slot="end">
-          <IonSpinner name="dots" />
         </Buttons>
         <Title>
           <Message>Loading...</Message>
